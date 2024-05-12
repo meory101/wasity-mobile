@@ -11,12 +11,7 @@ class App extends StatelessWidget {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return
         MaterialApp(
-          home:Scaffold(
-            body: Container(
-              height: AppHeightManager.h3Point5,
-              // width: ,
-            ),
-          ),
+         
         );
     });
   }
