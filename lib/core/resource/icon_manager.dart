@@ -6,7 +6,6 @@
 
 abstract class AppIconManager{
   static const String _iconBasePath = 'assets/icons';
-
   static String appLogo = '$_iconBasePath/app_logo.svg';
   static String arrowLeft = '$_iconBasePath/arrow_left.svg';
   static String arrowRight = '$_iconBasePath/arrow_right.svg';
