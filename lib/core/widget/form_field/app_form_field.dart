@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/ahmad
 import '../../resource/color_manager.dart';
 import '../../resource/font_manager.dart';
 import '../../resource/size_manager.dart';
