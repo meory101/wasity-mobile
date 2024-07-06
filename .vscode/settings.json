@@ -1,0 +1,8 @@
+{
+    "git.requireGitUserConfig": false,
+    "git.terminalGitEditor": false,
+    "githubRepositories.autoFetch.enabled": false,
+    "githubRepositories.experimental.prefetch": true,
+    "gradle.allowParallelRun": true,
+    "gradle.autoDetect": "on"
+}
