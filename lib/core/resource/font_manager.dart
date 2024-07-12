@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import 'dart:ui';
->>>>>>> origin/ahmad
 
 import 'package:responsive_sizer/responsive_sizer.dart';
 

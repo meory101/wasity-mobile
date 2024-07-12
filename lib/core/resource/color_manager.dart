@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 
 abstract class AppColorManager {
   static const Color black = Color(0xff171717);
-<<<<<<< HEAD
   static const Color navyLightBlue = Color.fromARGB(255, 26, 48, 65);
   static const Color navyBlue = Color.fromARGB(255, 18, 38, 54);
-=======
->>>>>>> origin/ahmad
   static const Color grey = Color(0xff8e8e93);
   static const Color green = Color(0xff34c759);
   static const Color lightGreen = Color(0xffb7fac8);
@@ -31,15 +28,8 @@ abstract class AppColorManager {
   static Color greyShadowOpacity1 = const Color(0xff828282).withOpacity(0.1);
   static Color greenShadow = const Color(0xff34c759).withOpacity(0.1);
 
-<<<<<<< HEAD
   static Color blackShadow = const Color(0xff171717).withOpacity(0.4);
 
-=======
-
-  static Color blackShadow = const Color(0xff171717).withOpacity(0.4);
-
-
->>>>>>> origin/ahmad
   static const Color shadow = Color.fromARGB(28, 130, 130, 130);
 
   static const Color hint = Color(0xffc7c7cc);

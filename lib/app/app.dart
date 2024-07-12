@@ -1,10 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-<<<<<<< HEAD
-=======
-import 'package:wasity/core/resource/size_manager.dart';
->>>>>>> origin/ahmad
 import 'package:wasity/features/home/screens/home_screen.dart';
 
 //
