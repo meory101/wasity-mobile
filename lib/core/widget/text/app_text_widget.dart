@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../../resource/color_manager.dart';
 import '../../resource/font_manager.dart';
 
-class AppTextWidget extends StatefulWidget {
+class AppTextWidget extends StatelessWidget {
   final String text;
   final double? fontSize;
   final double? height;
@@ -28,7 +27,7 @@ class AppTextWidget extends StatefulWidget {
     this.height,
     this.fontWeight,
     this.fontStyle,
-    this.color = AppColorManager.textAppColor,
+    this.color = AppColorManager.white,
     this.decorationColor,
     this.textDecoration,
     this.textAlign,
@@ -42,42 +41,30 @@ class AppTextWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AppTextWidget> createState() => _AppTextWidgetState();
-}
-
-class _AppTextWidgetState extends State<AppTextWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: onTap,
       child: Padding(
-        padding: widget.padding ?? EdgeInsets.zero,
+        padding: padding ?? EdgeInsets.zero,
         child: Text(
-          widget.text,
-          maxLines: widget.maxLines,
-          overflow: widget.overflow ?? TextOverflow.ellipsis,
-          softWrap: widget.softWrap,
-          textAlign: widget.textAlign,
-          textDirection: widget.textDirection,
-
-          style: widget.style ??
+          text,
+          maxLines: maxLines,
+          overflow: overflow ?? TextOverflow.ellipsis,
+          softWrap: softWrap,
+          textAlign: textAlign,
+          textDirection: textDirection,
+          style: style ??
               TextStyle(
                 fontFamily: FontFamilyManager.cairo,
-
-                fontSize: widget.fontSize??FontSizeManager.fs14,
-                fontWeight: widget.fontWeight,
-                color: widget.color,
-                decoration: widget.textDecoration,
-                decorationColor: widget.decorationColor,
-                height: widget.height,
+                fontSize: fontSize ?? FontSizeManager.fs14,
+                fontWeight: fontWeight,
+                color: color,
+                decoration: textDecoration,
+                decorationColor: decorationColor,
+                height: height,
               ),
         ),
       ),
     );
   }
 }
-

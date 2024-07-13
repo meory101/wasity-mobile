@@ -1,9 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/services/text_formatter.dart';
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/ahmad
 import '../../resource/color_manager.dart';
 import '../../resource/font_manager.dart';
 import '../../resource/size_manager.dart';
@@ -62,14 +60,14 @@ class AppTextFormField extends StatelessWidget {
       this.textAlignVertical,
       this.focusNode,
       this.labelText,
-      this.textColor = AppColorManager.textAppColor,
+      this.textColor = AppColorManager.white,
       this.labelColor,
       this.onFilledSubmited,
       this.initialValue,
       this.maxLines,
       this.prefixIcon,
       this.hintText,
-      this.outlinedBorder})
+      this.outlinedBorder, required TextInputType keyboardType,  required InputDecoration decoration})
       : super(key: key);
 
   @override
@@ -79,7 +77,7 @@ class AppTextFormField extends StatelessWidget {
       readOnly: readOnly ?? false,
       textAlignVertical: textAlignVertical,
       onFieldSubmitted: onFilledSubmited,
-      cursorColor: AppColorManager.darkOrange,
+      cursorColor: AppColorManager.white,
       validator: validator,
       controller: controller,
       focusNode: focusNode,
@@ -96,7 +94,7 @@ class AppTextFormField extends StatelessWidget {
       expands: expand ?? false,
       decoration: InputDecoration(
         filled: filled ?? true,
-        fillColor: fillColor ?? AppColorManager.white,
+        fillColor: fillColor ?? AppColorManager.navyLightBlue,
         hintText: hintText,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,

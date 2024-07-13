@@ -12,30 +12,29 @@ class SearchFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: AppHeightManager.h1point2),
+      padding: EdgeInsets.only(
+          top: AppHeightManager.h1point2, bottom: AppHeightManager.h3),
       child: Row(
         children: [
           Expanded(
             flex: 85,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadiusManager.r5),
+            child: AppTextFormField(
+              fillColor: AppColorManager.navyLightBlue,
+              borderRadius: AppRadiusManager.r6,
+              // outlinedBorder: false,
+              hintText: 'search here ...',
+              prefixIcon: const Icon(Icons.search, color: AppColorManager.grey),
+              hintStyle: TextStyle(
+                color: AppColorManager.grey,
+                fontSize: FontSizeManager.fs19,
               ),
-              child: AppTextFormField(
-                fillColor: AppColorManager.navyLightBlue,
-                borderRadius: AppRadiusManager.r6,
-                hintText: 'search here ...',
-                prefixIcon:
-                    const Icon(Icons.search, color: AppColorManager.grey),
-                hintStyle: TextStyle(
-                  color: AppColorManager.grey,
-                  fontSize: FontSizeManager.fs19,
-                ),
-                controller: TextEditingController(),
-                textInputType: TextInputType.text,
-                textInputAction: TextInputAction.search,
-                textColor: AppColorManager.white,
-              ),
+              controller: TextEditingController(),
+              textInputType: TextInputType.text,
+              textInputAction: TextInputAction.search,
+              keyboardType: TextInputType.name,
+               decoration: InputDecoration(border: InputBorder.none),
+            
+       
             ),
           ),
           //!filter

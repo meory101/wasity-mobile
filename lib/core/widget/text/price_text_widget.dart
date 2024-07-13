@@ -14,31 +14,37 @@ class PriceText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        AppTextWidget(
-          text: price == null ? "" : price.toString(),
-          style: priceStyle ??
-              TextStyle(
-                  fontWeight: FontWeight.w500, fontSize: FontSizeManager.fs16),
-        ),
-        Visibility(
-          visible: price != null,
-          child: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                    text: 'AED',
-                    style: style ??
-                        TextStyle(
-                            color: AppColorManager.black,
-                            fontSize: FontSizeManager.fs14,
-                            fontFeatures: const [FontFeature.superscripts()])),
-              ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
+      child: Row(
+        children: [
+          AppTextWidget(
+            text: price == null ? "" : price.toString(),
+            style: priceStyle ??
+                TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: FontSizeManager.fs18),
+          ),
+          Visibility(
+            visible: price != null,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                      text: ' S.P',
+                      style: style ??
+                          TextStyle(
+                              color: AppColorManager.white,
+                              fontSize: FontSizeManager.fs10,
+                              fontFeatures: const [
+                                FontFeature.superscripts()
+                              ])),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

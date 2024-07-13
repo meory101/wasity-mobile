@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../resource/color_manager.dart';
 import '../../resource/size_manager.dart';
 
-//A Decorated Container With Default Shadow Effect
 class DecoratedContainer extends StatelessWidget {
   const DecoratedContainer({
     Key? key,
@@ -21,6 +19,7 @@ class DecoratedContainer extends StatelessWidget {
     this.borderRadius,
     this.isGradient,
   }) : super(key: key);
+
   final Color? color;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
@@ -44,11 +43,17 @@ class DecoratedContainer extends StatelessWidget {
       height: height,
       margin: margin,
       decoration: BoxDecoration(
-        gradient: isGradient != null
+        gradient: isGradient != null && isGradient!
             ? const LinearGradient(
-                colors: [AppColorManager.white, AppColorManager.black],
+                colors: [
+                  AppColorManager.grayLightBlue,
+                  AppColorManager.grayLightBlue,
+                  AppColorManager.navyBlue,
+                  AppColorManager.navyBlue,
+                ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
+                stops: [0, 0.25, 0.75, 0.03],
               )
             : null,
         border: border,
@@ -59,12 +64,10 @@ class DecoratedContainer extends StatelessWidget {
         boxShadow: boxShadow ??
             [
               const BoxShadow(
-                color: AppColorManager.shadow,
-                blurRadius: 2,
+                color: AppColorManager.navyBlue,
+                blurRadius: 0,
                 spreadRadius: 0,
-                offset:
-                    // changes position of shadow
-                    Offset(3, 5),
+                offset: Offset(0, 0), // changes position of shadow
               ),
             ],
         shape: shape ?? BoxShape.rectangle,

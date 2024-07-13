@@ -1,10 +1,4 @@
 
-<<<<<<< HEAD
-=======
-/**
- * Created by Eng.Eyad AlSayed on 4/14/2024.
- */
->>>>>>> origin/ahmad
 
 
 abstract class AppIconManager{
@@ -36,17 +30,14 @@ abstract class AppIconManager{
   static String trash = '$_iconBasePath/trash.svg';
   static String logout = '$_iconBasePath/logout.svg';
   static String clock = '$_iconBasePath/clock.svg';
+  static String cart = '$_iconBasePath/cart.svg';
 
   static String calendar = '$_iconBasePath/clock.svg';
   static String note = '$_iconBasePath/clock.svg';
   static String ticketDiscount = '$_iconBasePath/clock.svg';
   static String timer = '$_iconBasePath/clock.svg';
-<<<<<<< HEAD
  static String list = '$_iconBasePath/list.svg';
  static String verticalSliders = '$_iconBasePath/vertical_sliders.svg';
-=======
-
->>>>>>> origin/ahmad
   static String arrowMenuUp = '$_iconBasePath/arrow_menu_up.svg';
   static String addCircle = '$_iconBasePath/add_circle.svg';
 

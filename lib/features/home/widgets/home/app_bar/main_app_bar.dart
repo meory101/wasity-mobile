@@ -6,11 +6,11 @@ import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/icon_manager.dart';
 import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
-import 'package:wasity/core/widget/button/circular_icon_button.dart';
+import 'package:wasity/features/home/widgets/home/button/circular_icon_button.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 
-class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({super.key});
+class MainAppBar extends StatelessWidget {
+  const MainAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,6 @@ class HomeAppBar extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
                 AppIconManager.list,
-
-                // width: AppWidthManager.w10,
-                // height: AppHeightManager.h10,
               ),
             ),
           ),

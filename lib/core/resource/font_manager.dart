@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import 'dart:ui';
->>>>>>> origin/ahmad
 
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -20,6 +16,7 @@ abstract class FontSizeManager {
   static double fs17 = 17.sp;
   static double fs18 = 18.sp;
   static double fs19 = 19.sp;
+  static double fs16point5 = 16.5.sp;
   static double fs20 = 20.sp;
   static double fs21 = 21.sp;
   static double fs22 = 22.sp;
