@@ -3,7 +3,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 abstract class AppRadiusManager {
   static double r3 = 3;
   static double r5 = 5;
-
   static double r1 = 1;
   static double r0 = 0;
   static double r4 = 4;
@@ -98,7 +97,6 @@ abstract class AppWidthManager {
 
 abstract class AppHeightManager {
   static double h02 = 0.2.h;
-  static double mh05 = -0.5.h;
   static double h03 = 0.3.h;
   static double h05 = 0.5.h;
   static double h06 = 0.6.h;
@@ -112,8 +110,9 @@ abstract class AppHeightManager {
   static double h2point2 = 2.2.h;
   static double h2point5 = 2.5.h;
   static double h2point7 = 2.7.h;
+
   static double h12point5 = 12.5.h;
-  static double h7point7 = 7.7.h;
+
 
   static double h3 = 3.h;
   static double h3point3 = 3.3.h;

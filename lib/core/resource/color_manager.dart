@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 abstract class AppColorManager {
   static const Color black = Color(0xff171717);
+
   static const Color grayLightBlue = Color.fromARGB(255, 117, 134, 148);
   static const Color navyLightBlue = Color.fromARGB(255, 58, 72, 83);
   static const Color navyBlue = Color.fromARGB(255, 16, 35, 51);
+
   static const Color grey = Color(0xff8e8e93);
   static const Color green = Color(0xff34c759);
   static const Color lightGreen = Color(0xffb7fac8);
