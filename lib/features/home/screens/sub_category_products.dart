@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
-
 class SubCategoryProducts extends StatefulWidget {
-  const SubCategoryProducts({super.key});
+  final ValueNotifier<ThemeMode> themeNotifier;
+
+  const SubCategoryProducts({super.key, required this.themeNotifier});
+
 
   @override
   State<SubCategoryProducts> createState() => _SubCategoryProductsState();
@@ -15,7 +16,7 @@ class _SubCategoryProductsState extends State<SubCategoryProducts> {
     final String subCategories =
         ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
-      backgroundColor: AppColorManager.navyBlue,
+  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: SecondAppbar(
         onBack: () {
           Navigator.pop(context);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
 import 'package:wasity/features/home/widgets/home/container/new_arrivais_container.dart';
@@ -7,18 +6,22 @@ import 'package:wasity/features/home/widgets/home/form_field/search_form_field.d
 
 //?All product هي نفسا
 class NewArrivais extends StatelessWidget {
-  const NewArrivais({super.key});
+  final ValueNotifier<ThemeMode>? themeNotifier;
+
+  const NewArrivais({super.key, this.themeNotifier});
 
   @override
   Widget build(BuildContext context) {
+    Theme.of(context);
     return Scaffold(
+       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: SecondAppbar(
         onBack: () {
           Navigator.pop(context);
         },
         titleText: "NewArrivais",
       ),
-      backgroundColor: AppColorManager.navyBlue,
+     
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: AppWidthManager.w5Point3,
@@ -26,7 +29,7 @@ class NewArrivais extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SearchFormField(),
+            const SearchFormField(),
             SizedBox(height: AppHeightManager.h3),
             Expanded(
               child: GridView.builder(
@@ -38,7 +41,7 @@ class NewArrivais extends StatelessWidget {
                 ),
                 itemCount: 12,
                 itemBuilder: (context, index) {
-                  return const NewArrivaisContainer();
+                  return NewArrivalsContainer(themeNotifier: themeNotifier);
                 },
               ),
             ),

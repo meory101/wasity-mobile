@@ -4,31 +4,31 @@ import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 
 class SecondAppbar extends StatelessWidget implements PreferredSizeWidget {
+  
   final String titleText;
+  final VoidCallback onBack; 
 
-  SecondAppbar({
+  const SecondAppbar({
     required this.titleText,
-    Key? key,
-    required Null Function() onBack,
-  }) : super(key: key);
+    required this.onBack, 
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back,
           size: FontSizeManager.fs24,
           color: AppColorManager.white,
         ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: onBack, 
       ),
       title: AppTextWidget(
         text: titleText,
-        fontSize: FontSizeManager.fs19,
-        fontWeight: FontWeight.bold,
+        style: Theme.of(context).textTheme.headlineMedium!,
       ),
       centerTitle: true,
       backgroundColor: AppColorManager.navyBlue,
@@ -37,5 +37,5 @@ class SecondAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:wasity/core/resource/color_manager.dart';
-import 'package:wasity/core/resource/font_manager.dart';
+import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 
@@ -11,8 +9,8 @@ class ViewAllBar extends StatefulWidget {
   const ViewAllBar({
     required this.title,
     required this.onViewAllPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ViewAllBar> createState() => _ViewAllBarState();
@@ -21,6 +19,10 @@ class ViewAllBar extends StatefulWidget {
 class _ViewAllBarState extends State<ViewAllBar> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+    final Color textColor = isDarkMode ? Colors.white : Colors.black;
+
     return Column(
       children: [
         Padding(
@@ -30,15 +32,17 @@ class _ViewAllBarState extends State<ViewAllBar> {
             children: [
               AppTextWidget(
                 text: widget.title,
-                fontSize: FontSizeManager.fs19,
-                fontWeight: FontWeight.bold,
+                style: theme.textTheme.displayLarge?.copyWith(
+                  color: textColor,
+                ),
               ),
               GestureDetector(
                 onTap: widget.onViewAllPressed,
                 child: AppTextWidget(
                   text: "View All",
-                  fontSize: FontSizeManager.fs16point5,
-                  color: AppColorManager.grey,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: textColor,
+                  ),
                 ),
               ),
             ],

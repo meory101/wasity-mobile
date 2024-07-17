@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
-import 'package:wasity/core/resource/font_manager.dart';
+
 import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
@@ -20,51 +19,56 @@ class Categorys extends StatelessWidget {
     "category9",
   ];
 
-  Categorys({super.key});
+  final ValueNotifier<ThemeMode>? themeNotifier;
+  Categorys({super.key, this.themeNotifier});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+    final Color textColor =
+        isDarkMode ? AppColorManager.white : AppColorManager.navyBlue;
     return SingleChildScrollView(
-      child: SizedBox(
-        height: AppHeightManager.h13,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: categories.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.only(right: AppWidthManager.w4),
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/SubcategoryPage',
-                        arguments: categories[index],
-                      );
-                    },
-                    child: DecoratedContainer(
-                      width: AppWidthManager.w13point5,
-                      height: AppHeightManager.h6point2,
-                      borderRadius: BorderRadius.circular(AppRadiusManager.r6),
-                      image: DecorationImage(
-                        image: AssetImage(AppImageManager.categoryImage),
-                        fit: BoxFit.cover,
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: categories
+            .map(
+              (category) => Padding(
+                padding: EdgeInsets.only(right: AppWidthManager.w2),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/SubcategoryPage',
+                          arguments: category,
+                        );
+                      },
+                      child: DecoratedContainer(
+                        width: AppWidthManager.w13point5,
+                        height: AppHeightManager.h6point2,
+                        borderRadius:
+                            BorderRadius.circular(AppRadiusManager.r6),
+                        image: DecorationImage(
+                          image: AssetImage(AppImageManager.categoryImage),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: AppWidthManager.w1Point5),
-                  AppTextWidget(
-                    text: categories[index],
-                    height: AppHeightManager.h03,
-                    color: AppColorManager.white,
-                    fontSize: FontSizeManager.fs15,
-                  ),
-                ],
+                    SizedBox(height: AppHeightManager.h03),
+                    AppTextWidget(
+                      text: category,
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: textColor,
+                          ),
+                    ),
+                    SizedBox(height: AppHeightManager.h5),
+                  ],
+                ),
               ),
-            );
-          },
-        ),
+            )
+            .toList(),
       ),
     );
   }

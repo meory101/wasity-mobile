@@ -1,4 +1,5 @@
 
+// ignore: depend_on_referenced_packages
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 abstract class FontFamilyManager {

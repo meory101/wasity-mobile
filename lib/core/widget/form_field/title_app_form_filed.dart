@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../resource/font_manager.dart';
 import '../../resource/size_manager.dart';
@@ -60,7 +61,7 @@ class TitleAppFormFiled extends StatelessWidget {
             textInputAction: TextInputAction.next,
             hintText: hint,
             textInputType: TextInputType.name,
-            keyboardType: TextInputType.none,  decoration: InputDecoration(border: InputBorder.none),
+            keyboardType: TextInputType.none, decoration: const InputDecoration(border: InputBorder.none),
           ),
         ),
       ],

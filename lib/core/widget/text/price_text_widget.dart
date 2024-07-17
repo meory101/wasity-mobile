@@ -10,7 +10,7 @@ class PriceText extends StatelessWidget {
   final TextStyle? priceStyle;
   final TextStyle? style;
 
-  PriceText({required this.price, this.style, this.priceStyle});
+  const PriceText({super.key, required this.price, this.style, this.priceStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class PriceText extends StatelessWidget {
             text: price == null ? "" : price.toString(),
             style: priceStyle ??
                 TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     fontSize: FontSizeManager.fs18),
           ),
           Visibility(
@@ -35,7 +35,8 @@ class PriceText extends StatelessWidget {
                       style: style ??
                           TextStyle(
                               color: AppColorManager.white,
-                              fontSize: FontSizeManager.fs10,
+                              fontWeight: FontWeight.w400,
+                              fontSize: FontSizeManager.fs18,
                               fontFeatures: const [
                                 FontFeature.superscripts()
                               ])),

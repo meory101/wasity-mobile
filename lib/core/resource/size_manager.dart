@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 abstract class AppRadiusManager {
@@ -5,6 +6,7 @@ abstract class AppRadiusManager {
   static double r5 = 5;
   static double r1 = 1;
   static double r0 = 0;
+  static double r0Point5 = 0.7;
   static double r4 = 4;
   static double r6 = 6;
   static double r10 = 10;
@@ -31,6 +33,7 @@ abstract class AppWidthManager {
   static double w3 = 3.w;
   static double w3Point8 = 3.8.w;
   static double w3Point5 = 3.5.w;
+  static double w3Point3 = 3.3.w;
   static double w5Point3 = 5.3.w;
   static double w4 = 4.w;
   static double w4point2 = 4.2.w;
@@ -56,6 +59,7 @@ abstract class AppWidthManager {
   static double w15 = 15.w;
   static double w16 = 16.w;
   static double w20 = 20.w;
+  static double w19 = 19.w;
   static double w21 = 21.w;
   static double w22 = 22.w;
   static double w23 = 23.w;
@@ -112,7 +116,6 @@ abstract class AppHeightManager {
   static double h2point7 = 2.7.h;
 
   static double h12point5 = 12.5.h;
-
 
   static double h3 = 3.h;
   static double h3point3 = 3.3.h;

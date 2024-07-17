@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wasity/core/resource/color_manager.dart';
-import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/icon_manager.dart';
 import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
@@ -9,24 +9,29 @@ import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 import 'package:wasity/core/widget/text/price_text_widget.dart';
 import 'package:wasity/features/home/widgets/home/button/cart_button.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class TrendingProductContainer extends StatelessWidget {
-  TrendingProductContainer({super.key});
+  final ValueNotifier<ThemeMode>? themeNotifier;
+
+  const TrendingProductContainer({super.key, this.themeNotifier});
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Padding(
       padding: EdgeInsets.only(bottom: AppHeightManager.h2),
       child: Row(
         children: [
           Stack(
             children: [
-              //?Main Container
+              //? Main Container
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadiusManager.r5),
                 child: DecoratedContainer(
-                  color: AppColorManager.navyLightBlue,
+                  color: themeNotifier!.value == ThemeMode.dark
+                      ? AppColorManager.navyLightBlue
+                      : AppColorManager.whiteBlue,
                   width: AppWidthManager.w89,
                   height: AppHeightManager.h15point7,
                   child: Padding(
@@ -36,17 +41,24 @@ class TrendingProductContainer extends StatelessWidget {
                         bottom: AppHeightManager.h08),
                     child: Row(
                       children: [
-                        //? Product image
+                        // ?Product image
                         ClipRRect(
                           borderRadius:
                               BorderRadius.circular(AppRadiusManager.r5),
                           child: DecoratedContainer(
-                            color: AppColorManager.grayLightBlue,
                             width: AppWidthManager.w25,
                             height: AppHeightManager.h11,
-                            child: Image.asset(
-                              AppImageManager.productImage,
-                              fit: BoxFit.cover,
+                            child: InkWell(
+                              child: Image.asset(
+                                AppImageManager.productImage,
+                                fit: BoxFit.cover,
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "/ProductInfo",
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -57,28 +69,39 @@ class TrendingProductContainer extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              //?Product name
+                              // ?Product name
                               AppTextWidget(
-                                fontWeight: FontWeight.w400,
                                 text: "Product Name",
-                                fontSize: FontSizeManager.fs19,
+                                style: theme.textTheme.displayMedium?.copyWith(
+                                  color: themeNotifier!.value == ThemeMode.dark
+                                      ? AppColorManager.white
+                                      : AppColorManager.navyBlue,
+                                ),
                               ),
 
                               //? Product Description
                               AppTextWidget(
-                                color: AppColorManager.grey,
-                                fontWeight: FontWeight.w400,
                                 text: "Product description",
-                                fontSize: FontSizeManager.fs17,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: themeNotifier!.value == ThemeMode.dark
+                                      ? AppColorManager.grey
+                                      : AppColorManager.navyBlue,
+                                ),
                               ),
-                              //?Product Price
+                              //? Product Price
                               PriceText(
                                 price: 123.45,
-                                priceStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColorManager.white,
+                                priceStyle:
+                                    theme.textTheme.displayMedium?.copyWith(
+                                  color: themeNotifier!.value == ThemeMode.dark
+                                      ? AppColorManager.white
+                                      : AppColorManager.navyBlue,
                                 ),
-                                style: TextStyle(),
+                                style: theme.textTheme.displayMedium?.copyWith(
+                                  color: themeNotifier!.value == ThemeMode.dark
+                                      ? AppColorManager.white
+                                      : AppColorManager.navyBlue,
+                                ),
                               ),
                             ],
                           ),
@@ -89,7 +112,7 @@ class TrendingProductContainer extends StatelessWidget {
                               top: AppHeightManager.h1point5),
                           child: Column(
                             children: [
-                              //?Rating
+                              //? Rating
                               Row(
                                 children: [
                                   SvgPicture.asset(
@@ -104,9 +127,13 @@ class TrendingProductContainer extends StatelessWidget {
                                   SizedBox(
                                     child: AppTextWidget(
                                       text: "4.2",
-                                      fontSize: FontSizeManager.fs16,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColorManager.white,
+                                      style: theme.textTheme.displaySmall
+                                          ?.copyWith(
+                                        color: themeNotifier!.value ==
+                                                ThemeMode.dark
+                                            ? AppColorManager.white
+                                            : AppColorManager.navyBlue,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -115,7 +142,7 @@ class TrendingProductContainer extends StatelessWidget {
                                   padding: EdgeInsets.only(
                                     top: AppHeightManager.h2,
                                   ),
-                                  child: CartButton()),
+                                  child: const CartButton()),
                             ],
                           ),
                         )

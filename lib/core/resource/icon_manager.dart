@@ -31,6 +31,7 @@ abstract class AppIconManager{
   static String logout = '$_iconBasePath/logout.svg';
   static String clock = '$_iconBasePath/clock.svg';
   static String cart = '$_iconBasePath/cart.svg';
+  static String setting = '$_iconBasePath/setting.svg';
 
   static String calendar = '$_iconBasePath/clock.svg';
   static String note = '$_iconBasePath/clock.svg';

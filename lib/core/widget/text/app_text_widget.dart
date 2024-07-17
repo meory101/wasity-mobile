@@ -21,7 +21,7 @@ class AppTextWidget extends StatelessWidget {
   final void Function()? onTap;
 
   const AppTextWidget({
-    Key? key,
+    super.key,
     required this.text,
     this.fontSize,
     this.height,
@@ -38,7 +38,7 @@ class AppTextWidget extends StatelessWidget {
     this.softWrap,
     this.padding,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

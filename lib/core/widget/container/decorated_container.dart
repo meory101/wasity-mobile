@@ -4,7 +4,7 @@ import '../../resource/size_manager.dart';
 
 class DecoratedContainer extends StatelessWidget {
   const DecoratedContainer({
-    Key? key,
+    super.key,
     this.color,
     this.margin,
     this.padding,
@@ -18,7 +18,8 @@ class DecoratedContainer extends StatelessWidget {
     this.image,
     this.borderRadius,
     this.isGradient,
-  }) : super(key: key);
+    this.isDarkMode,  // Add this parameter
+  });
 
   final Color? color;
   final EdgeInsetsGeometry? margin;
@@ -33,6 +34,7 @@ class DecoratedContainer extends StatelessWidget {
   final DecorationImage? image;
   final BorderRadiusGeometry? borderRadius;
   final bool? isGradient;
+  final bool? isDarkMode;  // Add this parameter
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +46,29 @@ class DecoratedContainer extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         gradient: isGradient != null && isGradient!
-            ? const LinearGradient(
-                colors: [
-                  AppColorManager.grayLightBlue,
-                  AppColorManager.grayLightBlue,
-                  AppColorManager.navyBlue,
-                  AppColorManager.navyBlue,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0, 0.25, 0.75, 0.03],
-              )
+            ? isDarkMode != null && isDarkMode!
+                ? const LinearGradient(
+                    colors: [
+                      AppColorManager.navyBlue,
+                      AppColorManager.navyBlue,
+                      AppColorManager.grayLightBlue,
+                      AppColorManager.grayLightBlue,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 0.25, 0.75, 0.03],
+                  )
+                : const LinearGradient(
+                    colors: [
+                      AppColorManager.grayLightBlue,
+                      AppColorManager.grayLightBlue,
+                      AppColorManager.navyBlue,
+                      AppColorManager.navyBlue,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 0.25, 0.75, 0.03],
+                  )
             : null,
         border: border,
         image: image,

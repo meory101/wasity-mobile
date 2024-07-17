@@ -1,6 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
-import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
@@ -11,31 +10,40 @@ class Intro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+
     return Column(
-        children: [
-          DecoratedContainer(
-            height: AppHeightManager.h40,
-            isGradient: true,
-            child: Stack(
-              children: [
-                Image.asset(
-                  AppImageManager.logo,
-                ),
-                Positioned(
-                  left: AppWidthManager.w22,
-                  top: AppHeightManager.h17,
-                  child: Row(
-                    children: [
-                      AppTextWidget(
-                        text: " Everything in one place !",
-                        fontSize: FontSizeManager.fs22,
-                        color: AppColorManager.grey,
+      children: [
+        DecoratedContainer(
+          height: AppHeightManager.h100,
+          isGradient: true,
+          isDarkMode: isDarkMode,  // Pass the isDarkMode flag
+          child: Stack(
+            children: [
+              Image.asset(
+                AppImageManager.logo,
+              ),
+              Positioned(
+                left: AppWidthManager.w21,
+                top: AppHeightManager.h17,
+                child: Row(
+                  children: [
+                    AppTextWidget(
+                      text: " Everything in one place !",
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: isDarkMode
+                            ? AppColorManager.white
+                            : AppColorManager.white,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),],);
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wasity/core/resource/color_manager.dart';
-import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
@@ -26,14 +24,16 @@ class SubcategoryPage extends StatelessWidget {
     "subCategorie15",
   ];
 
-  SubcategoryPage({super.key});
+  final ValueNotifier<ThemeMode> themeNotifier;
+
+  SubcategoryPage({super.key, required this.themeNotifier});
 
   @override
   Widget build(BuildContext context) {
     final String mainCategory =
         ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
-      backgroundColor: AppColorManager.navyBlue,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: SecondAppbar(
         onBack: () {
           Navigator.pop(context);
@@ -67,7 +67,7 @@ class SubcategoryPage extends StatelessWidget {
                   child: DecoratedContainer(
                     width: AppWidthManager.w25,
                     height: AppHeightManager.h11,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(AppRadiusManager.r6),
                     image: DecorationImage(
                       image: AssetImage(AppImageManager.subCategoryImage),
                       fit: BoxFit.cover,
@@ -78,8 +78,7 @@ class SubcategoryPage extends StatelessWidget {
                 AppTextWidget(
                   text: subCategories[index],
                   height: AppHeightManager.h03,
-                  color: AppColorManager.white,
-                  fontSize: FontSizeManager.fs15,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ],
             );
