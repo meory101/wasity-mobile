@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../resource/font_manager.dart';
 import '../../resource/size_manager.dart';
 import '../text/app_text_widget.dart';
 import 'app_form_field.dart';
-
-/**
- * Created by Eng.Eyad AlSayed on 4/23/2024.
- */
 
 class TitleAppFormFiled extends StatelessWidget {
   const TitleAppFormFiled(
@@ -64,6 +61,7 @@ class TitleAppFormFiled extends StatelessWidget {
             textInputAction: TextInputAction.next,
             hintText: hint,
             textInputType: TextInputType.name,
+            keyboardType: TextInputType.none, decoration: const InputDecoration(border: InputBorder.none),
           ),
         ),
       ],

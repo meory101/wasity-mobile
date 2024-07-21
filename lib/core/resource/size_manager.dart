@@ -1,10 +1,16 @@
+// ignore: depend_on_referenced_packages
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 abstract class AppRadiusManager {
   static double r3 = 3;
   static double r5 = 5;
+  static double r1 = 1;
+  static double r0 = 0;
+  static double r0Point5 = 0.7;
   static double r4 = 4;
+  static double r6 = 6;
   static double r10 = 10;
+  static double r13 = 13;
   static double r15 = 15;
   static double r16 = 16;
   static double r20 = 20;
@@ -16,22 +22,31 @@ abstract class AppRadiusManager {
 
 abstract class AppWidthManager {
   static double w05 = 0.5.w;
+  static double mw05 = -0.5.w;
   static double w1 = 1.w;
   static double w2 = 2.w;
   static double w1Point2 = 1.2.w;
+  static double w74 = 74.w;
   static double w1Point5 = 1.5.w;
   static double w1Point8 = 1.8.w;
   static double w2point5 = 2.5.w;
   static double w3 = 3.w;
   static double w3Point8 = 3.8.w;
+  static double w3Point5 = 3.5.w;
+  static double w3Point3 = 3.3.w;
+  static double w5Point3 = 5.3.w;
   static double w4 = 4.w;
   static double w4point2 = 4.2.w;
+  static double w4point7 = 4.7.w;
   static double w5 = 5.w;
   static double w6 = 6.w;
   static double w7 = 7.w;
 
+  static double w77Point3 = 77.3.w;
+
   static double w7point2 = 7.2.w;
   static double w8 = 8.w;
+  static double w8point5 = 8.5.w;
   static double w9 = 9.w;
   static double w9point4 = 9.4.w;
 
@@ -44,12 +59,13 @@ abstract class AppWidthManager {
   static double w15 = 15.w;
   static double w16 = 16.w;
   static double w20 = 20.w;
+  static double w19 = 19.w;
   static double w21 = 21.w;
   static double w22 = 22.w;
   static double w23 = 23.w;
   static double w25 = 25.w;
   static double w26 = 26.w;
-  static double w28 = 28.w;
+  static double w27 = 27.w;
   static double w29 = 29.w;
   static double w30 = 30.w;
   static double w32 = 32.w;
@@ -73,6 +89,7 @@ abstract class AppWidthManager {
   static double w71 = 71.w;
   static double w72 = 72.w;
   static double w80 = 80.w;
+  static double w89 = 89.w;
   static double w84 = 84.w;
   static double w90 = 90.w;
   static double w91 = 91.w;
@@ -84,21 +101,26 @@ abstract class AppWidthManager {
 
 abstract class AppHeightManager {
   static double h02 = 0.2.h;
+  static double h03 = 0.3.h;
   static double h05 = 0.5.h;
   static double h06 = 0.6.h;
-
   static double h08 = 0.8.h;
   static double h1 = 1.h;
   static double h1point5 = 1.5.h;
+  static double h1point2 = 1.2.h;
   static double h1point8 = 1.8.h;
+  static double h1point6 = 1.6.h;
   static double h2 = 2.h;
   static double h2point2 = 2.2.h;
   static double h2point5 = 2.5.h;
   static double h2point7 = 2.7.h;
 
+  static double h12point5 = 12.5.h;
+
   static double h3 = 3.h;
   static double h3point3 = 3.3.h;
   static double h3Point5 = 3.5.h;
+  static double h3Point7 = 3.7.h;
   static double h4 = 4.h;
   static double h4point4 = 4.4.h;
   static double h4point6 = 4.6.h;
@@ -106,6 +128,7 @@ abstract class AppHeightManager {
   static double h5 = 5.h;
   static double h5point2 = 5.2.h;
   static double h5point8 = 5.8.h;
+  static double h6point2 = 6.3.h;
   static double h6 = 6.h;
   static double h7 = 7.h;
   static double h8 = 8.h;
@@ -115,7 +138,9 @@ abstract class AppHeightManager {
   static double h12 = 12.h;
   static double h13 = 13.h;
   static double h14 = 14.h;
+  static double h14point7 = 14.7.h;
   static double h15 = 15.h;
+  static double h15point7 = 15.7.h;
   static double h16 = 16.h;
   static double h17 = 17.h;
   static double h18 = 18.h;

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-
 import '../../resource/color_manager.dart';
 import '../../resource/font_manager.dart';
 import '../../resource/size_manager.dart';
@@ -36,38 +34,40 @@ class AppTextFormField extends StatelessWidget {
   final bool? filled;
   final bool? readOnly;
 
-  const AppTextFormField(
-      {Key? key,
-      this.borderRadius,
-      this.minLines,
-      this.filled,
-      this.readOnly,
-      this.enabled,
-      this.suffixIcon,
-      this.fillColor,
-      this.expand,
-      this.contentPadding,
-      this.controller,
-      this.obscureText,
-      this.autoFoucs,
-      this.validator,
-      this.hintStyle,
-      this.editingComplete,
-      this.onChanged,
-      this.textInputType,
-      this.textInputAction,
-      this.textAlignVertical,
-      this.focusNode,
-      this.labelText,
-      this.textColor = AppColorManager.textAppColor,
-      this.labelColor,
-      this.onFilledSubmited,
-      this.initialValue,
-      this.maxLines,
-      this.prefixIcon,
-      this.hintText,
-      this.outlinedBorder})
-      : super(key: key);
+  const AppTextFormField({
+    super.key,
+    this.borderRadius,
+    this.minLines,
+    this.filled,
+    this.readOnly,
+    this.enabled,
+    this.suffixIcon,
+    this.fillColor,
+    this.expand,
+    this.contentPadding,
+    this.controller,
+    this.obscureText,
+    this.autoFoucs,
+    this.validator,
+    this.hintStyle,
+    this.editingComplete,
+    this.onChanged,
+    this.textInputType,
+    this.textInputAction,
+    this.textAlignVertical,
+    this.focusNode,
+    this.labelText,
+    this.textColor = AppColorManager.white,
+    this.labelColor,
+    this.onFilledSubmited,
+    this.initialValue,
+    this.maxLines,
+    this.prefixIcon,
+    this.hintText,
+    this.outlinedBorder,
+    required TextInputType keyboardType,
+    required InputDecoration decoration,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,9 @@ class AppTextFormField extends StatelessWidget {
       readOnly: readOnly ?? false,
       textAlignVertical: textAlignVertical,
       onFieldSubmitted: onFilledSubmited,
-      cursorColor: AppColorManager.darkOrange,
+      cursorColor: Theme.of(context)
+          .textSelectionTheme
+          .cursorColor, // استخدام لون المؤشر من الثيم
       validator: validator,
       controller: controller,
       focusNode: focusNode,
@@ -93,11 +95,19 @@ class AppTextFormField extends StatelessWidget {
       expands: expand ?? false,
       decoration: InputDecoration(
         filled: filled ?? true,
-        fillColor: fillColor ?? AppColorManager.white,
+        fillColor: fillColor ?? AppColorManager.navyLightBlue,
         hintText: hintText,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
-        hintStyle: hintStyle,
+        hintStyle: hintStyle ??
+            TextStyle(
+              color: Theme.of(context)
+                  .inputDecorationTheme
+                  .hintStyle
+                  ?.color, // لون النص التلميحي يعتمد على الثيم الحالي
+              fontSize: FontSizeManager.fs16,
+              fontWeight: FontWeight.normal,
+            ),
         prefixIconColor: Colors.grey,
         suffixIconColor: Colors.grey,
         contentPadding: contentPadding ??
@@ -124,7 +134,6 @@ class AppTextFormField extends StatelessWidget {
                 borderRadius != null ? borderRadius! : AppRadiusManager.r10)),
             borderSide: const BorderSide(
               color: Colors.transparent,
-              // color: Colors.transparent,
             )),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(

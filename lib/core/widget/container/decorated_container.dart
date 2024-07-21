@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-
 import '../../resource/color_manager.dart';
 import '../../resource/size_manager.dart';
 
-//A Decorated Container With Default Shadow Effect
 class DecoratedContainer extends StatelessWidget {
   const DecoratedContainer({
-    Key? key,
+    super.key,
     this.color,
     this.margin,
     this.padding,
@@ -20,7 +18,9 @@ class DecoratedContainer extends StatelessWidget {
     this.image,
     this.borderRadius,
     this.isGradient,
-  }) : super(key: key);
+    this.isDarkMode,  // Add this parameter
+  });
+
   final Color? color;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
@@ -34,6 +34,7 @@ class DecoratedContainer extends StatelessWidget {
   final DecorationImage? image;
   final BorderRadiusGeometry? borderRadius;
   final bool? isGradient;
+  final bool? isDarkMode;  // Add this parameter
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +45,30 @@ class DecoratedContainer extends StatelessWidget {
       height: height,
       margin: margin,
       decoration: BoxDecoration(
-        gradient: isGradient != null
-            ? const LinearGradient(
-                colors: [AppColorManager.white, AppColorManager.black],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
+        gradient: isGradient != null && isGradient!
+            ? isDarkMode != null && isDarkMode!
+                ? const LinearGradient(
+                    colors: [
+                      AppColorManager.navyBlue,
+                      AppColorManager.navyBlue,
+                      AppColorManager.grayLightBlue,
+                      AppColorManager.grayLightBlue,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 0.25, 0.75, 0.03],
+                  )
+                : const LinearGradient(
+                    colors: [
+                      AppColorManager.grayLightBlue,
+                      AppColorManager.grayLightBlue,
+                      AppColorManager.navyBlue,
+                      AppColorManager.navyBlue,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 0.25, 0.75, 0.03],
+                  )
             : null,
         border: border,
         image: image,
@@ -59,12 +78,10 @@ class DecoratedContainer extends StatelessWidget {
         boxShadow: boxShadow ??
             [
               const BoxShadow(
-                color: AppColorManager.shadow,
-                blurRadius: 2,
+                color: AppColorManager.navyBlue,
+                blurRadius: 0,
                 spreadRadius: 0,
-                offset:
-                    // changes position of shadow
-                    Offset(3, 5),
+                offset: Offset(0, 0), // changes position of shadow
               ),
             ],
         shape: shape ?? BoxShape.rectangle,
