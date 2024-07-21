@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
-import 'package:wasity/features/home/screens/otp.dart';
-import 'package:wasity/features/home/widgets/auth/container/intro.dart';
-import 'package:wasity/features/home/widgets/auth/button/app_button.dart';
+import 'package:wasity/features/auth/screens/generate_otp_screen.dart';
 import 'package:wasity/core/widget/form_field/app_form_field.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
+import 'package:wasity/features/auth/widgets/button/app_button.dart';
+import 'package:wasity/features/auth/widgets/container/intro.dart';
 
 class Phone extends StatefulWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;

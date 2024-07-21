@@ -41,10 +41,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   responsive_sizer: ^3.3.1
+  flutter_bloc: ^8.1.3
   shared_preferences: ^2.2.3
   flutter_svg: ^2.0.10+1
   flutter_rating_bar: ^4.0.0
-  
+  easy_localization: ^3.0.5
+  connectivity_plus: ^5.0.1
+  equatable: ^2.0.5
+
+  dartz: ^0.10.1
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

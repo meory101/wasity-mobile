@@ -19,15 +19,15 @@ class AppElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(color),
-        minimumSize: WidgetStateProperty.all(
-          Size(double.infinity, AppHeightManager.h9),
-        ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadiusManager.r10),
-          ),
-        ),
+        // backgroundColor: WidgetStateProperty.all(color),
+        // minimumSize: WidgetStateProperty.all(
+        //   Size(double.infinity, AppHeightManager.h9),
+        // // ),
+        // shape: WidgetStateProperty.all(
+        //   RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(AppRadiusManager.r10),
+        //   ),
+        // ),
       ),
       onPressed: onPressed,
       child: AppTextWidget(

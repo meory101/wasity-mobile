@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 
-class App extends StatelessWidget {
-  const App({super.key});
+class Wasity extends StatelessWidget {
+  const Wasity({super.key});
 
   @override
   Widget build(BuildContext context) {
