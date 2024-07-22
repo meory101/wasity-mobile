@@ -4,22 +4,21 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/helper/language_helper.dart';
 import '../../../../core/resource/color_manager.dart';
 import '../../../../core/resource/font_manager.dart';
+import '../../../../core/resource/size_manager.dart';
 import '../../../../core/widget/button/main_app_button.dart';
 import '../../../../core/widget/text/app_text_widget.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'dart:ui' as ui;
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import '../../../core/resource/icon_manager.dart';
-import '../../../core/resource/size_manager.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class GenerateOtpScreen extends StatefulWidget {
+  const GenerateOtpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<GenerateOtpScreen> createState() => _GenerateOtpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _GenerateOtpScreenState extends State<GenerateOtpScreen> {
   final formKey = GlobalKey<FormState>();
   int maxLength = 10;
 
@@ -61,6 +60,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   textDirection: ui.TextDirection.ltr,
                   child: InternationalPhoneNumberInput(
 
+selectorTextStyle: const TextStyle(color: AppColorManager.white),
+                    initialValue: PhoneNumber(
+
+                        isoCode: "SY"),
+
                     onInputChanged: (PhoneNumber value) {
                       maxLength = countries
                               .firstWhere(
@@ -70,7 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       maxLength += value.dialCode?.length ?? 0;
                     },
-                    inputBorder: InputBorder.none,
+
+                 inputBorder: InputBorder.none,
+
+
+
                     hintText: '',
                     validator: (value) {
                       if ((value ?? "").isEmpty) {
@@ -86,12 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     textStyle: TextStyle(
                         height: 2.2,
                         fontFamily: FontFamilyManager.cairo,
-                        color: AppColorManager.textAppColor,
+                        color: AppColorManager.white,
                         fontSize: FontSizeManager.fs17),
                     textAlign: TextAlign.left,
-                    initialValue: PhoneNumber(),
                     keyboardAction: TextInputAction.done,
-                    cursorColor: AppColorManager.navyBlue,
+                    cursorColor: AppColorManager.yellow,
                     maxLength: 15,
                     selectorConfig: SelectorConfig(
                         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
@@ -118,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: AppTextWidget(
                           text: "logIn".tr(),
                           color: AppColorManager.navyBlue,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                           fontSize: FontSizeManager.fs16),
                     ),
                     SizedBox(
@@ -129,8 +136,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: "continueAsGuest".tr(),
                       fontSize: FontSizeManager.fs16,
                       textDecoration: TextDecoration.underline,
-                      decorationColor: AppColorManager.navyBlue,
-                      color: AppColorManager.navyBlue,
+                      decorationColor: AppColorManager.yellow,
+                      color: AppColorManager.yellow,
                     ),
                   ],
                 ),

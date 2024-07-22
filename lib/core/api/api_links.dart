@@ -1,7 +1,7 @@
 class ApiGetUrl {}
 
 class ApiPostUrl {
-  static String otp = 'api/generateOTP';
+  static String generateOtp = 'api/generateOTP';
 
 }
 
