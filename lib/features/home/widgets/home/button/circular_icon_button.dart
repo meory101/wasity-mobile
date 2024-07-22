@@ -15,8 +15,6 @@ class CircularIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final containerColor =
-        isDarkMode ? AppColorManager.navyLightBlue : AppColorManager.whiteBlue;
 
     return GestureDetector(
       onTap: onPressed,
@@ -25,7 +23,6 @@ class CircularIconButton extends StatelessWidget {
         height: 18.h,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         decoration: BoxDecoration(
-          color: buttonColor ?? containerColor,
           border: Border.all(
             width: AppRadiusManager.r1,
             color: AppColorManager.shadow,

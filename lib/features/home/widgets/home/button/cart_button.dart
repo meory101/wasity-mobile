@@ -13,9 +13,9 @@ class CartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final containerColor =
-        isDarkMode ? AppColorManager.whiteBlue : AppColorManager.navyBlue;
+       AppColorManager.navyBlue;
     final iconColor =
-        isDarkMode ? AppColorManager.navyLightBlue : AppColorManager.whiteBlue;
+       AppColorManager.navyLightBlue ;
 
     return DecoratedContainer(
       borderRadius: BorderRadius.circular(AppRadiusManager.r4),

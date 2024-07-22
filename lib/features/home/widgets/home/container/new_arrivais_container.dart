@@ -37,9 +37,7 @@ class _NewArrivalsContainerState extends State<NewArrivalsContainer> {
                 child: Container(
                   width: AppWidthManager.w42,
                   height: AppHeightManager.h36,
-                  color: isDarkMode
-                      ? AppColorManager.navyLightBlue
-                      : AppColorManager.whiteBlue,
+                  color:AppColorManager.navyLightBlue,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

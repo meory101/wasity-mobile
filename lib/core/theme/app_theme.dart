@@ -159,18 +159,18 @@ ThemeData lightTheme() {
     primaryColorLight: AppColorManager.navyLightBlue,
     scaffoldBackgroundColor: AppColorManager.white,
     splashColor: AppColorManager.white,
-    primaryColor: AppColorManager.whiteBlue,
+    // primaryColor: AppColorManager.whiteBlue,
     textTheme: appTextTheme,
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: AppColorManager.navyLightBlue,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: AppColorManager.whiteBlue,
-      foregroundColor: AppColorManager.whiteBlue,
+      // backgroundColor: AppColorManager.whiteBlue,
+      // foregroundColor: AppColorManager.whiteBlue,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColorManager.whiteBlue,
+      // fillColor: AppColorManager.whiteBlue,
       hintStyle: TextStyle(
         color: AppColorManager.navyLightBlue,
         fontSize: FontSizeManager.fs16,
@@ -220,7 +220,7 @@ ThemeData lightTheme() {
       secondary: AppColorManager.navyLightBlue,
     ),
     buttonTheme: const ButtonThemeData(
-      buttonColor: AppColorManager.whiteBlue,
+      // buttonColor: AppColorManager.whiteBlue,
       textTheme: ButtonTextTheme.primary,
     ),
   );

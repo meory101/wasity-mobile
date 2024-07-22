@@ -201,10 +201,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: "761a297c042deedc1ffbb156d6e2af13886bb305c2a343a4d972504cd67dd938"
+      sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.2"
   http_parser:
     dependency: transitive
     description:
@@ -221,6 +221,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.1"
+  intl_phone_field:
+    dependency: "direct dev"
+    description:
+      name: intl_phone_field
+      sha256: "73819d3dfcb68d2c85663606f6842597c3ddf6688ac777f051b17814fe767bbf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
+  intl_phone_number_input:
+    dependency: "direct dev"
+    description:
+      name: intl_phone_number_input
+      sha256: "1c4328713a9503ab26a1fdbb6b00b4cada68c18aac922b35bedbc72eff1297c3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.4"
   js:
     dependency: transitive
     description:
@@ -253,6 +269,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  libphonenumber_platform_interface:
+    dependency: transitive
+    description:
+      name: libphonenumber_platform_interface
+      sha256: f801f6c65523f56504b83f0890e6dad584ab3a7507dca65fec0eed640afea40f
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.2"
+  libphonenumber_plugin:
+    dependency: transitive
+    description:
+      name: libphonenumber_plugin
+      sha256: c615021d9816fbda2b2587881019ed595ecdf54d999652d7e4cce0e1f026368c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3"
+  libphonenumber_web:
+    dependency: transitive
+    description:
+      name: libphonenumber_web
+      sha256: "8186f420dbe97c3132283e52819daff1e55d60d6db46f7ea5ac42f42a28cc2ef"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   lints:
     dependency: transitive
     description:
@@ -337,10 +377,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_windows
-      sha256: "8bc9f22eee8690981c22aa7fc602f5c85b497a6fb2ceb35ee5a5e5ed85ad8170"
+      sha256: bd6f00dbd873bfb70d0761682da2b3a2c2fccc2b9e84c495821639601d81afe7
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.3.0"
   petitparser:
     dependency: transitive
     description:
@@ -417,10 +457,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_platform_interface
-      sha256: "22e2ecac9419b4246d7c22bfbbda589e3acf5c0351137d87dd2939d984d37c3b"
+      sha256: "034650b71e73629ca08a0bd789fd1d83cc63c2d1e405946f7cef7bc37432f93a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   shared_preferences_web:
     dependency: transitive
     description:
@@ -546,14 +586,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
-  win32:
-    dependency: transitive
-    description:
-      name: win32
-      sha256: "0eaf06e3446824099858367950a813472af675116bf63f008a4c2a75ae13e9cb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.5.0"
   xdg_directories:
     dependency: transitive
     description:

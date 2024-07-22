@@ -29,9 +29,7 @@ class TrendingProductContainer extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadiusManager.r5),
                 child: DecoratedContainer(
-                  color: themeNotifier!.value == ThemeMode.dark
-                      ? AppColorManager.navyLightBlue
-                      : AppColorManager.whiteBlue,
+                  color:  AppColorManager.navyLightBlue,
                   width: AppWidthManager.w89,
                   height: AppHeightManager.h15point7,
                   child: Padding(
