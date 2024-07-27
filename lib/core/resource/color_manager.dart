@@ -4,9 +4,9 @@ abstract class AppColorManager {
   static const Color black = Color(0xff171717);
 
   static const Color grayLightBlue = Color.fromARGB(255, 117, 134, 148);
-  static const Color navyLightBlue = Color.fromARGB(255, 58, 72, 83);
+  static const Color navyLightBlue = Color(0xFF3A4853);
 
-  static const Color navyBlue = Color.fromARGB(255, 16, 35, 51);
+  static const Color navyBlue = Color(0xFF102333);
   static const Color background = Color.fromARGB(255, 16, 35, 51);
 
   static const Color grey = Color(0xff8e8e93);
@@ -19,8 +19,8 @@ abstract class AppColorManager {
 
   static const Color darkOrange3 = Color(0xffEC1C24);
   static const Color white = Color(0xffffffff);
-  static const Color red = Color(0xffff3b30);
-  static const Color whiteBlue = Color.fromARGB(255, 246, 246, 247);
+  static const Color error = Color.fromARGB(255, 122, 93, 92);
+  static const Color whiteBlue = Color(0xFFF6F6F7);
 
   static const Color shimmerHighlightColor = Color(0xffd9d9d9);
   static const Color shimmerBaseColor = Color(0xffe0e0e0);

@@ -13,7 +13,7 @@ abstract class AppIconManager{
   static String arrowMenuDown = '$_iconBasePath/arrow_menu_down.svg';
   static String arrowMenuLeft = '$_iconBasePath/arrow_menu_left.svg';
   static String arrowMenuRight = '$_iconBasePath/arrow_menu_right.svg';
-  static String home = '$_iconBasePath/home.svg';
+ 
   static String more = '$_iconBasePath/more.svg';
   static String restaurants = '$_iconBasePath/restaurants.svg';
   static String star = '$_iconBasePath/star.svg';
@@ -31,8 +31,13 @@ abstract class AppIconManager{
   static String logout = '$_iconBasePath/logout.svg';
   static String clock = '$_iconBasePath/clock.svg';
   static String cart = '$_iconBasePath/cart.svg';
-  static String setting = '$_iconBasePath/setting.svg';
-
+  static String cartFill = '$_iconBasePath/cart_fill.svg';
+  static String category = '$_iconBasePath/category.svg';
+ static String home = '$_iconBasePath/home.svg';
+  static String homeFill = '$_iconBasePath/home_fill.svg';
+  static String categoryFill = '$_iconBasePath/category_fill.svg';
+  static String profile = '$_iconBasePath/profile.svg';
+  static String profileFill = '$_iconBasePath/profile_fill.svg';
   static String calendar = '$_iconBasePath/clock.svg';
   static String note = '$_iconBasePath/clock.svg';
   static String ticketDiscount = '$_iconBasePath/clock.svg';
