@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/form_field/app_form_field.dart';
-import 'package:wasity/features/pages/home/button/filter.dart';
+import 'package:wasity/features/pages/home/widgets/button/filter.dart';
 
 class SearchFormField extends StatelessWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;
@@ -42,31 +42,4 @@ class SearchFormField extends StatelessWidget {
     );
   }
 }
-
-
-  // Color _getSearchFieldFillColor(BuildContext context) {
-  //   if (themeNotifier?.value == ThemeMode.dark) {
-  //     return AppColorManager.navyLightBlue; 
-  //   } else {
-  //     return AppColorManager.white; 
-  //   }
-  // }
-
-  // Color _getSearchFieldHintColor(BuildContext context) {
-  //   if (themeNotifier?.value == ThemeMode.dark) {
-  //     return AppColorManager.grey; // Dark theme color
-  //   } else {
-  //     return Theme.of(context).textTheme.headlineSmall?.color ?? Colors.black; // Light theme color
-  //   }
-  // }
-
-  // TextStyle? _getSearchFieldHintStyle(BuildContext context) {
-  //   if (themeNotifier?.value == ThemeMode.dark) {
-  //     return Theme.of(context).textTheme.headlineSmall?.copyWith(
-  //       color: AppColorManager.grey, // Dark theme color
-  //     );
-  //   } else {
-  //     return Theme.of(context).textTheme.headlineSmall; // Light theme style
-  //   }
-  // }
 

@@ -37,3 +37,45 @@ class SecondAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+// import 'package:flutter/material.dart';
+// import 'package:wasity/core/resource/color_manager.dart';
+// import 'package:wasity/core/resource/font_manager.dart';
+// import 'package:wasity/core/widget/text/app_text_widget.dart';
+
+// class SecondAppbar extends StatelessWidget implements PreferredSizeWidget {
+//   final String titleText;
+//   final VoidCallback? onBack;
+//   final bool showBackButton; 
+
+//   const SecondAppbar({
+//     required this.titleText,
+//     this.onBack,
+//     this.showBackButton = true, 
+//     super.key,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return AppBar(
+//       leading: showBackButton && onBack != null
+//         ? IconButton(
+//             icon: Icon(
+//               Icons.arrow_back,
+//               size: FontSizeManager.fs24,
+//               color: AppColorManager.white,
+//             ),
+//             onPressed: onBack, 
+//         : null, 
+//       title: AppTextWidget(
+//         text: titleText,
+//         style: Theme.of(context).textTheme.headlineMedium!,
+//       ),
+//       centerTitle: true,
+//       backgroundColor: AppColorManager.navyLightBlue,
+//       elevation: 0,
+//     );
+//   }
+
+//   @override
+//   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+// }

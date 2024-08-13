@@ -8,7 +8,7 @@ import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 import 'package:wasity/core/widget/text/price_text_widget.dart';
-import 'package:wasity/features/pages/cart/button/cart_button.dart';
+import 'package:wasity/features/pages/cart/widgets/button/cart_button.dart';
 
 class TrendingProductContainer extends StatelessWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;

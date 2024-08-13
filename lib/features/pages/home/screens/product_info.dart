@@ -1,130 +1,78 @@
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:wasity/core/resource/color_manager.dart';
-import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 import 'package:wasity/core/widget/text/price_text_widget.dart';
+import 'package:wasity/features/models/appModels.dart';
 
-class ProductInfo extends StatefulWidget {
+class ProductInfo extends StatelessWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;
+  final int productId;
 
-  const ProductInfo({super.key, this.themeNotifier});
-
-  @override
-  State<ProductInfo> createState() => _ProductInfoState();
-}
-
-class _ProductInfoState extends State<ProductInfo> {
-  final double _rating = 3.5;
+  const ProductInfo({super.key, this.themeNotifier, required this.productId});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bool isDarkMode = theme.brightness == Brightness.dark;
-    final Color textColor =
-        isDarkMode ? Colors.white : AppColorManager.navyLightBlue;
+    final bool isDarkMode = themeNotifier?.value == ThemeMode.dark;
+    final textColor =
+        isDarkMode ? AppColorManager.white : AppColorManager.navyBlue;
+
+    // ملاحظة: تحتاج إلى تنفيذ طريقة لجلب المنتج بناءً على معرفه
+    final Product product = fetchProductById(productId);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: SecondAppbar(
-        titleText: "Product Info",
-        onBack: () {
-          Navigator.pop(context);
-        },
+        titleText: 'Product Info',
+        onBack: () => Navigator.pop(context),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(
-              top: AppHeightManager.h5,
-              right: AppWidthManager.w6,
-              left: AppWidthManager.w6),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(AppRadiusManager.r16),
-                child: DecoratedContainer(
-                  borderRadius: BorderRadius.circular(AppRadiusManager.r15),
-                  height: AppHeightManager.h35,
-                  width: AppWidthManager.w110,
-                  child: Image.asset(
-                    AppImageManager.productImage,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+      body: Padding(
+        padding: EdgeInsets.all(AppWidthManager.w5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DecoratedContainer(
+              width: double.infinity,
+              height: AppHeightManager.h20,
+              image: DecorationImage(
+                image: NetworkImage(
+                    'http://127.0.0.1:8000/storage/${product.image}'),
+                fit: BoxFit.cover,
               ),
-              SizedBox(height: AppHeightManager.h6),
-              Row(
-                children: [
-                  AppTextWidget(
-                    text: "Product Name",
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayLarge
-                        ?.copyWith(color: textColor),
-                  ),
-                  SizedBox(width: AppWidthManager.w25),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(AppRadiusManager.r5),
-                    child: DecoratedContainer(
-                      width: AppWidthManager.w20,
-                      color: AppColorManager.yellow,
-                      child: Center(
-                        child: AppTextWidget(
-                          text: "Food",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppWidthManager.w2),
-              Row(
-                children: [
-                  AppTextWidget(
-                    text: _rating.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall
-                        ?.copyWith(color: textColor),
-                  ),
-                  RatingBarIndicator(
-                    rating: _rating,
-                    itemBuilder: (context, index) => const Icon(
-                      Icons.star,
-                      color: AppColorManager.yellow,
-                    ),
-                    itemCount: 5,
-                    itemSize: AppRadiusManager.r15,
-                    direction: Axis.horizontal,
-                    unratedColor: AppColorManager.white,
-                  ),
-                  SizedBox(width: AppWidthManager.w2),
-                ],
-              ),
-              SizedBox(height: AppWidthManager.w5),
-              Row(
-                children: [
-                  PriceText(
-                    price: 12000,
-                    priceStyle: Theme.of(context)
-                        .textTheme
-                        .displayLarge
-                        ?.copyWith(color: textColor),
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayLarge
-                        ?.copyWith(color: textColor),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: AppHeightManager.h3),
+            AppTextWidget(
+              text: product.name,
+              style: theme.textTheme.displayLarge?.copyWith(color: textColor),
+            ),
+            SizedBox(height: AppHeightManager.h1),
+            // AppTextWidget(
+            //   text: product.description ?? "No description available",
+            //   style: theme.textTheme.displayMedium?.copyWith(color: textColor),
+            // ),
+            SizedBox(height: AppHeightManager.h1),
+            PriceText(
+              price: product.price,
+              style: theme.textTheme.displayLarge?.copyWith(color: textColor),
+            ),
+          ],
         ),
       ),
     );
   }
+}
+
+Product fetchProductById(int id) {
+  return Product(
+    id: id,
+    name: 'Product Name',
+    // description: 'Product Description',
+    image: 'path/to/image',
+    price: 123.45,
+    //  brand: , subCategory: ,
+    // rating: 4.5,
+  );
 }
