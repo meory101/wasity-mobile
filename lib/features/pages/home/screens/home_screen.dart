@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/Drawer/app_drawer.dart';
-import 'package:wasity/features/pages/category/widgets/button/category_icons.dart';
+import 'package:wasity/features/pages/category/widgets/containers/category_icons.dart';
 import 'package:wasity/features/pages/home/widgets/button/view_all_bar.dart';
 import 'package:wasity/features/pages/home/widgets/containers/brand.dart';
 import 'package:wasity/features/pages/home/widgets/containers/new_arrivais_container.dart';

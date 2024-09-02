@@ -6,7 +6,9 @@ import 'package:wasity/features/pages/home/widgets/button/button_navbar.dart';
 import 'package:wasity/features/pages/cart/screen/cart.dart';
 import 'package:wasity/features/pages/category/screens/Products_by_sub_category.dart';
 import 'package:wasity/features/pages/home/screens/new_arrivais.dart';
-import 'package:wasity/features/pages/profile/screens/saved_address.dart';
+import 'package:wasity/features/pages/orders/screens/map.dart';
+import 'package:wasity/features/pages/orders/screens/order_history.dart';
+import 'package:wasity/features/pages/orders/screens/saved_address.dart';
 import 'package:wasity/features/pages/profile/screens/edit_profile.dart';
 import 'package:wasity/features/pages/home/screens/home_screen.dart';
 import 'package:wasity/features/pages/auth/screens/phone.dart';
@@ -32,7 +34,7 @@ class App extends StatelessWidget {
             themeMode: themeNotifier.value,
             debugShowCheckedModeBanner: false,
             home: HomeScreen(themeNotifier: themeNotifier),
-            initialRoute: "/ButtonNavbar",
+            initialRoute: "/Otp",
             routes: {
               "/AllCategory": (context) =>
                   AllCategory(themeNotifier: themeNotifier),
@@ -54,10 +56,13 @@ class App extends StatelessWidget {
                   NewArrivais(themeNotifier: themeNotifier),
               "/ProductInfo": (context) => ProductInfo(
                     themeNotifier: themeNotifier,
-                    productId: 0, 
+                    productId: 0,
                   ),
               "/TrendingProduct": (context) =>
                   TrendingProduct(themeNotifier: themeNotifier),
+              "/GMap": (context) => const GMap(),
+              "/OrderHistory": (context) =>
+                  OrderHistory(themeNotifier: themeNotifier),
               "/SavedAddresses": (context) =>
                   SavedAddresses(themeNotifier: themeNotifier),
               "/ProductsBySubCategory": (context) => ProductsBySubCategory(

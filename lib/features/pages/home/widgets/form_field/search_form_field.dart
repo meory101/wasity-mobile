@@ -29,7 +29,6 @@ class SearchFormField extends StatelessWidget {
               controller: TextEditingController(),
               textInputType: TextInputType.text,
               textInputAction: TextInputAction.search,
-              keyboardType: TextInputType.name, decoration: const InputDecoration(border: InputBorder.none),
          
             ),
           ),

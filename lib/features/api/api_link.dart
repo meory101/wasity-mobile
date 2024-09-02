@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wasity/features/models/appModels.dart';
+
 class Config {
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
-  
+  static const String baseUrl = 'http://192.168.1.103:8000/api';
+
   static String getFullUrl(String endpoint) {
     return '$baseUrl/$endpoint';
   }
@@ -80,7 +81,6 @@ class Brands {
   }
 }
 
-
 //!FetchNewArrivais
 Future<List<NewArrivaisData>> fetchNewArrivais() async {
   final response = await http.get(Uri.parse(Config.getFullUrl('clientHome')));
@@ -93,10 +93,10 @@ Future<List<NewArrivaisData>> fetchNewArrivais() async {
   }
 }
 
-
 //!FetchMainCategories
 Future<List<SubCategory>> fetchMainCategories() async {
-  final response = await http.get(Uri.parse(Config.getFullUrl('getMainCatgories')));
+  final response =
+      await http.get(Uri.parse(Config.getFullUrl('getMainCatgories')));
 
   if (response.statusCode == 200) {
     List<dynamic> data = jsonDecode(response.body);
@@ -108,7 +108,8 @@ Future<List<SubCategory>> fetchMainCategories() async {
 
 //!FetchSubCategories
 Future<List<MainCategory>> fetchSubCategories(int mainCategoryId) async {
-  final response = await http.get(Uri.parse(Config.getFullUrl('getSubCategoriesByMainCategoryId/$mainCategoryId')));
+  final response = await http.get(Uri.parse(
+      Config.getFullUrl('getSubCategoriesByMainCategoryId/$mainCategoryId')));
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
@@ -123,7 +124,8 @@ Future<List<MainCategory>> fetchSubCategories(int mainCategoryId) async {
 //!FetchProductsBySubCategoryId
 class ProductService {
   Future<List<Product>> fetchProductsBySubCategoryId(int subCategoryId) async {
-    final response = await http.get(Uri.parse(Config.getFullUrl('getProductsBySubCategoryId/$subCategoryId')));
+    final response = await http.get(Uri.parse(
+        Config.getFullUrl('getProductsBySubCategoryId/$subCategoryId')));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -134,6 +136,65 @@ class ProductService {
   }
 }
 
+//!AddressService
+
+class AddressService {
+  //? FetchAddresses
+
+  static const String _baseUrl = 'http://127.0.0.1:8000/api';
+
+  Future<List<Address>> fetchAddresses(int clientId) async {
+    final response =
+        await http.get(Uri.parse('$_baseUrl/getAddressesByClientId/$clientId'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => Address.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load addresses');
+    }
+  }
+
+//?AddAddress
+  Future<void> addAddress(Address address) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/addAddress'),
+      body: {
+        'name': address.name,
+        'lat': address.lat.toString(),
+        'long': address.long.toString(),
+        'client_id': address.clientId.toString(),
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add address');
+    }
+  }
+
+//?UpdateAddress
+  Future<void> updateAddress(Address address) async {
+    final response = await http.put(
+      Uri.parse('$_baseUrl/updateAddress'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'id': address.id,
+        'name': address.name,
+        'lat': address.lat,
+        'long': address.long,
+        'client_id': address.clientId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+    } else {
+      print('Failed to update address: ${response.body}');
+      throw Exception('Failed to update address');
+    }
+  }
+}
 
 // //!GetProfile
 // class ProfileService {

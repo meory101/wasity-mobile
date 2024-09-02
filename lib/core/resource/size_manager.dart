@@ -96,6 +96,9 @@ abstract class AppWidthManager {
   static double w80 = 80.w;
   static double w89 = 89.w;
   static double w84 = 84.w;
+  static double w85 = 85.w;
+  static double w86 = 86.w;
+  static double w87 = 87.w;
   static double w90 = 90.w;
   static double w91 = 91.w;
   static double w92 = 92.w;

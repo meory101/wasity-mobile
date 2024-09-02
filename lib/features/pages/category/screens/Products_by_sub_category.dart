@@ -3,7 +3,7 @@ import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
 import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
-import 'package:wasity/features/pages/category/widgets/ProductsBySubCategory.dart';
+import 'package:wasity/features/pages/category/widgets/containers/ProductsBySubCategory.dart';
 import 'package:wasity/features/pages/home/widgets/form_field/search_form_field.dart';
 
 class ProductsBySubCategory extends StatefulWidget {

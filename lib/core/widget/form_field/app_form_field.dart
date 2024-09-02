@@ -65,8 +65,8 @@ class AppTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.hintText,
     this.outlinedBorder,
-    required TextInputType keyboardType,
-    required InputDecoration decoration,
+    // required TextInputType keyboardType,
+    // required InputDecoration decoration,
   });
 
   @override

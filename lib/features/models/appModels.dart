@@ -120,11 +120,15 @@ class Brand {
   final int id;
   final String name;
   final String image;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   Brand({
     required this.id,
     required this.name,
     required this.image,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Brand.fromJson(Map<String, dynamic> json) {
@@ -132,6 +136,8 @@ class Brand {
       id: json['id'],
       name: json['name'],
       image: json['image'],
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
     );
   }
 
@@ -140,6 +146,8 @@ class Brand {
       'id': id,
       'name': name,
       'image': image,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
     };
   }
 }
@@ -148,6 +156,38 @@ List<Brand> parseBrands(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
   return parsed.map<Brand>((json) => Brand.fromJson(json)).toList();
 }
+// class Brand {
+//   final int id;
+//   final String name;
+//   final String image;
+
+//   Brand({
+//     required this.id,
+//     required this.name,
+//     required this.image,
+//   });
+
+//   factory Brand.fromJson(Map<String, dynamic> json) {
+//     return Brand(
+//       id: json['id'],
+//       name: json['name'],
+//       image: json['image'],
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'id': id,
+//       'name': name,
+//       'image': image,
+//     };
+//   }
+// }
+
+// List<Brand> parseBrands(String responseBody) {
+//   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+//   return parsed.map<Brand>((json) => Brand.fromJson(json)).toList();
+// }
 
 
 
@@ -182,6 +222,70 @@ class Product {
     );
   }
 }
+//!AddressModel
+// class Address {
+//   final int id;
+//   final String name;
+//   final double lat;
+//   final double long;
+//   final int clientId;
+
+//   Address({
+//     required this.id,
+//     required this.name,
+//     required this.lat,
+//     required this.long,
+//     required this.clientId,
+//   });
+
+//   factory Address.fromJson(Map<String, dynamic> json) {
+//     return Address(
+//       id: json['id'],
+//       name: json['name'],
+//       lat: json['lat'].toDouble(),
+//       long: json['long'].toDouble(),
+//       clientId: json['client_id'],
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'id': id,
+//       'name': name,
+//       'lat': lat,
+//       'long': long,
+//       'client_id': clientId,
+//     };
+//   }
+// }
+
+
+class Address {
+  final int id;
+  final String name;
+  final double lat;
+  final double long;
+  final int clientId;
+
+  Address({
+    required this.id,
+    required this.name,
+    required this.lat,
+    required this.long,
+    required this.clientId,
+  });
+
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      id: json['id'],
+      name: json['name'],
+      lat: json['lat'].toDouble(),
+      long: json['long'].toDouble(),
+      clientId: json['client_id'],
+    );
+  }
+}
+
 
 // //!ProfileModel
 

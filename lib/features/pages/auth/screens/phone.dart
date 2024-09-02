@@ -82,6 +82,7 @@ class _PhoneState extends State<Phone> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -90,84 +91,83 @@ class _PhoneState extends State<Phone> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                const Intro(),
-                Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: AppHeightManager.h40,
-                      right: AppWidthManager.w6,
-                      left: AppWidthManager.w6,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            AppTextWidget(
-                              text: "Phone number",
-                              style: theme.textTheme.headlineLarge?.copyWith(
-                                color: isDarkMode
-                                    ? AppColorManager.grey
-                                    : AppColorManager.grey,
+        child: Padding(
+          padding: EdgeInsets.only(top: AppHeightManager.h10),
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  const Intro(),
+                  Form(
+                    key: _formKey,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: AppHeightManager.h40,
+                        right: AppWidthManager.w6,
+                        left: AppWidthManager.w6,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              AppTextWidget(
+                                text: "Phone number",
+                                style: theme.textTheme.headlineLarge?.copyWith(
+                                  color: isDarkMode
+                                      ? AppColorManager.grey
+                                      : AppColorManager.grey,
+                                ),
+                                height: AppHeightManager.h03,
                               ),
-                              height: AppHeightManager.h03,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            AppTextFormField(
-                              controller: numberController,
-                              fillColor: theme.inputDecorationTheme.fillColor,
-                              borderRadius: AppRadiusManager.r6,
-                              hintText: '09 - - - - - - - -',
-                              prefixIcon: Icon(Icons.phone,
-                                  color: theme
-                                      .inputDecorationTheme.hintStyle?.color),
-                              hintStyle: theme.inputDecorationTheme.hintStyle
-                                  ?.copyWith(
-                                color: isDarkMode
-                                    ? AppColorManager.grey
-                                    : AppColorManager.navyLightBlue,
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              AppTextFormField(
+                                controller: numberController,
+                                fillColor: theme.inputDecorationTheme.fillColor,
+                                borderRadius: AppRadiusManager.r6,
+                                hintText: '09 - - - - - - - -',
+                                prefixIcon: Icon(Icons.phone,
+                                    color: theme
+                                        .inputDecorationTheme.hintStyle?.color),
+                                hintStyle: theme.inputDecorationTheme.hintStyle
+                                    ?.copyWith(
+                                  color: isDarkMode
+                                      ? AppColorManager.grey
+                                      : AppColorManager.navyLightBlue,
+                                ),
+                                textColor: isDarkMode
+                                    ? AppColorManager.white
+                                    : AppColorManager.navyBlue,
+                                textInputType: TextInputType.phone,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your phone number';
+                                  } else if (value.length != 10) {
+                                    return 'Phone number must be 10 digits';
+                                  } else if (!value.startsWith('09')) {
+                                    return 'Phone number must start with 09';
+                                  }
+                                  return null;
+                                },
                               ),
-                              textColor: isDarkMode
-                                  ? AppColorManager.white
-                                  : AppColorManager.navyBlue,
-                              textInputType: TextInputType.phone,
-                              keyboardType: TextInputType.phone,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your phone number';
-                                } else if (value.length != 10) {
-                                  return 'Phone number must be 10 digits';
-                                } else if (!value.startsWith('09')) {
-                                  return 'Phone number must start with 09';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
+                              SizedBox(height: AppHeightManager.h12),
+                              AppElevatedButton(
+                                text: "Next",
+                                onPressed: _generateOTPAndNavigate,
+                                color: AppColorManager.yellow,
                               ),
-                            ),
-                            SizedBox(height: AppHeightManager.h12),
-                            AppElevatedButton(
-                              text: "Next",
-                              onPressed: _generateOTPAndNavigate,
-                              color: AppColorManager.yellow,
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

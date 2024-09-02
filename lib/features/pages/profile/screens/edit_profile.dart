@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/icon_manager.dart';
-import 'package:wasity/core/resource/image_manager.dart';
+// import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
 import 'package:wasity/core/widget/button/app_button.dart';
@@ -29,6 +32,8 @@ class _EditProfileState extends State<EditProfile> {
   String email = '';
   String birthdate = '';
   int gender = 1;
+  String? profileImageUrl;
+  File? _profileImage;
 
   @override
   void initState() {
@@ -38,42 +43,59 @@ class _EditProfileState extends State<EditProfile> {
 
   Future<void> _getProfile() async {
     const url = 'http://127.0.0.1:8000/api/getClientProfile/1';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (!mounted) return;
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (!mounted) return;
+        setState(() {
+          name = data['name'] ?? '';
+          email = data['email'] ?? '';
+          birthdate = data['birth_date'] ?? '';
+          gender = data['gender'] == 'Female' ? 1 : 2;
+          profileImageUrl = data['profile_image'] != null
+              ? 'http://127.0.0.1:8000/storage/${data['profile_image']}'
+              : null;
+        });
+      } else {
+        _showErrorDialog("Failed to load profile data.");
+      }
+    } catch (e) {
+      _showErrorDialog("Failed to load profile data.");
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
       setState(() {
-        name = data['name'] ?? '';
-        email = data['email'] ?? '';
-        birthdate = data['birthdate'] ?? '';
-        gender = data['gender'] == 'Female' ? 1 : 2;
+        _profileImage = File(image.path);
       });
-    } else {
-      throw Exception('Failed to load profile');
     }
   }
 
   Future<void> _updateProfile() async {
     if (_formKey.currentState?.validate() ?? false) {
       const url = 'http://127.0.0.1:8000/api/updateClientProfile';
-      final response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'id': '1',
-          'name': name,
-          'email': email,
-          'birthdate': birthdate,
-          'gender': gender.toString(),
-        }),
-      );
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.fields['id'] = '1';
+      request.fields['name'] = name;
+      request.fields['email'] = email;
+      request.fields['birth_date'] = birthdate;
+      request.fields['gender'] = gender.toString();
+
+      if (_profileImage != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+            'profile_image', _profileImage!.path));
+      }
+
+      final response = await request.send();
 
       if (response.statusCode == 200) {
         _showSuccessDialog();
       } else {
-        throw Exception('Failed to update profile');
+        _showErrorDialog("Failed to update profile.");
       }
     }
   }
@@ -115,6 +137,42 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: AppTextWidget(
+            text: 'Error',
+            fontSize: FontSizeManager.fs16,
+            color: AppColorManager.navyBlue,
+          ),
+          content: Row(
+            children: [
+              const Icon(Icons.error, color: AppColorManager.error),
+              SizedBox(width: AppWidthManager.w5),
+              AppTextWidget(
+                text: message,
+                fontSize: FontSizeManager.fs16,
+                color: AppColorManager.navyBlue,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const AppTextWidget(
+                text: "OK",
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -145,8 +203,10 @@ class _EditProfileState extends State<EditProfile> {
                   initialValue: name,
                   onChanged: (value) => setState(() => name = value!),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Please enter your name';
-                    if (RegExp(r'[0-9]').hasMatch(value)) return 'Name cannot contain numbers';
+                    if (value == null || value.isEmpty)
+                      return 'Please enter your name';
+                    if (RegExp(r'[0-9]').hasMatch(value))
+                      return 'Name cannot contain numbers';
                     return null;
                   },
                 ),
@@ -158,8 +218,10 @@ class _EditProfileState extends State<EditProfile> {
                   initialValue: email,
                   onChanged: (value) => setState(() => email = value!),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Please enter your email';
-                    if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(value)) return 'Please enter a valid email address';
+                    if (value == null || value.isEmpty)
+                      return 'Please enter your email';
+                    if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(value))
+                      return 'Please enter a valid email address';
                     return null;
                   },
                 ),
@@ -182,21 +244,31 @@ class _EditProfileState extends State<EditProfile> {
           Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppRadiusManager.r15),
-              child: DecoratedContainer(
-                height: AppHeightManager.h13,
-                width: AppWidthManager.w26,
-                child: Image.asset(
-                  AppImageManager.productImage,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              child: _profileImage != null
+                  ? Image.file(
+                      _profileImage!,
+                      fit: BoxFit.cover,
+                      height: AppHeightManager.h13,
+                      width: AppWidthManager.w26,
+                    )
+                  : profileImageUrl != null
+                      ? Image.network(
+                          profileImageUrl!,
+                          fit: BoxFit.cover,
+                          height: AppHeightManager.h13,
+                          width: AppWidthManager.w26,
+                          errorBuilder: (context, error, stackTrace) {
+                            return _buildDefaultProfileImage();
+                          },
+                        )
+                      : _buildDefaultProfileImage(),
             ),
           ),
           Positioned(
             right: AppWidthManager.w50,
             top: AppHeightManager.h10,
             child: GestureDetector(
-              onTap: () {},
+              onTap: _pickImage,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadiusManager.r13),
                 child: DecoratedContainer(
@@ -218,6 +290,21 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+  Widget _buildDefaultProfileImage() {
+    return DecoratedContainer(
+      color: AppColorManager.grey.withOpacity(0.3),
+      height: AppHeightManager.h13,
+      width: AppWidthManager.w26,
+      child: Center(
+        child: AppTextWidget(
+          text: "Add Photo",
+          fontSize: FontSizeManager.fs16,
+          color: AppColorManager.navyBlue,
+        ),
+      ),
+    );
+  }
+
   Widget _buildTextField({
     required String label,
     required String hintText,
@@ -228,7 +315,7 @@ class _EditProfileState extends State<EditProfile> {
   }) {
     final theme = Theme.of(context);
     final isDarkMode = widget.themeNotifier?.value == ThemeMode.dark;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -244,71 +331,76 @@ class _EditProfileState extends State<EditProfile> {
           fillColor: theme.inputDecorationTheme.fillColor,
           borderRadius: AppRadiusManager.r6,
           hintText: hintText,
-          prefixIcon: Icon(prefixIcon, color: theme.inputDecorationTheme.hintStyle?.color),
+          prefixIcon: Icon(prefixIcon,
+              color: theme.inputDecorationTheme.hintStyle?.color),
           hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
-            color: isDarkMode ? AppColorManager.grey : AppColorManager.navyLightBlue,
+            color: isDarkMode
+                ? AppColorManager.grey
+                : AppColorManager.navyLightBlue,
           ),
-          textColor: isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
-          // onChanged: onChanged,
+          textColor:
+              isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
           validator: validator,
-          decoration: const InputDecoration(border: InputBorder.none), keyboardType: TextInputType.number,
         ),
       ],
     );
   }
 
   Widget _buildBirthdateAndGenderFields() {
-    Theme.of(context);
-    
     return Row(
       children: [
         Expanded(
           child: _buildTextField(
             label: "Birthdate",
-            hintText: "Enter Your Birthdate",
+            hintText: "dd/mm/yyyy",
             prefixIcon: Icons.date_range_outlined,
             initialValue: birthdate,
             onChanged: (value) => setState(() => birthdate = value!),
-            validator: (value) => value == null || value.isEmpty ? 'Please enter your birthdate' : null,
+            validator: (value) => value == null || value.isEmpty
+                ? 'Please enter your birthdate'
+                : null,
           ),
         ),
-        SizedBox(width: AppWidthManager.w9),
-        _buildGenderRadioButtons(),
-      ],
-    );
-  }
-
-  Widget _buildGenderRadioButtons() {
-    final isDarkMode = widget.themeNotifier?.value == ThemeMode.dark;
-    
-    return Row(
-      children: [
-        _buildGenderRadioButton(label: "Female", value: 1),
-        SizedBox(width: AppWidthManager.w6),
-        _buildGenderRadioButton(label: "Male", value: 2),
-      ],
-    );
-  }
-
-  Widget _buildGenderRadioButton({required String label, required int value}) {
-    final isDarkMode = widget.themeNotifier?.value == ThemeMode.dark;
-
-    return Column(
-      children: [
-        SizedBox(
-          height: AppHeightManager.h3,
-          width: AppWidthManager.w16,
-          child: Radio<int>(
-            activeColor: AppColorManager.yellow,
-            onChanged: (newValue) => setState(() => gender = newValue!),
-            value: value,
-            groupValue: gender,
-          ),
-        ),
-        AppTextWidget(
-          text: label,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: isDarkMode ? AppColorManager.white : AppColorManager.navyLightBlue,
+        SizedBox(width: AppWidthManager.w7),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppTextWidget(
+                text: "Gender",
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      color: AppColorManager.grey,
+                    ),
+              ),
+              SizedBox(height: AppHeightManager.h1point2),
+              Container(
+                height: AppHeightManager.h7,
+                decoration: BoxDecoration(
+                  color: AppColorManager.white,
+                  borderRadius: BorderRadius.circular(AppRadiusManager.r6),
+                ),
+                child: DropdownButtonFormField<int>(
+                  value: gender,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                  items: [
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text('Female',
+                          style: Theme.of(context).textTheme.bodyLarge),
+                    ),
+                    DropdownMenuItem(
+                      value: 2,
+                      child: Text('Male',
+                          style: Theme.of(context).textTheme.bodyLarge),
+                    ),
+                  ],
+                  onChanged: (value) => setState(() => gender = value ?? 1),
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -316,42 +408,13 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Widget _buildBottomNavigationBar() {
-    return DecoratedContainer(
-      color: AppColorManager.navyLightBlue,
-      height: AppHeightManager.h9,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: AppHeightManager.h6,
-                child: AppElevatedButton(
-                  text: 'Cancel',
-                  fontSize: FontSizeManager.fs16,
-                  color: AppColorManager.navyBlue,
-                  textColor: Colors.grey,
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/ButtonNavbar');
-                  },
-                ),
-              ),
-            ),
-            SizedBox(width: 15),
-            SizedBox(
-              width: AppWidthManager.w55,
-              height: AppHeightManager.h6,
-              child: AppElevatedButton(
-                text: 'Save',
-                textColor: AppColorManager.navyLightBlue,
-                fontSize: FontSizeManager.fs18,
-                color: AppColorManager.white,
-                onPressed: _updateProfile,
-              ),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: AppWidthManager.w6, vertical: AppHeightManager.h6),
+      child: AppElevatedButton(
+        text: "Save",
+        onPressed: _updateProfile,
+        color: AppColorManager.white,
       ),
     );
   }

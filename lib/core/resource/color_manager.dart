@@ -17,7 +17,7 @@ abstract class AppColorManager {
   static const Color lightGrey = Color.fromARGB(255, 159, 158, 167);
   static const Color darkOrange2 = Color(0xffec1c24);
 
-  static const Color darkOrange3 = Color(0xffEC1C24);
+  static const Color red = Color(0xffEC1C24);
   static const Color white = Color(0xffffffff);
   static const Color error = Color.fromARGB(255, 122, 93, 92);
   static const Color whiteBlue = Color(0xFFF6F6F7);

@@ -20,7 +20,7 @@ class ProductInfo extends StatelessWidget {
     final textColor =
         isDarkMode ? AppColorManager.white : AppColorManager.navyBlue;
 
-    // ملاحظة: تحتاج إلى تنفيذ طريقة لجلب المنتج بناءً على معرفه
+    
     final Product product = fetchProductById(productId);
 
     return Scaffold(

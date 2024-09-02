@@ -101,7 +101,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
               child: ListView(
                 children: [
                   profileItem(Icons.category_outlined, "Orders",
-                      "Ongoing orders, Recent orders..", '/OrdersPage'),
+                      "Ongoing orders, Recent orders..", '/OrderHistory'),
                   profileItem(Icons.payment_rounded, "Payment",
                       "Saved card, Wallets", '/PaymentPage'),
                   profileItem(Icons.location_on_outlined, "Saved Address",

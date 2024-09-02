@@ -42,8 +42,9 @@ class _BrandListState extends State<BrandList> {
             itemCount: brands.length,
             itemBuilder: (context, index) {
               final brand = brands[index];
-              final imageUrl = 'http://127.0.0.1:8000/storage//${brand.image}';
-
+              final imageUrl =
+                  'http://192.168.1.103:8000/storage/${brand.image}';
+              print(imageUrl);
               return Padding(
                 padding: EdgeInsets.only(
                     bottom: AppHeightManager.h1point8,
@@ -60,7 +61,8 @@ class _BrandListState extends State<BrandList> {
                         if (loadingProgress == null) {
                           return child;
                         } else {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                       },
                       errorBuilder: (context, error, stackTrace) {

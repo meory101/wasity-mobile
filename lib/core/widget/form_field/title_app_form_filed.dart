@@ -61,7 +61,6 @@ class TitleAppFormFiled extends StatelessWidget {
             textInputAction: TextInputAction.next,
             hintText: hint,
             textInputType: TextInputType.name,
-            keyboardType: TextInputType.none, decoration: const InputDecoration(border: InputBorder.none),
           ),
         ),
       ],

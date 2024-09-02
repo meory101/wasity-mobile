@@ -13,37 +13,41 @@ class Intro extends StatelessWidget {
     final theme = Theme.of(context);
     final bool isDarkMode = theme.brightness == Brightness.dark;
 
-    return Column(
-      children: [
-        DecoratedContainer(
-          height: AppHeightManager.h100,
-          isGradient: true,
-          isDarkMode: isDarkMode,  // Pass the isDarkMode flag
-          child: Stack(
-            children: [
-              Image.asset(
-                AppImageManager.logo,
-              ),
-              Positioned(
-                left: AppWidthManager.w21,
-                top: AppHeightManager.h17,
-                child: Row(
-                  children: [
-                    AppTextWidget(
-                      text: " Everything in one place !",
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        color: isDarkMode
-                            ? AppColorManager.white
-                            : AppColorManager.white,
-                      ),
-                    ),
-                  ],
+    return Padding(
+      padding: EdgeInsets.only(
+          top: AppHeightManager.h6, ),
+      child: Column(
+        children: [
+          DecoratedContainer(
+            height: AppHeightManager.h100,
+            isGradient: true,
+            isDarkMode: isDarkMode, // Pass the isDarkMode flag
+            child: Stack(
+              children: [
+                Image.asset(
+                  AppImageManager.logo,
                 ),
-              ),
-            ],
+                Positioned(
+                  left: AppWidthManager.w21,
+                  top: AppHeightManager.h17,
+                  child: Row(
+                    children: [
+                      AppTextWidget(
+                        text: " Everything in one place !",
+                        style: theme.textTheme.headlineLarge?.copyWith(
+                          color: isDarkMode
+                              ? AppColorManager.white
+                              : AppColorManager.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
