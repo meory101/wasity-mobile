@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
@@ -5,12 +7,17 @@ import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/pages/category/widgets/containers/ProductsBySubCategory.dart';
 import 'package:wasity/features/pages/home/widgets/form_field/search_form_field.dart';
-
 class ProductsBySubCategory extends StatefulWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;
   final int subCategoryId;
+  final int mainCategoryId; 
 
-  const ProductsBySubCategory({super.key, this.themeNotifier, required this.subCategoryId});
+  const ProductsBySubCategory({
+    super.key,
+    this.themeNotifier,
+    required this.subCategoryId,
+    required this.mainCategoryId, 
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -69,6 +76,7 @@ class __ProductsBySubCategoryState extends State<ProductsBySubCategory> {
                         return ProductsbysubcategoryContainer(
                           themeNotifier: widget.themeNotifier,
                           product: products[index],
+                         
                         );
                       },
                     );

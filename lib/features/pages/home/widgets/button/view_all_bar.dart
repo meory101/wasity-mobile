@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 
 class ViewAllBar extends StatefulWidget {
@@ -25,28 +24,25 @@ class _ViewAllBarState extends State<ViewAllBar> {
 
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: AppHeightManager.h2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppTextWidget(
-                text: widget.title,
-                style: theme.textTheme.displayLarge?.copyWith(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppTextWidget(
+              text: widget.title,
+              style: theme.textTheme.displayLarge?.copyWith(
+                color: textColor,
+              ),
+            ),
+            GestureDetector(
+              onTap: widget.onViewAllPressed,
+              child: AppTextWidget(
+                text: "View All",
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: textColor,
                 ),
               ),
-              GestureDetector(
-                onTap: widget.onViewAllPressed,
-                child: AppTextWidget(
-                  text: "View All",
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: textColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

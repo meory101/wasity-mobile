@@ -1,37 +1,42 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:wasity/features/models/appModels.dart';
+// ignore: depend_on_referenced_packages
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Config {
   static const String baseUrl = 'http://192.168.1.103:8000/api';
+  static const String imageUrl = 'http://192.168.1.103:8000/storage';
 
   static String getFullUrl(String endpoint) {
     return '$baseUrl/$endpoint';
   }
 }
 
-//!Auth
+//! Auth
 class OTPService {
-  Future<String?> generateOTP(String number, String userType) async {
+  Future<Map<String, dynamic>?> generateOTP(
+      String number, String userType) async {
     String url = Config.getFullUrl('generateOTP');
 
     Map<String, dynamic> data = {
       "number": number,
       "type": 0,
     };
-
     Map<String, String> headers = {
       "Content-Type": "application/json",
       "user-type": userType,
     };
-
     try {
       var response = await http.post(Uri.parse(url),
           headers: headers, body: jsonEncode(data));
-
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = jsonDecode(response.body);
-        return responseData["otp_code"].toString();
+        return {
+          "otp_code": responseData["otp_code"].toString(),
+          "client_id": responseData["client_id"].toString(),
+        };
       } else {
         return Future.error(
             "Failed to generate OTP. Status code: ${response.statusCode}");
@@ -41,26 +46,30 @@ class OTPService {
     }
   }
 
-  Future<bool> verifyOTP(String number, String otpCode) async {
-    String url = Config.getFullUrl('verifyOTP');
+  Future<void> verifyOTPAndStoreToken(String number, String otpCode) async {
+    String url = Config.getFullUrl('clientDeliveryLogin');
 
     Map<String, dynamic> data = {
       "number": number,
       "otp_code": otpCode,
+      "type": 0,
     };
-
     Map<String, String> headers = {
       "Content-Type": "application/json",
     };
-
     try {
       var response = await http.post(Uri.parse(url),
           headers: headers, body: jsonEncode(data));
-
       if (response.statusCode == 200) {
-        return true;
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        String token = responseData['token'];
+        String userId = responseData['user']['id'].toString();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', token);
+        prefs.setString('user_id', userId);
       } else {
-        return false;
+        return Future.error(
+            "Failed to verify OTP. Status code: ${response.statusCode}");
       }
     } catch (error) {
       return Future.error("Error: $error");
@@ -72,7 +81,6 @@ class OTPService {
 class Brands {
   Future<List<Brand>> fetchBrands() async {
     final response = await http.get(Uri.parse(Config.getFullUrl('getBrands')));
-
     if (response.statusCode == 200) {
       return parseBrands(response.body);
     } else {
@@ -81,28 +89,49 @@ class Brands {
   }
 }
 
-//!FetchNewArrivais
-Future<List<NewArrivaisData>> fetchNewArrivais() async {
-  final response = await http.get(Uri.parse(Config.getFullUrl('clientHome')));
+//!Fetch Trending Products
+class TrendingProductService {
+  Future<List<Product>> fetchTrendingProducts() async {
+    try {
+      final response =
+          await http.get(Uri.parse('${Config.baseUrl}/getPopulatItems'));
 
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((item) => Product.fromJson(item)).toList();
+      } else {
+        throw Exception('Failed to load trending products');
+      }
+    } catch (e) {
+      // print('Error fetching trending products: $e');
+      rethrow;
+    }
+  }
+}
+
+//!FetchNewArrivais
+Future<List<Product>> fetchNewItems() async {
+  final response = await http.get(Uri.parse(Config.getFullUrl('getNewItems')));
   if (response.statusCode == 200) {
     List<dynamic> jsonData = json.decode(response.body);
-    return jsonData.map((item) => NewArrivaisData.fromJson(item)).toList();
+    return jsonData.map((item) => Product.fromJson(item)).toList();
   } else {
-    throw Exception('Failed to load new arrivals');
+    throw Exception('Failed to load new items');
   }
 }
 
 //!FetchMainCategories
-Future<List<SubCategory>> fetchMainCategories() async {
+Future<List<MainCategory>> fetchCategories() async {
   final response =
-      await http.get(Uri.parse(Config.getFullUrl('getMainCatgories')));
+      await http.get(Uri.parse('${Config.baseUrl}/getMainCatgories'));
 
   if (response.statusCode == 200) {
-    List<dynamic> data = jsonDecode(response.body);
-    return data.map((item) => SubCategory.fromJson(item)).toList();
+    List jsonResponse = json.decode(response.body);
+    return jsonResponse
+        .map((category) => MainCategory.fromJson(category))
+        .toList();
   } else {
-    throw Exception('Failed to load MainCategories');
+    throw Exception('Failed to load categories');
   }
 }
 
@@ -137,15 +166,11 @@ class ProductService {
 }
 
 //!AddressService
-
 class AddressService {
   //? FetchAddresses
-
-  static const String _baseUrl = 'http://127.0.0.1:8000/api';
-
   Future<List<Address>> fetchAddresses(int clientId) async {
-    final response =
-        await http.get(Uri.parse('$_baseUrl/getAddressesByClientId/$clientId'));
+    final response = await http
+        .get(Uri.parse('${Config.baseUrl}/getAddressesByClientId/$clientId'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -158,7 +183,7 @@ class AddressService {
 //?AddAddress
   Future<void> addAddress(Address address) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/addAddress'),
+      Uri.parse('${Config.baseUrl}/addAddress'),
       body: {
         'name': address.name,
         'lat': address.lat.toString(),
@@ -175,7 +200,7 @@ class AddressService {
 //?UpdateAddress
   Future<void> updateAddress(Address address) async {
     final response = await http.put(
-      Uri.parse('$_baseUrl/updateAddress'),
+      Uri.parse('${Config.baseUrl}/updateAddress'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -190,11 +215,61 @@ class AddressService {
 
     if (response.statusCode == 200) {
     } else {
-      print('Failed to update address: ${response.body}');
+      if (kDebugMode) {
+        print('Failed to update address: ${response.body}');
+      }
       throw Exception('Failed to update address');
     }
   }
 }
+
+//!fetchSubBranches
+Future<List<SubBranch>> fetchSubBranches(int mainBranchId) async {
+  final response = await http.get(Uri.parse(
+      '${Config.baseUrl}/getSubBranchesByMainBranchId/$mainBranchId'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> jsonList = json.decode(response.body);
+    return jsonList.map((json) => SubBranch.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to load sub-branches');
+  }
+}
+
+//!FetchProducts By SubBranch Id
+Future<List<Product>> fetchProductsBySubBranchId(int subBranchId) async {
+  final response = await http.get(
+    Uri.parse(
+        'http://192.168.1.103:8000/api/getProductsBySubBranchId/$subBranchId'),
+  );
+
+  if (response.statusCode == 200) {
+    List<dynamic> data = json.decode(response.body);
+
+    return data.map((item) => Product.fromJson(item)).toList();
+  } else {
+    throw Exception('Failed to load products');
+  }
+}
+
+//!FetchMainBranches
+class MainBranches {
+  Future<List<MainBranchModel>> fetchMainBranches() async {
+    final response =
+        await http.get(Uri.parse('${Config.baseUrl}/getMainBranches'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse
+          .map((branch) => MainBranchModel.fromJson(branch))
+          .toList();
+    } else {
+      throw Exception('Failed to load main branches');
+    }
+  }
+}
+
+
 
 // //!GetProfile
 // class ProfileService {
@@ -240,24 +315,4 @@ class AddressService {
 //     }
 //   }
 // }
-
-//!fetchProductsBySubCategoryId
-// Future<List<Product>> fetchProductsBySubCategoryId(int subCategoryId) async {
-//   final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/getProductsBySubCategoryId/$subCategoryId'));
-
-//   if (response.statusCode == 200) {
-//     List<dynamic> jsonResponse = json.decode(response.body);
-//     return jsonResponse.map((data) => Product.fromJson(data)).toList();
-//   } else {
-//     throw Exception('Failed to load products');
-//   }
-// }
-
-// Product? findProductById(List<Product> products, int productId) {
-//   return products.firstWhere((product) => product.id == productId, orElse: () => );
-// }
-
-
-
-
 

@@ -17,8 +17,8 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName', '1.0
 
 android {
     namespace "com.example.wasity"
-    compileSdk 34 // Replace with a specific version if needed
-    ndkVersion "21.3.6528147" // Replace with your NDK version if necessary
+    compileSdk 34 
+    ndkVersion "21.3.6528147"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

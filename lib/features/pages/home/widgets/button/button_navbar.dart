@@ -9,6 +9,7 @@ import 'package:wasity/features/pages/cart/screen/cart.dart';
 import 'package:wasity/features/pages/category/screens/all_category.dart';
 import 'package:wasity/features/pages/home/screens/home_screen.dart';
 import 'package:wasity/features/pages/profile/screens/profile_info.dart';
+import 'package:wasity/features/pages/branch/main_branch.dart'; 
 
 class ButtonNavbar extends StatefulWidget {
   final ValueNotifier<ThemeMode> themeNotifier;
@@ -29,6 +30,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
       HomeScreen(themeNotifier: widget.themeNotifier),
       AllCategory(themeNotifier: widget.themeNotifier),
       Cart(themeNotifier: widget.themeNotifier),
+      MainBranch(themeNotifier: widget.themeNotifier),
       ProfileInfo(themeNotifier: widget.themeNotifier),
     ];
 
@@ -46,7 +48,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
                   selectedIndex: _selectedIndex,
                   elevation: 0,
                   indicatorColor: AppColorManager.yellow,
-                  height: AppHeightManager.h9,
+                  height: AppHeightManager.h8,
                   backgroundColor: AppColorManager.navyLightBlue,
                   onDestinationSelected: (int index) {
                     setState(() {
@@ -89,6 +91,21 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
                       child: NavigationDestination(
                         icon: SvgPicture.asset(
                           AppIconManager.cartFill,
+                          colorFilter: const ColorFilter.mode(
+                            AppColorManager.white,
+                            BlendMode.srcIn,
+                          ),
+                          width: AppWidthManager.w12,
+                          height: AppHeightManager.h4,
+                        ),
+                        label: '',
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: AppHeightManager.h3),
+                      child: NavigationDestination(
+                        icon: SvgPicture.asset(
+                          AppIconManager.store,
                           colorFilter: const ColorFilter.mode(
                             AppColorManager.white,
                             BlendMode.srcIn,

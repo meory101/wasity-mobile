@@ -14,8 +14,8 @@ class FilterButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: AppWidthManager.w2),
       child: Container(
-        width: AppWidthManager.w12,
-        height: AppHeightManager.h7,
+        width: AppWidthManager.w10,
+        height: AppHeightManager.h5,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         decoration: BoxDecoration(
           color: theme.primaryColor,

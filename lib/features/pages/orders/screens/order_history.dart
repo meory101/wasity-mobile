@@ -14,6 +14,7 @@ class OrderHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // ignore: unrelated_type_equality_checks
     final isDarkMode = themeNotifier == ThemeMode.dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -113,7 +114,7 @@ class OrderHistory extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Divider(
+                      const Divider(
                         color: AppColorManager.grey,
                       ),
                       Row(

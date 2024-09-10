@@ -13,6 +13,7 @@ abstract class AppIconManager{
   static String arrowMenuDown = '$_iconBasePath/arrow_menu_down.svg';
   static String arrowMenuLeft = '$_iconBasePath/arrow_menu_left.svg';
   static String arrowMenuRight = '$_iconBasePath/arrow_menu_right.svg';
+  static String store = '$_iconBasePath/store.svg';
  
   static String more = '$_iconBasePath/more.svg';
   static String restaurants = '$_iconBasePath/restaurants.svg';

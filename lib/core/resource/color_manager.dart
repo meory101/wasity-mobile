@@ -11,7 +11,7 @@ abstract class AppColorManager {
 
   static const Color grey = Color(0xff8e8e93);
   static const Color green = Color(0xff34c759);
-  static const Color lightGreen = Color(0xffb7fac8);
+  static const Color lightGray = Color.fromARGB(202, 142, 142, 147);
   static const Color orange = Color(0xffff9500);
   static const Color yellow = Color.fromARGB(255, 230, 185, 21);
   static const Color lightGrey = Color.fromARGB(255, 159, 158, 167);

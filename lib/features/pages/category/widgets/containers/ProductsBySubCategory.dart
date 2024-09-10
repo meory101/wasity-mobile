@@ -6,6 +6,7 @@ import 'package:wasity/core/resource/icon_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 import 'package:wasity/core/widget/text/price_text_widget.dart';
+import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/pages/cart/widgets/button/cart_button.dart';
 import 'package:wasity/features/pages/home/screens/product_info.dart';
@@ -52,19 +53,25 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                             width: AppWidthManager.w35,
                             child: InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ProductInfo(
                                       themeNotifier: themeNotifier,
-                                      productId: product.id,
+                                      product: product,
+                                      subBranchId: 0,
                                     ),
-                                  ) as String,
+                                  ),
                                 );
                               },
                               child: Image.network(
-                                'http://127.0.0.1:8000/storage/${product.image}',
+                                '${Config.imageUrl}/${product.image}',
                                 fit: BoxFit.fill,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return Image.asset(
+                                      'assets/images/placeholder.png');
+                                },
                               ),
                             ),
                           ),
@@ -86,12 +93,14 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                                     : AppColorManager.navyBlue,
                               ),
                             ),
-                            // AppTextWidget(
-                            //   text: product.description ?? "No description",
-                            //   style: theme.textTheme.bodySmall?.copyWith(
-                            //     color: isDarkMode ? AppColorManager.grey : AppColorManager.navyBlue,
-                            //   ),
-                            // ),
+                            AppTextWidget(
+                              text: product.desc,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: isDarkMode
+                                    ? AppColorManager.grey
+                                    : AppColorManager.navyBlue,
+                              ),
+                            ),
                             Row(
                               children: [
                                 Column(
@@ -123,12 +132,18 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                                           height: AppHeightManager.h2point2,
                                         ),
                                         SizedBox(width: AppWidthManager.w1),
-                                        // AppTextWidget(
-                                        //   text: product.rating.toString(),
-                                        //   style: theme.textTheme.displaySmall?.copyWith(
-                                        //     color: isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
-                                        //   ),
-                                        // ),
+                                        AppTextWidget(
+                                          text: (product.rate != null
+                                              ? product.rate!.toStringAsFixed(1)
+                                              : '0.0'),
+                                          style: theme.textTheme.displaySmall
+                                              ?.copyWith(
+                                            color: themeNotifier!.value ==
+                                                    ThemeMode.dark
+                                                ? AppColorManager.white
+                                                : AppColorManager.navyBlue,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -145,7 +160,7 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
               Positioned(
                 left: AppWidthManager.w29,
                 top: AppHeightManager.h17,
-                child: const CartButton(),
+                child:  CartButton(product:product ,),
               ),
             ],
           ),

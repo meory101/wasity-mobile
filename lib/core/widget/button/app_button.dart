@@ -37,7 +37,7 @@ class AppElevatedButton extends StatelessWidget {
       child: AppTextWidget(
         text: text,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: textColor ?? AppColorManager.navyBlue,
+              color: textColor ?? AppColorManager.navyLightBlue,
               fontSize: fontSize,
             ),
       ),

@@ -9,8 +9,15 @@ import 'package:wasity/core/widget/text/app_text_widget.dart';
 
 class SubCategoryProducts extends StatefulWidget {
   final ValueNotifier<ThemeMode> themeNotifier;
+  final int subCategoryId;
+  final String subCategoryName;
 
-  const SubCategoryProducts({super.key, required this.themeNotifier});
+  const SubCategoryProducts({
+    super.key,
+    required this.themeNotifier,
+    required this.subCategoryId,
+    required this.subCategoryName,
+  });
 
   @override
   State<SubCategoryProducts> createState() => _SubCategoryProductsState();
@@ -18,27 +25,21 @@ class SubCategoryProducts extends StatefulWidget {
 
 class _SubCategoryProductsState extends State<SubCategoryProducts> {
   late Future<List<MainCategory>> futureSubCategories;
-  late String mainCategoryName;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final arguments =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    final int mainCategoryId = arguments['id'];
-    mainCategoryName = arguments['name'];
-    futureSubCategories = fetchSubCategories(mainCategoryId);
+    futureSubCategories = fetchSubCategories(widget.subCategoryId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: SecondAppbar(
+        titleText: 'Subcategory for ${widget.subCategoryName}',
         onBack: () {
           Navigator.pop(context);
         },
-        titleText: 'Subcategory for $mainCategoryName',
       ),
       body: FutureBuilder<List<MainCategory>>(
         future: futureSubCategories,
@@ -77,6 +78,7 @@ class _SubCategoryProductsState extends State<SubCategoryProducts> {
                               builder: (context) => ProductsBySubCategory(
                                 themeNotifier: widget.themeNotifier,
                                 subCategoryId: subCategories[index].id,
+                                mainCategoryId: 0,
                               ),
                             ),
                           );
@@ -88,7 +90,8 @@ class _SubCategoryProductsState extends State<SubCategoryProducts> {
                               BorderRadius.circular(AppRadiusManager.r6),
                           image: DecorationImage(
                             image: NetworkImage(
-                                'http://127.0.0.1:8000/storage/${subCategories[index].image}'),
+                              '${Config.imageUrl}/${subCategories[index].image}',
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),

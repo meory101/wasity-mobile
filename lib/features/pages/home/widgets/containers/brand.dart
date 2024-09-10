@@ -36,15 +36,15 @@ class _BrandListState extends State<BrandList> {
         final brands = snapshot.data!;
 
         return SizedBox(
-          height: AppHeightManager.h14 + AppHeightManager.h3Point5,
+          height: AppHeightManager.h17,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: brands.length,
             itemBuilder: (context, index) {
               final brand = brands[index];
-              final imageUrl =
-                  'http://192.168.1.103:8000/storage/${brand.image}';
-              print(imageUrl);
+
+              final imageUrl = '${Config.imageUrl}/${brand.image}';
+
               return Padding(
                 padding: EdgeInsets.only(
                     bottom: AppHeightManager.h1point8,

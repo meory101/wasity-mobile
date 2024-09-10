@@ -84,7 +84,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       theme.textTheme.displayMedium?.copyWith(color: textColor),
                 ),
                 SizedBox(
-                  width: AppWidthManager.w37,
+                  width: AppWidthManager.w30,
                 ),
                 Transform.scale(
                   scale: AppRadiusManager.r0Point5,

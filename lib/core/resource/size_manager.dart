@@ -56,6 +56,7 @@ abstract class AppWidthManager {
   static double w12 = 12.w;
   static double w13 = 13.w;
   static double w13point5 = 13.5.w;
+  static double w61point5 = 61.5.w;
   static double w14 = 14.w;
   static double w15 = 15.w;
   static double w16 = 16.w;
@@ -71,6 +72,8 @@ abstract class AppWidthManager {
   static double w27 = 27.w;
   static double w29 = 29.w;
   static double w30 = 30.w;
+  static double w30point8 = 30.8.w;
+  static double w31 = 31.w;
   static double w32 = 32.w;
   static double w34 = 34.w;
   static double w35 = 35.w;
@@ -87,9 +90,11 @@ abstract class AppWidthManager {
   static double w56 = 56.w;
   static double w57 = 57.w;
   static double w60 = 60.w;
+  static double w62 = 62.w;
   static double w64 = 64.w;
   static double w66 = 66.w;
   static double w68 = 68.w;
+  static double w78 = 78.w;
   static double w70 = 70.w;
   static double w71 = 71.w;
   static double w72 = 72.w;
@@ -142,6 +147,9 @@ abstract class AppHeightManager {
   static double h8 = 8.h;
   static double h9 = 9.h;
   static double h10 = 10.h;
+  static double h10point5 = 10.5.h;
+  static double h10point3 = 10.3.h;
+  static double h10point4 = 10.4.h;
   static double h11 = 11.h;
   static double h12 = 12.h;
   static double h13 = 13.h;

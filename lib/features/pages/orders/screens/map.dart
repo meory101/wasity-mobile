@@ -13,7 +13,7 @@ class GMap extends StatefulWidget {
 class _GMapState extends State<GMap> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:DecoratedContainer(color: AppColorManager.error,child: GoogleMap(initialCameraPosition: CameraPosition(target: LatLng(22, 22))),) ,)
+    return const Scaffold(body:DecoratedContainer(color: AppColorManager.error,child: GoogleMap(initialCameraPosition: CameraPosition(target: LatLng(22, 22))),) ,)
     
     
     

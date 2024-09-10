@@ -16,6 +16,7 @@ import 'package:wasity/core/widget/button/app_button.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/form_field/app_form_field.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
+import 'package:wasity/features/api/api_link.dart';
 
 class EditProfile extends StatefulWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;
@@ -42,7 +43,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future<void> _getProfile() async {
-    const url = 'http://127.0.0.1:8000/api/getClientProfile/1';
+    const url = '${Config.baseUrl}/getClientProfile/1';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -54,7 +55,7 @@ class _EditProfileState extends State<EditProfile> {
           birthdate = data['birth_date'] ?? '';
           gender = data['gender'] == 'Female' ? 1 : 2;
           profileImageUrl = data['profile_image'] != null
-              ? 'http://127.0.0.1:8000/storage/${data['profile_image']}'
+              ? '${Config.imageUrl}/${data['profile_image']}'
               : null;
         });
       } else {
@@ -77,7 +78,7 @@ class _EditProfileState extends State<EditProfile> {
 
   Future<void> _updateProfile() async {
     if (_formKey.currentState?.validate() ?? false) {
-      const url = 'http://127.0.0.1:8000/api/updateClientProfile';
+      const url = '${Config.baseUrl}/updateClientProfile';
       var request = http.MultipartRequest('POST', Uri.parse(url));
       request.fields['id'] = '1';
       request.fields['name'] = name;
@@ -203,10 +204,12 @@ class _EditProfileState extends State<EditProfile> {
                   initialValue: name,
                   onChanged: (value) => setState(() => name = value!),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return 'Please enter your name';
-                    if (RegExp(r'[0-9]').hasMatch(value))
+                    }
+                    if (RegExp(r'[0-9]').hasMatch(value)) {
                       return 'Name cannot contain numbers';
+                    }
                     return null;
                   },
                 ),
@@ -218,10 +221,12 @@ class _EditProfileState extends State<EditProfile> {
                   initialValue: email,
                   onChanged: (value) => setState(() => email = value!),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return 'Please enter your email';
-                    if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(value))
+                    }
+                    if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(value)) {
                       return 'Please enter a valid email address';
+                    }
                     return null;
                   },
                 ),

@@ -33,17 +33,19 @@ class _PhoneState extends State<Phone> {
   void _generateOTPAndNavigate() async {
     if (_formKey.currentState!.validate()) {
       try {
-        String? otpCode = await otpService.generateOTP(
+        Map<String, dynamic>? otpResponse = await otpService.generateOTP(
           numberController.text,
           userTypeController.text,
         );
-        if (otpCode != null) {
+        if (otpResponse != null && otpResponse.containsKey('otp_code')) {
           Navigator.push(
+            // ignore: use_build_context_synchronously
             context,
             MaterialPageRoute(
               builder: (context) => Otp(
-                otpCode: otpCode,
+                otpCode: otpResponse['otp_code'].toString(),
                 themeNotifier: widget.themeNotifier,
+                clientId: otpResponse['client_id'].toString(), 
               ),
             ),
           );
@@ -54,6 +56,87 @@ class _PhoneState extends State<Phone> {
         _showErrorDialog("Error", error.toString());
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bool isDarkMode = widget.themeNotifier?.value == ThemeMode.dark;
+
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(top: AppHeightManager.h10),
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  const Intro(),
+                  Form(
+                    key: _formKey,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: AppHeightManager.h40,
+                        horizontal: AppWidthManager.w6,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppTextWidget(
+                            text: "Phone number",
+                            style: theme.textTheme.headlineLarge?.copyWith(
+                              color: isDarkMode
+                                  ? AppColorManager.grey
+                                  : AppColorManager.grey,
+                            ),
+                            height: AppHeightManager.h03,
+                          ),
+                          SizedBox(height: AppHeightManager.h12),
+                          AppTextFormField(
+                            controller: numberController,
+                            fillColor: theme.inputDecorationTheme.fillColor,
+                            borderRadius: AppRadiusManager.r6,
+                            hintText: '09 - - - - - - - -',
+                            prefixIcon: Icon(Icons.phone,
+                                color: theme.inputDecorationTheme.hintStyle?.color),
+                            hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
+                              color: isDarkMode
+                                  ? AppColorManager.grey
+                                  : AppColorManager.navyLightBlue,
+                            ),
+                            textColor: isDarkMode
+                                ? AppColorManager.white
+                                : AppColorManager.navyBlue,
+                            textInputType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              } else if (value.length != 10) {
+                                return 'Phone number must be 10 digits';
+                              } else if (!value.startsWith('09')) {
+                                return 'Phone number must start with 09';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: AppHeightManager.h12),
+                          AppElevatedButton(
+                            text: "Next",
+                            onPressed: _generateOTPAndNavigate,
+                            color: AppColorManager.yellow,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _showErrorDialog(String title, String message) {
@@ -79,96 +162,6 @@ class _PhoneState extends State<Phone> {
             },
           ),
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final bool isDarkMode = widget.themeNotifier?.value == ThemeMode.dark;
-
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(top: AppHeightManager.h10),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  const Intro(),
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: AppHeightManager.h40,
-                        right: AppWidthManager.w6,
-                        left: AppWidthManager.w6,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              AppTextWidget(
-                                text: "Phone number",
-                                style: theme.textTheme.headlineLarge?.copyWith(
-                                  color: isDarkMode
-                                      ? AppColorManager.grey
-                                      : AppColorManager.grey,
-                                ),
-                                height: AppHeightManager.h03,
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              AppTextFormField(
-                                controller: numberController,
-                                fillColor: theme.inputDecorationTheme.fillColor,
-                                borderRadius: AppRadiusManager.r6,
-                                hintText: '09 - - - - - - - -',
-                                prefixIcon: Icon(Icons.phone,
-                                    color: theme
-                                        .inputDecorationTheme.hintStyle?.color),
-                                hintStyle: theme.inputDecorationTheme.hintStyle
-                                    ?.copyWith(
-                                  color: isDarkMode
-                                      ? AppColorManager.grey
-                                      : AppColorManager.navyLightBlue,
-                                ),
-                                textColor: isDarkMode
-                                    ? AppColorManager.white
-                                    : AppColorManager.navyBlue,
-                                textInputType: TextInputType.phone,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your phone number';
-                                  } else if (value.length != 10) {
-                                    return 'Phone number must be 10 digits';
-                                  } else if (!value.startsWith('09')) {
-                                    return 'Phone number must start with 09';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: AppHeightManager.h12),
-                              AppElevatedButton(
-                                text: "Next",
-                                onPressed: _generateOTPAndNavigate,
-                                color: AppColorManager.yellow,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

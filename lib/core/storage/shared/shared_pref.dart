@@ -1,43 +1,64 @@
 // ignore: depend_on_referenced_packages
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../resource/key_manger.dart';
 
-abstract class AppSharedPreferences {
-  static late SharedPreferences _sharedPreferences;
 
-  static init(SharedPreferences sh) {
+
+abstract class AppSharedPreferences {
+  static SharedPreferences? _sharedPreferences;
+
+  // Initialize SharedPreferences
+  static Future<void> init(SharedPreferences sh) async {
     _sharedPreferences = sh;
   }
 
-  static clear() {
-    _sharedPreferences.clear();
+  // Check if SharedPreferences is initialized
+  static void checkInitialized() {
+    if (_sharedPreferences == null) {
+      throw StateError('SharedPreferences has not been initialized.');
+    }
   }
 
+  // Cache client ID
+  static void cacheClientId(String clientId) {
+    checkInitialized();
+    _sharedPreferences!.setString(AppKeyManager.clientIdKey, clientId);
+  }
 
+  // Get cached client ID
+  static String getClientId() {
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.clientIdKey) ?? '';
+  }
 
+ 
+  // Cache default location
   static String getDefaultLocation() {
-    return _sharedPreferences.getString(AppKeyManager.defaultLocation) ?? "";
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.defaultLocation) ?? "";
   }
 
-  static void cashDefaultAddressId({required String id,required String location}) {
-    _sharedPreferences.setString(AppKeyManager.defaultAddressId, id);
-    _sharedPreferences.setString(AppKeyManager.defaultLocation, location);
+  // Cache default address ID and location
+  static void cacheDefaultAddressId({required String id, required String location}) {
+    checkInitialized();
+    _sharedPreferences!.setString(AppKeyManager.defaultAddressId, id);
+    _sharedPreferences!.setString(AppKeyManager.defaultLocation, location);
   }
 
+  // Get default address ID
   static String getDefaultAddressId() {
-    return _sharedPreferences.getString(AppKeyManager.defaultAddressId) ?? "";
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.defaultAddressId) ?? "";
   }
 
 
-  static cashLanguage({required String language}) {
-    _sharedPreferences.setString(AppKeyManager.language, language);
+  // Cache guest mode status
+  static void cacheGuestMode({required bool isGuest}) {
+    checkInitialized();
+    _sharedPreferences!.setBool(AppKeyManager.guestModeLocalKey, isGuest);
   }
 
-  static cashGuestMode({required bool isGuest}) {
-    _sharedPreferences.setBool(AppKeyManager.guestModeLocalKey, isGuest);
-  }
-
+  // Cache authenticated user information
   static void cacheAuthUserInfo({
     String token = '',
     String userName = '',
@@ -45,45 +66,60 @@ abstract class AppSharedPreferences {
     required String phoneNumber,
     required String userId,
   }) {
+    checkInitialized();
     if (token.isNotEmpty) {
-      _sharedPreferences.setString(AppKeyManager.token, token);
+      _sharedPreferences!.setString(AppKeyManager.token, token);
     }
     if (userName.isNotEmpty) {
-      _sharedPreferences.setString(AppKeyManager.username, userName);
+      _sharedPreferences!.setString(AppKeyManager.username, userName);
     }
     if (fullName.isNotEmpty) {
-      _sharedPreferences.setString(AppKeyManager.fullName, fullName);
+      _sharedPreferences!.setString(AppKeyManager.fullName, fullName);
     }
-    _sharedPreferences.setString(AppKeyManager.userId, userId);
-    _sharedPreferences.setString(AppKeyManager.phoneNumber, phoneNumber);
-    cashGuestMode(isGuest: false);
+    _sharedPreferences!.setString(AppKeyManager.userId, userId);
+    _sharedPreferences!.setString(AppKeyManager.phoneNumber, phoneNumber);
+    cacheGuestMode(isGuest: false);
   }
 
+  // Get cached language
   static String getLanguage() {
-    return _sharedPreferences.getString(AppKeyManager.language) ?? "ar";
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.language) ?? "ar";
   }
 
+  // Get cached token
   static String getToken() {
-    return _sharedPreferences.getString(AppKeyManager.token) ?? '';
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.token) ?? '';
   }
 
+  // Get cached user name
   static String getUserName() {
-    return _sharedPreferences.getString(AppKeyManager.username) ?? '';
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.username) ?? '';
   }
 
+  // Get cached full name
   static String getFullName() {
-    return _sharedPreferences.getString(AppKeyManager.fullName) ?? '';
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.fullName) ?? '';
   }
 
+  // Get cached phone number
   static String getPhoneNumber() {
-    return _sharedPreferences.getString(AppKeyManager.phoneNumber) ?? '';
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.phoneNumber) ?? '';
   }
 
+  // Get cached user ID
   static String getUserId() {
-    return _sharedPreferences.getString(AppKeyManager.userId) ?? '';
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.userId) ?? '';
   }
 
-  static bool getCashedGuestMode() {
-    return _sharedPreferences.getBool(AppKeyManager.guestModeLocalKey) ?? true;
+  // Get cached guest mode status
+  static bool getCachedGuestMode() {
+    checkInitialized();
+    return _sharedPreferences!.getBool(AppKeyManager.guestModeLocalKey) ?? true;
   }
 }

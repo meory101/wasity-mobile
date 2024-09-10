@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
+import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
 
 class Categorys extends StatefulWidget {
@@ -70,7 +68,7 @@ class _CategorysState extends State<Categorys> {
                               BorderRadius.circular(AppRadiusManager.r6),
                           image: DecorationImage(
                             image: NetworkImage(
-                                'http://127.0.0.1:8000/storage/${category.image}'),
+                                '${Config.imageUrl}/${category.image}'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -83,7 +81,7 @@ class _CategorysState extends State<Categorys> {
                                   color: textColor,
                                 ),
                       ),
-                      SizedBox(height: AppHeightManager.h5),
+                      SizedBox(height: AppHeightManager.h3),
                     ],
                   ),
                 );
@@ -96,14 +94,3 @@ class _CategorysState extends State<Categorys> {
   }
 }
 
-Future<List<MainCategory>> fetchCategories() async {
-  final response =
-      await http.get(Uri.parse('http://127.0.0.1:8000/api/getMainCatgories'));
-
-  if (response.statusCode == 200) {
-    List jsonResponse = json.decode(response.body);
-    return jsonResponse.map((category) => MainCategory.fromJson(category)).toList();
-  } else {
-    throw Exception('Failed to load categories');
-  }
-}

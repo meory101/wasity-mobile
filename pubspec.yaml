@@ -50,6 +50,7 @@ dev_dependencies:
   shared_preferences: ^2.2.3
   flutter_svg: ^2.0.10+1
   flutter_rating_bar: ^4.0.0
+
   
 
   # The "flutter_lints" package below contains a set of recommended lints to
