@@ -5,7 +5,7 @@ import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/pages/home/widgets/containers/new_arrivais_container.dart';
 import 'package:wasity/features/pages/home/widgets/form_field/search_form_field.dart';
-import 'package:wasity/features/pages/not_found_page.dart';
+import 'package:wasity/features/pages/status/not_found_page.dart';
 
 class NewArrivais extends StatefulWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;

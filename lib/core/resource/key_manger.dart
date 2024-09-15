@@ -1,4 +1,4 @@
-//All Specific Keys In The Project
+// All Specific Keys In The Project
 abstract class AppKeyManager {
   static const String arabicLocalizationCode = "ar";
   static const String englishLocalizationCode = "en";
@@ -16,4 +16,5 @@ abstract class AppKeyManager {
   static const String fullName = 'full_name';
   static const String userId = 'user_id';
   static const String phoneNumber = 'phone_number';
+  static const String cartItemsKey = 'cart_items';
 }

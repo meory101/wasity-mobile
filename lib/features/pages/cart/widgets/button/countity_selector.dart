@@ -8,14 +8,14 @@ import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 
-class CountSelector extends StatelessWidget {
-  final int count;
+class CountitySelector extends StatelessWidget {
+  final int quantity;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
 
-  const CountSelector({
+  const CountitySelector({
     super.key,
-    required this.count,
+    required this.quantity,
     required this.onIncrement,
     required this.onDecrement,
   });
@@ -49,7 +49,7 @@ class CountSelector extends StatelessWidget {
             width: AppWidthManager.w10,
             child: Center(
               child: AppTextWidget(
-                text: '$count',
+                text: '$quantity',
                 fontSize: FontSizeManager.fs17,
               ),
             ),

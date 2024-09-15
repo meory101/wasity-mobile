@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 import 'package:wasity/core/widget/text/price_text_widget.dart';
+import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/pages/cart/widgets/button/cart_button.dart';
 
@@ -63,7 +64,7 @@ class Productsbysubbranchcontainer extends StatelessWidget {
                                 );
                               },
                               child: Image.network(
-                                'http://192.168.1.103:8000/storage/${product.image}',
+                                '${Config.imageUrl}/${product.image}',
                                 fit: BoxFit.fill,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {
@@ -161,7 +162,9 @@ class Productsbysubbranchcontainer extends StatelessWidget {
               Positioned(
                 left: AppWidthManager.w29,
                 top: AppHeightManager.h17,
-                child:  CartButton(product: product,),
+                child: CartButton(
+                  product: product,
+                ),
               ),
             ],
           ),

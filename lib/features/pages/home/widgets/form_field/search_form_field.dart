@@ -5,8 +5,14 @@ import 'package:wasity/features/pages/home/widgets/button/filter.dart';
 
 class SearchFormField extends StatelessWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;
+  final TextEditingController? searchController;
+  final void Function()? onSearchClicked;
 
-  const SearchFormField({super.key, this.themeNotifier});
+  const SearchFormField(
+      {super.key,
+      this.themeNotifier,
+      this.onSearchClicked,
+      this.searchController});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +29,14 @@ class SearchFormField extends StatelessWidget {
               fillColor: theme.inputDecorationTheme.fillColor,
               borderRadius: AppRadiusManager.r6,
               hintText: 'search here ...',
-              prefixIcon: Icon(Icons.search,
+              prefixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: onSearchClicked ?? () {  Navigator.pushNamed(context, '/SearchProducts');},
                   color: theme.inputDecorationTheme.hintStyle?.color),
               hintStyle: theme.inputDecorationTheme.hintStyle,
-              controller: TextEditingController(),
+              controller: searchController ?? TextEditingController(),
               textInputType: TextInputType.text,
               textInputAction: TextInputAction.search,
-         
             ),
           ),
           const Expanded(
@@ -41,4 +48,3 @@ class SearchFormField extends StatelessWidget {
     );
   }
 }
-

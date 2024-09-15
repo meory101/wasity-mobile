@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     required this.themeNotifier,
-    this.product, // تعديل هنا
+    this.product, 
   });
 
   @override
@@ -41,8 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _refreshData() async {
     setState(() {
       _futureNewArrivals = fetchNewItems();
-      // _futureTrendingProducts =
-      // TrendingProductService().fetchTrendingProducts();
+
     });
   }
 
@@ -63,11 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 MainAppBar(themeNotifier: widget.themeNotifier),
                 SearchFormField(themeNotifier: widget.themeNotifier),
-                ViewAllBar(
+                const ViewAllBar(
                   title: 'Brands',
-                  onViewAllPressed: () {
-                    // Navigator.pushNamed(context, '/BrandsPage');
-                  },
+      
                 ),
                 const BrandList(),
                 Categorys(themeNotifier: widget.themeNotifier),

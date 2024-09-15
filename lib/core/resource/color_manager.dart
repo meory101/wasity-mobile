@@ -20,7 +20,7 @@ abstract class AppColorManager {
   static const Color red = Color(0xffEC1C24);
   static const Color white = Color(0xffffffff);
   static const Color error = Color.fromARGB(255, 122, 93, 92);
-  static const Color whiteBlue = Color(0xFFF6F6F7);
+  static const Color whiteBlue = Color.fromARGB(255, 222, 222, 235);
 
   static const Color shimmerHighlightColor = Color(0xffd9d9d9);
   static const Color shimmerBaseColor = Color(0xffe0e0e0);

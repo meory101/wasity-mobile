@@ -8,7 +8,6 @@ import 'package:wasity/features/pages/cart/provider/cart_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   AppSharedPreferences.init(prefs);
 
@@ -23,3 +22,5 @@ void main() async {
     ),
   );
 }
+
+

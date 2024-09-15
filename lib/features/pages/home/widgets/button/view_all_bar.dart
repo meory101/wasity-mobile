@@ -3,11 +3,11 @@ import 'package:wasity/core/widget/text/app_text_widget.dart';
 
 class ViewAllBar extends StatefulWidget {
   final String title;
-  final VoidCallback onViewAllPressed;
+  final VoidCallback? onViewAllPressed;
 
   const ViewAllBar({
     required this.title,
-    required this.onViewAllPressed,
+     this.onViewAllPressed,
     super.key,
   });
 

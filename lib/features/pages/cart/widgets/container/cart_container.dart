@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';  
+import 'package:provider/provider.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/icon_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
@@ -11,7 +11,7 @@ import 'package:wasity/core/widget/text/price_text_widget.dart';
 import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/pages/cart/provider/cart_provider.dart';
-import 'package:wasity/features/pages/cart/widgets/button/count_selector.dart';
+import 'package:wasity/features/pages/cart/widgets/button/countity_selector.dart';
 
 class CartContainer extends StatefulWidget {
   final ValueNotifier<ThemeMode> themeNotifier;
@@ -31,30 +31,31 @@ class CartContainer extends StatefulWidget {
 }
 
 class _CartContainerState extends State<CartContainer> {
-  int count = 1;
+  int quantity = 1;
 
   @override
   void initState() {
+    print(quantity);
     super.initState();
-    count = widget.product.count; 
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    quantity = cartProvider.getQuantity(widget.product);
   }
 
-  void _incrementcount() {
+  void _incrementQuantity() {
     setState(() {
-      count++;
+      quantity++;
     });
-//!تحديث الكمية في السلة  
     Provider.of<CartProvider>(context, listen: false)
-        .updatecount(widget.product, count);
+        .updateQuantity(widget.product, quantity);
   }
 
-  void _decrementcount() {
-    if (count > 1) {
+  void _decrementQuantity() {
+    if (quantity > 1) {
       setState(() {
-        count--;
+        quantity--;
       });
       Provider.of<CartProvider>(context, listen: false)
-          .updatecount(widget.product, count);
+          .updateQuantity(widget.product, quantity);
     }
   }
 
@@ -63,22 +64,22 @@ class _CartContainerState extends State<CartContainer> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const AppTextWidget(text: "Confirm Deletion"),
+          title: const Text("تأكيد الحذف"),
           content:
-              const AppTextWidget(text: "Are you sure you want to remove this item from your cart?"),
-          actions: [
+              const Text("هل أنت متأكد من حذف هذا المنتج من سلة المشتريات؟"),
+          actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); 
               },
-              child: const AppTextWidget(text: "Cancel"),
+              child: const Text("إلغاء"),
             ),
             TextButton(
               onPressed: () {
-                widget.onRemove();
-                Navigator.of(context).pop();
+                widget.onRemove(); 
+                Navigator.of(context).pop(); 
               },
-              child: const AppTextWidget(text: "Delete"),
+              child: const Text("تأكيد"),
             ),
           ],
         );
@@ -90,7 +91,7 @@ class _CartContainerState extends State<CartContainer> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     double unitPrice = widget.product.price;
-    double totalPrice = unitPrice * count;
+    double totalPrice = unitPrice * quantity;
 
     return Padding(
       padding: EdgeInsets.only(bottom: AppHeightManager.h2),
@@ -219,10 +220,10 @@ class _CartContainerState extends State<CartContainer> {
                   right: AppWidthManager.w2,
                   top: AppHeightManager.h9,
                 ),
-                child: CountSelector(
-                  count: count,
-                  onIncrement: _incrementcount,
-                  onDecrement: _decrementcount,
+                child: CountitySelector(
+                  quantity: quantity,
+                  onIncrement: _incrementQuantity,
+                  onDecrement: _decrementQuantity,
                 ),
               ),
             ],

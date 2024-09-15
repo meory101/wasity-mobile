@@ -57,7 +57,7 @@ class _SavedAddressesState extends State<SavedAddresses> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: SecondAppbar(
-        onBack: () => Navigator.pushNamed(context, '/ProfileInfo'),
+        onBack: () => Navigator.pop(context),
         titleText: "Saved Addresses",
       ),
       body: Stack(
@@ -106,7 +106,8 @@ class _SavedAddressesState extends State<SavedAddresses> {
                     text: "Apply",
                     color: AppColorManager.white,
                     onPressed:
-                        _saveSelectedAddressId, // Save selected address ID
+                        _saveSelectedAddressId,
+                        
                     textColor: AppColorManager.navyBlue,
                     fontSize: FontSizeManager.fs17,
                   ),

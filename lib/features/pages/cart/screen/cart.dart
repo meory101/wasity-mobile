@@ -10,17 +10,17 @@ import 'package:wasity/core/widget/text/app_text_widget.dart';
 import 'package:wasity/core/widget/text/price_text_widget.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/pages/cart/provider/cart_provider.dart';
-import 'package:wasity/features/pages/cart/widgets/container/cart_container.dart';
+import 'package:wasity/features/pages/cart/widgets/cartItemsList/cart_list.dart';
 
 class Cart extends StatefulWidget {
+  final ValueNotifier<ThemeMode> themeNotifier;
+  final Address? selectedAddress;
+
   const Cart({
     super.key,
     required this.themeNotifier,
-    this.selectedAddress, // !Optional parameter for selected address
+    this.selectedAddress,
   });
-
-  final ValueNotifier<ThemeMode> themeNotifier;
-  final Address? selectedAddress; //! Store selected address here
 
   @override
   State<Cart> createState() => _CartState();
@@ -34,9 +34,7 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    final cartProvider = Provider.of<CartProvider>(context);
-    final cartItems = cartProvider.cartItems;
+    final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -51,15 +49,9 @@ class _CartState extends State<Cart> {
               left: AppWidthManager.w5,
               top: AppHeightManager.h3,
             ),
-            child: ListView.builder(
-              itemCount: cartItems.length,
-              itemBuilder: (context, index) {
-                return CartContainer(
-                  themeNotifier: widget.themeNotifier,
-                  product: cartItems[index],
-                  onRemove: () => _removeItem(cartItems[index]),
-                );
-              },
+            child: CartItemsWidget(
+              themeNotifier: widget.themeNotifier,
+              onRemove: _removeItem,
             ),
           ),
           if (widget.selectedAddress != null)
@@ -88,7 +80,9 @@ class _CartState extends State<Cart> {
                   child: AppElevatedButton(
                     text: "Checkout",
                     color: AppColorManager.white,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/Checkout');
+                    },
                     textColor: AppColorManager.navyBlue,
                     fontSize: FontSizeManager.fs17,
                   ),
@@ -114,11 +108,10 @@ class _CartState extends State<Cart> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                //!عرض السعر الكلي بشكل ديناميكي
                 Consumer<CartProvider>(
                   builder: (context, cartProvider, child) {
                     return PriceText(
-                      price: cartProvider.totalPrice, // !عرض السعر الكلي
+                      price: cartProvider.totalPrice,
                       priceStyle: theme.textTheme.displayLarge,
                       style: theme.textTheme.displayMedium,
                     );

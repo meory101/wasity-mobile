@@ -102,7 +102,7 @@ class Product {
   String image;
   double price;
   int sizeType;
-  int count;
+  int procountity;
   int subBranchId;
   int brandId;
   int? subCategoryId;
@@ -119,7 +119,7 @@ class Product {
     required this.image,
     required this.price,
     required this.sizeType,
-    required this.count,
+    required this.procountity,
     required this.subBranchId,
     required this.brandId,
     this.subCategoryId,
@@ -130,18 +130,23 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['product']['id'],
-      name: json['product']['name'],
-      desc: json['product']['desc'],
-      image: json['product']['image'],
-      price: json['product']['price'].toDouble(),
-      sizeType: json['product']['size_type'],
-      count: json['product']['count'],
-      subBranchId: json['product']['sub_branch_id'],
-      brandId: json['product']['brand_id'],
-      subCategoryId: json['product']['sub_category_id'],
+    if (json['product'] == null) {
+      throw Exception("Product data is missing");
+    }
 
+    return Product(
+      id: json['product']['id'] ?? 0,
+      name: json['product']['name'] ?? '',
+      desc: json['product']['desc'] ?? '',
+      image: json['product']['image'] ?? '',
+      price: json['product']['price'] != null
+          ? json['product']['price'].toDouble()
+          : 0.0,
+      sizeType: json['product']['size_type'] ?? 0,
+      procountity: json['product']['count'] ?? 0,
+      subBranchId: json['product']['sub_branch_id'] ?? 0,
+      brandId: json['product']['brand_id'] ?? 0,
+      subCategoryId: json['product']['sub_category_id'],
       rate: json['rate'] != null ? json['rate'].toDouble() : 0.0,
       subCategory: json['subCategory'] != null
           ? SubCategory.fromJson(json['subCategory'])
@@ -160,7 +165,7 @@ class Product {
         'image': image,
         'price': price,
         'size_type': sizeType,
-        'count': count,
+        'count': procountity,
         'sub_branch_id': subBranchId,
         'brand_id': brandId,
         'sub_category_id': subCategoryId,
@@ -206,7 +211,6 @@ class SubCategory {
   }
 }
 
-
 // //!SubBranchModel
 
 class SubBranch {
@@ -251,7 +255,6 @@ class SubBranch {
       'main_branch_id': mainBranchId,
     };
   }
-
 
   String get status => activeStatus == 1 ? 'Available' : 'Stopped';
 
@@ -336,114 +339,117 @@ List<Brand> parseBrands(String responseBody) {
 }
 //!Order model 
 
-class OrderResponse {
-  final Order order;
-  final List<ProductItem> products;
+// class OrderResponse {
+//   final Order order;
+//   final List<ProductItem> products;
 
-  OrderResponse({
-    required this.order,
-    required this.products,
-  });
+//   OrderResponse({
+//     required this.order,
+//     required this.products,
+//   });
 
-  factory OrderResponse.fromJson(Map<String, dynamic> json) {
-    return OrderResponse(
-      order: Order.fromJson(json['order']),
-      products: (json['products'] as List<dynamic>).map((item) => ProductItem.fromJson(item)).toList(),
-    );
-  }
+//   factory OrderResponse.fromJson(Map<String, dynamic> json) {
+//     return OrderResponse(
+//       order: Order.fromJson(json['order']),
+//       products: (json['products'] as List<dynamic>).map((item) => ProductItem.fromJson(item)).toList(),
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'order': order.toJson(),
-      'products': products.map((item) => item.toJson()).toList(),
-    };
-  }
-}
 
-class Order {
-  final int id;
-  final String orderNumber;
-  final int statusCode;
-  final int deliveryType;
-  final double subTotal;
-  final double? total;
-  final double? deliveryFee;
-  final int clientId;
-  final int? deliveryManId;
-  final int addressId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
-  Order({
-    required this.id,
-    required this.orderNumber,
-    required this.statusCode,
-    required this.deliveryType,
-    required this.subTotal,
-    this.total,
-    this.deliveryFee,
-    required this.clientId,
-    this.deliveryManId,
-    required this.addressId,
-    required this.createdAt,
-    required this.updatedAt,
-  });
 
-  factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
-      id: json['id'],
-      orderNumber: json['order_number'],
-      statusCode: json['status_code'],
-      deliveryType: json['delivery_type'],
-      subTotal: json['sub_total'].toDouble(),
-      total: json['total']?.toDouble(),
-      deliveryFee: json['delivery_fee']?.toDouble(),
-      clientId: json['client_id'],
-      deliveryManId: json['delivery_man_id'],
-      addressId: json['address_id'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
-    );
-  }
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'order': order.toJson(),
+//       'products': products.map((item) => item.toJson()).toList(),
+//     };
+//   }
+// }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'order_number': orderNumber,
-      'status_code': statusCode,
-      'delivery_type': deliveryType,
-      'sub_total': subTotal,
-      'total': total,
-      'delivery_fee': deliveryFee,
-      'client_id': clientId,
-      'delivery_man_id': deliveryManId,
-      'address_id': addressId,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
-    };
-  }
-}
+// class Order {
+//   final int id;
+//   final String orderNumber;
+//   final int statusCode;
+//   final int deliveryType;
+//   final double subTotal;
+//   final double? total;
+//   final double? deliveryFee;
+//   final int clientId;
+//   final int? deliveryManId;
+//   final int addressId;
+//   final DateTime createdAt;
+//   final DateTime updatedAt;
 
-class ProductItem {
-  final int id;
-  final int count;
+//   Order({
+//     required this.id,
+//     required this.orderNumber,
+//     required this.statusCode,
+//     required this.deliveryType,
+//     required this.subTotal,
+//     this.total,
+//     this.deliveryFee,
+//     required this.clientId,
+//     this.deliveryManId,
+//     required this.addressId,
+//     required this.createdAt,
+//     required this.updatedAt,
+//   });
 
-  ProductItem({
-    required this.id,
-    required this.count,
-  });
+//   factory Order.fromJson(Map<String, dynamic> json) {
+//     return Order(
+//       id: json['id'],
+//       orderNumber: json['order_number'],
+//       statusCode: json['status_code'],
+//       deliveryType: json['delivery_type'],
+//       subTotal: json['sub_total'].toDouble(),
+//       total: json['total']?.toDouble(),
+//       deliveryFee: json['delivery_fee']?.toDouble(),
+//       clientId: json['client_id'],
+//       deliveryManId: json['delivery_man_id'],
+//       addressId: json['address_id'],
+//       createdAt: DateTime.parse(json['created_at']),
+//       updatedAt: DateTime.parse(json['updated_at']),
+//     );
+//   }
 
-  factory ProductItem.fromJson(Map<String, dynamic> json) {
-    return ProductItem(
-      id: json['id'],
-      count: json['count'],
-    );
-  }
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'id': id,
+//       'order_number': orderNumber,
+//       'status_code': statusCode,
+//       'delivery_type': deliveryType,
+//       'sub_total': subTotal,
+//       'total': total,
+//       'delivery_fee': deliveryFee,
+//       'client_id': clientId,
+//       'delivery_man_id': deliveryManId,
+//       'address_id': addressId,
+//       'created_at': createdAt.toIso8601String(),
+//       'updated_at': updatedAt.toIso8601String(),
+//     };
+//   }
+// }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'count': count,
-    };
-  }
-}
+// class ProductItem {
+//   final int id;
+//   final int procountity;
+
+//   ProductItem({
+//     required this.id,
+//     required this.procountity,
+//   });
+
+//   factory ProductItem.fromJson(Map<String, dynamic> json) {
+//     return ProductItem(
+//       id: json['id'],
+//       procountity: json['count'],
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'id': id,
+//       'count': procountity,
+//     };
+//   }
+// }

@@ -2,8 +2,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../resource/key_manger.dart';
 
-
-
 abstract class AppSharedPreferences {
   static SharedPreferences? _sharedPreferences;
 
@@ -19,19 +17,18 @@ abstract class AppSharedPreferences {
     }
   }
 
-  // Cache client ID
+  // !Cache client ID
   static void cacheClientId(String clientId) {
     checkInitialized();
     _sharedPreferences!.setString(AppKeyManager.clientIdKey, clientId);
   }
 
-  // Get cached client ID
+  //! Get cached client ID
   static String getClientId() {
     checkInitialized();
     return _sharedPreferences!.getString(AppKeyManager.clientIdKey) ?? '';
   }
 
- 
   // Cache default location
   static String getDefaultLocation() {
     checkInitialized();
@@ -50,7 +47,6 @@ abstract class AppSharedPreferences {
     checkInitialized();
     return _sharedPreferences!.getString(AppKeyManager.defaultAddressId) ?? "";
   }
-
 
   // Cache guest mode status
   static void cacheGuestMode({required bool isGuest}) {
@@ -111,7 +107,7 @@ abstract class AppSharedPreferences {
     return _sharedPreferences!.getString(AppKeyManager.phoneNumber) ?? '';
   }
 
-  // Get cached user ID
+  //! Get cached user ID
   static String getUserId() {
     checkInitialized();
     return _sharedPreferences!.getString(AppKeyManager.userId) ?? '';
@@ -122,4 +118,18 @@ abstract class AppSharedPreferences {
     checkInitialized();
     return _sharedPreferences!.getBool(AppKeyManager.guestModeLocalKey) ?? true;
   }
+
+  // !Cache cart items
+  static void cacheCartItems(String cartItemsJson) {
+    checkInitialized();
+    _sharedPreferences!.setString(AppKeyManager.cartItemsKey, cartItemsJson);
+  }
+
+  // !Get cached cart items
+  static String getCartItems() {
+    checkInitialized();
+    return _sharedPreferences!.getString(AppKeyManager.cartItemsKey) ?? '';
+  }
 }
+
+

@@ -10,9 +10,10 @@ import 'package:wasity/features/pages/cart/screen/cart.dart';
 import 'package:wasity/features/pages/category/screens/Products_by_sub_category.dart';
 import 'package:wasity/features/pages/home/screens/new_arrivais.dart';
 import 'package:wasity/features/pages/branch/sub_branch.dart';
+import 'package:wasity/features/pages/orders/screens/Checkout.dart';
 import 'package:wasity/features/pages/orders/screens/map.dart';
 import 'package:wasity/features/pages/orders/screens/order_history.dart';
-import 'package:wasity/features/pages/orders/screens/saved_address.dart';
+import 'package:wasity/features/pages/profile/screens/saved_address.dart';
 import 'package:wasity/features/pages/profile/screens/edit_profile.dart';
 import 'package:wasity/features/pages/home/screens/home_screen.dart';
 import 'package:wasity/features/pages/auth/screens/phone.dart';
@@ -21,6 +22,7 @@ import 'package:wasity/features/pages/category/screens/all_category.dart';
 import 'package:wasity/features/pages/profile/screens/profile_info.dart';
 import 'package:wasity/features/pages/category/screens/sub_category_products.dart';
 import 'package:wasity/features/pages/auth/screens/otp.dart';
+import 'package:wasity/features/pages/search/screens/search.dart';
 
 class App extends StatelessWidget {
   final ValueNotifier<ThemeMode> themeNotifier;
@@ -37,8 +39,8 @@ class App extends StatelessWidget {
             darkTheme: darkTheme(),
             themeMode: themeNotifier.value,
             debugShowCheckedModeBanner: false,
-            home: HomeScreen(themeNotifier: themeNotifier),
-            initialRoute: "/Cart",
+            home: HomeScreen(themeNotifier: themeNotifier,),
+            initialRoute: "/ButtonNavbar",
             onGenerateRoute: (settings) {
               switch (settings.name) {
                 case "/AllCategory":
@@ -89,6 +91,16 @@ class App extends StatelessWidget {
                     builder: (context) =>
                         ButtonNavbar(themeNotifier: themeNotifier),
                   );
+                case "/SearchProducts":
+                  return MaterialPageRoute(
+                    builder: (context) =>
+                        SearchProducts(themeNotifier: themeNotifier),
+                  );
+                case "/Checkout":
+                  return MaterialPageRoute(
+                    builder: (context) =>
+                        Checkout(themeNotifier: themeNotifier),
+                  );
                 case "/HomeScreen":
                   final args = settings.arguments as Map<String, dynamic>;
                   return MaterialPageRoute(
@@ -108,7 +120,8 @@ class App extends StatelessWidget {
                   return MaterialPageRoute(
                     builder: (context) => ProductInfo(
                       themeNotifier: themeNotifier,
-                      product: product, subBranchId: 0,
+                      product: product,
+                      subBranchId: 0,
                     ),
                   );
                 case "/TrendingProduct":

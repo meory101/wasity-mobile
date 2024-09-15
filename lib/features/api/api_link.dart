@@ -6,8 +6,8 @@ import 'package:wasity/features/models/appModels.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Config {
-  static const String baseUrl = 'http://192.168.1.103:8000/api';
-  static const String imageUrl = 'http://192.168.1.103:8000/storage';
+  static const String baseUrl = 'http://192.168.1.104:8000/api';
+  static const String imageUrl = 'http://192.168.1.104:8000/storage';
 
   static String getFullUrl(String endpoint) {
     return '$baseUrl/$endpoint';
@@ -198,6 +198,7 @@ class AddressService {
   }
 
 //?UpdateAddress
+  // Update Address Method in AddressService
   Future<void> updateAddress(Address address) async {
     final response = await http.put(
       Uri.parse('${Config.baseUrl}/updateAddress'),
@@ -214,11 +215,17 @@ class AddressService {
     );
 
     if (response.statusCode == 200) {
+      // Successfully updated
+      if (kDebugMode) {
+        print('Address updated successfully');
+      }
     } else {
+      // Log error message for better debugging
       if (kDebugMode) {
         print('Failed to update address: ${response.body}');
       }
-      throw Exception('Failed to update address');
+      throw Exception(
+          'Failed to update address. Status code: ${response.statusCode}');
     }
   }
 }
@@ -239,8 +246,7 @@ Future<List<SubBranch>> fetchSubBranches(int mainBranchId) async {
 //!FetchProducts By SubBranch Id
 Future<List<Product>> fetchProductsBySubBranchId(int subBranchId) async {
   final response = await http.get(
-    Uri.parse(
-        'http://192.168.1.103:8000/api/getProductsBySubBranchId/$subBranchId'),
+    Uri.parse('${Config.baseUrl}/getProductsBySubBranchId/$subBranchId'),
   );
 
   if (response.statusCode == 200) {
