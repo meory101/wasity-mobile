@@ -18,9 +18,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => CartProvider()),
       ],
-      child: App(themeNotifier: themeNotifier),
+      child: Wasity(themeNotifier: themeNotifier),
     ),
   );
 }
-
-

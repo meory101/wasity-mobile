@@ -93,34 +93,34 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                                     : AppColorManager.navyBlue,
                               ),
                             ),
-                            AppTextWidget(
-                              text: product.desc,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: isDarkMode
-                                    ? AppColorManager.grey
-                                    : AppColorManager.navyBlue,
-                              ),
-                            ),
                             Row(
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    PriceText(
-                                      price: product.price,
-                                      style: theme.textTheme.displayMedium
-                                          ?.copyWith(
-                                        color: isDarkMode
-                                            ? AppColorManager.white
-                                            : AppColorManager.navyBlue,
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          AppTextWidget(
+                                            text: product.desc.isNotEmpty
+                                                ? product.desc
+                                                : "No description available",
+                                            style: theme.textTheme.bodySmall
+                                                ?.copyWith(
+                                              color: isDarkMode
+                                                  ? AppColorManager.grey
+                                                  : AppColorManager.navyBlue,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(width: AppWidthManager.w4),
-                                Column(
-                                  children: [
-                                    Row(
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: AppHeightManager.h2),
+                                    child: Row(
                                       children: [
                                         SvgPicture.asset(
                                           AppIconManager.star,
@@ -146,8 +146,32 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                                         ),
                                       ],
                                     ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: AppHeightManager.h05,
+                            ),
+                            Row(
+                              children: [
+                                // Product Price
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    PriceText(
+                                      price: product.price,
+                                      style: theme.textTheme.displaySmall
+                                          ?.copyWith(
+                                        color: isDarkMode
+                                            ? AppColorManager.white
+                                            : AppColorManager.navyBlue,
+                                      ),
+                                    ),
                                   ],
                                 ),
+                                SizedBox(width: AppWidthManager.w4),
+                                // Product Rating
                               ],
                             ),
                           ],
@@ -157,6 +181,7 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                   ),
                 ),
               ),
+              // Cart Button
               Positioned(
                 left: AppWidthManager.w29,
                 top: AppHeightManager.h17,

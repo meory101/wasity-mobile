@@ -9,9 +9,9 @@ class AppTextFormField extends StatelessWidget {
   final bool? obscureText;
   final bool? enabled;
   final String? Function(String?)? validator;
-  final String? Function(String?)? onFilledSubmited;
+  final String? Function(String?)? onFieldSubmitted;
   final Function()? editingComplete;
-  final String? Function(String?)? onChanged;
+  final void Function(String)? onChanged; 
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
   final Color? fillColor;
@@ -28,7 +28,7 @@ class AppTextFormField extends StatelessWidget {
   final String? hintText;
   final bool? outlinedBorder;
   final bool? expand;
-  final bool? autoFoucs;
+  final bool? autoFocus;
   final double? borderRadius;
   final EdgeInsetsGeometry? contentPadding;
   final bool? filled;
@@ -47,11 +47,11 @@ class AppTextFormField extends StatelessWidget {
     this.contentPadding,
     this.controller,
     this.obscureText,
-    this.autoFoucs,
+    this.autoFocus,
     this.validator,
     this.hintStyle,
     this.editingComplete,
-    this.onChanged,
+    this.onChanged, 
     this.textInputType,
     this.textInputAction,
     this.textAlignVertical,
@@ -59,14 +59,12 @@ class AppTextFormField extends StatelessWidget {
     this.labelText,
     this.textColor = AppColorManager.white,
     this.labelColor,
-    this.onFilledSubmited,
+    this.onFieldSubmitted,
     this.initialValue,
     this.maxLines,
     this.prefixIcon,
     this.hintText,
     this.outlinedBorder,
-    // required TextInputType keyboardType,
-    // required InputDecoration decoration,
   });
 
   @override
@@ -75,16 +73,14 @@ class AppTextFormField extends StatelessWidget {
       key: Key(initialValue ?? ""),
       readOnly: readOnly ?? false,
       textAlignVertical: textAlignVertical,
-      onFieldSubmitted: onFilledSubmited,
-      cursorColor: Theme.of(context)
-          .textSelectionTheme
-          .cursorColor, // استخدام لون المؤشر من الثيم
+      onFieldSubmitted: onFieldSubmitted,
+      cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
       validator: validator,
       controller: controller,
       focusNode: focusNode,
       obscureText: obscureText ?? false,
       onChanged: onChanged,
-      autofocus: autoFoucs ?? false,
+      autofocus: autoFocus ?? false,
       onEditingComplete: editingComplete,
       keyboardType: textInputType,
       textInputAction: textInputAction,
@@ -99,59 +95,56 @@ class AppTextFormField extends StatelessWidget {
         hintText: hintText,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
-        hintStyle: hintStyle ??
-            TextStyle(
-              color: Theme.of(context)
-                  .inputDecorationTheme
-                  .hintStyle
-                  ?.color, // لون النص التلميحي يعتمد على الثيم الحالي
-              fontSize: FontSizeManager.fs16,
-              fontWeight: FontWeight.normal,
-            ),
+        hintStyle: hintStyle ?? _defaultHintStyle(context),
         prefixIconColor: Colors.grey,
         suffixIconColor: Colors.grey,
-        contentPadding: contentPadding ??
-            EdgeInsets.symmetric(
-                horizontal: AppWidthManager.w3, vertical: AppHeightManager.h1),
+        contentPadding: contentPadding ?? _defaultContentPadding(),
         labelText: labelText,
         labelStyle: TextStyle(
-            color: labelColor,
-            fontSize: FontSizeManager.fs16,
-            fontWeight: FontWeight.bold,
-            fontFamily: FontFamilyManager.cairo),
+          color: labelColor,
+          fontSize: FontSizeManager.fs16,
+          fontWeight: FontWeight.bold,
+          fontFamily: FontFamilyManager.cairo,
+        ),
         errorStyle: TextStyle(
           fontSize: FontSizeManager.fs14,
           fontFamily: FontFamilyManager.cairo,
         ),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(
-                borderRadius != null ? borderRadius! : AppRadiusManager.r10)),
-            borderSide: BorderSide(
-              color: AppColorManager.lightGreyOpacity6,
-            )),
-        disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(
-                borderRadius != null ? borderRadius! : AppRadiusManager.r10)),
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-            )),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(
-                borderRadius != null ? borderRadius! : AppRadiusManager.r10)),
-            borderSide: BorderSide(
-              color: AppColorManager.lightGreyOpacity6,
-            )),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(
-                borderRadius != null ? borderRadius! : AppRadiusManager.r10)),
-            borderSide: BorderSide(
-              color: Theme.of(context).primaryColor,
-            )),
+        enabledBorder: _buildOutlineInputBorder(AppColorManager.lightGreyOpacity6),
+        disabledBorder: _buildOutlineInputBorder(Colors.transparent),
+        focusedBorder: _buildOutlineInputBorder(AppColorManager.lightGreyOpacity6),
+        border: _buildOutlineInputBorder(Theme.of(context).primaryColor),
       ),
       style: TextStyle(
-          color: textColor,
-          fontSize: FontSizeManager.fs16,
-          fontFamily: FontFamilyManager.cairo),
+        color: textColor,
+        fontSize: FontSizeManager.fs16,
+        fontFamily: FontFamilyManager.cairo,
+      ),
+    );
+  }
+
+  // Helper methods to simplify repetitive code
+  TextStyle _defaultHintStyle(BuildContext context) {
+    return TextStyle(
+      color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
+      fontSize: FontSizeManager.fs16,
+      fontWeight: FontWeight.normal,
+    );
+  }
+
+  EdgeInsetsGeometry _defaultContentPadding() {
+    return EdgeInsets.symmetric(
+      horizontal: AppWidthManager.w3,
+      vertical: AppHeightManager.h1,
+    );
+  }
+
+  OutlineInputBorder _buildOutlineInputBorder(Color borderColor) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(borderRadius ?? AppRadiusManager.r10),
+      ),
+      borderSide: BorderSide(color: borderColor),
     );
   }
 }

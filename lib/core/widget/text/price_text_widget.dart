@@ -10,7 +10,8 @@ class PriceText extends StatelessWidget {
   final TextStyle? priceStyle;
   final TextStyle? style;
 
-  const PriceText({super.key, required this.price, this.style, this.priceStyle});
+  const PriceText(
+      {super.key, required this.price, this.style, this.priceStyle});
 
   @override
   Widget build(BuildContext context) {

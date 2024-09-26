@@ -6,6 +6,7 @@ import 'package:wasity/core/widget/text/app_text_widget.dart';
 class SecondAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String titleText;
   final VoidCallback onBack;
+  
 
   const SecondAppbar({
     required this.titleText,

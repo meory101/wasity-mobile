@@ -13,6 +13,8 @@ import '../widgets/app_bar/main_app_bar.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/api/api_link.dart';
 
+TextEditingController irSearch = TextEditingController();
+
 class HomeScreen extends StatefulWidget {
   final ValueNotifier<ThemeMode> themeNotifier;
   final Product? product;
@@ -20,7 +22,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     required this.themeNotifier,
-    this.product, 
+    this.product,
   });
 
   @override
@@ -41,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _refreshData() async {
     setState(() {
       _futureNewArrivals = fetchNewItems();
-
     });
   }
 
@@ -56,19 +57,22 @@ class _HomeScreenState extends State<HomeScreen> {
         onRefresh: _refreshData,
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppWidthManager.w4),
+            padding: EdgeInsets.symmetric(horizontal: AppWidthManager.w2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MainAppBar(themeNotifier: widget.themeNotifier),
-                SearchFormField(themeNotifier: widget.themeNotifier),
+                SearchFormField(
+                  themeNotifier: widget.themeNotifier,
+                  searchController: irSearch,
+                ),
                 const ViewAllBar(
                   title: 'Brands',
-      
                 ),
                 const BrandList(),
                 Categorys(themeNotifier: widget.themeNotifier),
                 ViewAllBar(
+                  viewAllText: 'View All',
                   title: 'New Arrivals',
                   onViewAllPressed: () {
                     Navigator.pushNamed(context, '/NewArrivais');
@@ -84,34 +88,55 @@ class _HomeScreenState extends State<HomeScreen> {
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return const Center(child: Text('No new arrivals found'));
                     }
-
                     final newArrivalsList = snapshot.data!;
+                    final lastFourItems = newArrivalsList.takeLast(4).toList();
+                    final firstRowItems = lastFourItems.take(2).toList();
+                    final secondRowItems = lastFourItems.skip(2).toList();
 
-                    final randomItems =
-                        (newArrivalsList..shuffle()).take(2).toList();
-
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: randomItems.map((product) {
-                        return Expanded(
-                          child: NewArrivaisContainer(
-                            themeNotifier: widget.themeNotifier,
-                            product: product,
-                          ),
-                        );
-                      }).toList(),
+                    return Column(
+                      children: [
+                        Row(
+                          children: firstRowItems.map((product) {
+                            return Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppHeightManager.h1point3),
+                                child: NewArrivaisContainer(
+                                  themeNotifier: widget.themeNotifier,
+                                  product: product,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(height: AppHeightManager.h02),
+                        Row(
+                          children: secondRowItems.map((product) {
+                            return Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppHeightManager.h1point3),
+                                child: NewArrivaisContainer(
+                                  themeNotifier: widget.themeNotifier,
+                                  product: product,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     );
                   },
                 ),
                 ViewAllBar(
+                  viewAllText: 'View All',
                   title: 'Trending Product',
                   onViewAllPressed: () {
                     Navigator.pushNamed(context, '/TrendingProduct');
                   },
                 ),
                 FutureBuilder<List<Product>>(
-                  future:  _futureTrendingProducts,
-
+                  future: _futureTrendingProducts,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -124,16 +149,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     final products = snapshot.data!;
 
-                return Column(
-                  children: List.generate(
-                    products.length,
-                    (index) => TrendingProductContainer(
-                      themeNotifier: widget.themeNotifier,
-                      product: products[index],
-                    ),
-                  ),
-                );
-                },
+                    return Column(
+                      children: List.generate(
+                        products.length,
+                        (index) => TrendingProductContainer(
+                          themeNotifier: widget.themeNotifier,
+                          product: products[index],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -141,5 +166,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+
+extension ListTakeLast<T> on List<T> {
+  List<T> takeLast(int count) {
+    if (count >= length) return this;
+    return sublist(length - count);
   }
 }

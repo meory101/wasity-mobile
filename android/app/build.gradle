@@ -35,8 +35,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.wasity"
-        minSdkVersion 21 // Replace with a specific version if needed
-        targetSdkVersion 33 // Replace with a specific version if needed
+        minSdkVersion 21 
+        targetSdkVersion 33 
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -55,5 +55,5 @@ flutter {
 dependencies {
     // Add your dependencies here
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.20'
 }

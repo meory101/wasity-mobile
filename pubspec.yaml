@@ -50,6 +50,12 @@ dev_dependencies:
   shared_preferences: ^2.2.3
   flutter_svg: ^2.0.10+1
   flutter_rating_bar: ^4.0.0
+  geolocator: ^13.0.1
+  permission_handler: ^11.3.1
+  syncfusion_flutter_charts: ^21.1.35
+  local_auth:
+  calendar_date_picker2:
+  lottie:
 
   
 
@@ -58,7 +64,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 
 # For information on the generic Dart part of this file, see the

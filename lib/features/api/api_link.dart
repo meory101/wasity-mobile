@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:wasity/core/resource/color_manager.dart';
+import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/features/models/appModels.dart';
 // ignore: depend_on_referenced_packages
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,7 +106,9 @@ class TrendingProductService {
         throw Exception('Failed to load trending products');
       }
     } catch (e) {
-      // print('Error fetching trending products: $e');
+      if (kDebugMode) {
+        print('Error fetching trending products: $e');
+      }
       rethrow;
     }
   }
@@ -169,44 +174,26 @@ class ProductService {
 class AddressService {
   //? FetchAddresses
   Future<List<Address>> fetchAddresses(int clientId) async {
-    final response = await http
-        .get(Uri.parse('${Config.baseUrl}/getAddressesByClientId/$clientId'));
+    final response = await http.get(
+      Uri.parse('${Config.baseUrl}/getAddressesByClientId/$clientId'),
+    );
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       return data.map((json) => Address.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load addresses');
+      throw Exception('Failed to load addresses: ${response.body}');
     }
   }
 
-//?AddAddress
+  //? AddAddresses
   Future<void> addAddress(Address address) async {
     final response = await http.post(
       Uri.parse('${Config.baseUrl}/addAddress'),
-      body: {
-        'name': address.name,
-        'lat': address.lat.toString(),
-        'long': address.long.toString(),
-        'client_id': address.clientId.toString(),
-      },
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to add address');
-    }
-  }
-
-//?UpdateAddress
-  // Update Address Method in AddressService
-  Future<void> updateAddress(Address address) async {
-    final response = await http.put(
-      Uri.parse('${Config.baseUrl}/updateAddress'),
       headers: {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'id': address.id,
         'name': address.name,
         'lat': address.lat,
         'long': address.long,
@@ -214,20 +201,46 @@ class AddressService {
       }),
     );
 
-    if (response.statusCode == 200) {
-      // Successfully updated
-      if (kDebugMode) {
-        print('Address updated successfully');
-      }
-    } else {
-      // Log error message for better debugging
-      if (kDebugMode) {
-        print('Failed to update address: ${response.body}');
-      }
-      throw Exception(
-          'Failed to update address. Status code: ${response.statusCode}');
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception('Failed to add address: ${response.body}');
     }
   }
+
+  //? UpdateAddress
+  Future<void> updateAddress(UpdateAddress address) async {
+    final response = await http.post(
+      Uri.parse('${Config.baseUrl}/updateAddress'),
+      body: jsonEncode(address.toJson()),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode != 200) {
+      print(
+          'Updating address: name: ${address.name}, id: ${address.id}, ${address.long}, ${address.lat}');
+
+      print(
+          'Failed to update address:++++++++++++++++++++++++++++++++++++++++++++ ${response.body}');
+      throw Exception('Failed to update address');
+    }
+  }
+
+  // Future<void> updateAddress(Address address) async {
+  //   print(
+  //       'Updating address:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${jsonEncode(address.toJsonWithoutClientId())}');
+
+  //   final response = await http.post(
+  //     Uri.parse('${Config.baseUrl}/updateAddress'),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: jsonEncode(address.toJsonWithoutClientId()),
+  //   );
+  //   print('Response: ${response.body}');
+
+  //   if (response.statusCode != 200 && response.statusCode != 201) {
+  //     throw Exception('Failed to update address: ${response.body}');
+  //   }
+  // }
 }
 
 //!fetchSubBranches
@@ -275,50 +288,248 @@ class MainBranches {
   }
 }
 
+//!Add rate
+class RateService {
+  static Future<void> submitRating(double value, int productId) async {
+    String clientId = AppSharedPreferences.getClientId();
+
+    if (clientId.isEmpty) {
+      if (kDebugMode) {
+        print('Error: Client ID is null or empty');
+      }
+      return;
+    }
+
+    int? clientIdParsed = int.tryParse(clientId);
+    if (clientIdParsed == null) {
+      if (kDebugMode) {
+        print('Error: Invalid Client ID');
+      }
+      return;
+    }
+
+    // تجهيز البيانات
+    Map<String, dynamic> data = {
+      "value": value.toStringAsFixed(1),
+      "product_id": productId,
+      "client_id": clientIdParsed,
+    };
+
+    try {
+      if (kDebugMode) {
+        print(clientId);
+      }
+
+      final response = await http.post(
+        Uri.parse('${Config.baseUrl}/rateProduct'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        if (kDebugMode) {
+          print('Rating submitted successfully');
+        }
+      } else {
+        if (kDebugMode) {
+          print(
+              'Error submitting rating: ${response.statusCode} - ${response.body}');
+        }
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error: $error');
+      }
+    }
+  }
+}
+
+//!GetProfile
+
+class ClientProfileService {
+  Future<ClientProfile?> fetchClientProfile() async {
+    String clientId = AppSharedPreferences.getClientId();
+    final url = Uri.parse('${Config.baseUrl}/getClientProfile/$clientId');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ClientProfile.fromJson(data);
+      } else {
+        if (kDebugMode) {
+          print('Failed to load profile data');
+        }
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error: $e');
+      }
+      return null;
+    }
+  }
+}
+
+//!UpdateProfile
+class ClientProfileServices {
+  // Method to update the client profile
+  Future<http.Response?> updateClientProfile({
+    required String name,
+    required String email,
+    required String birthDate,
+    required String gender,
+    File? imageFile,
+  }) async {
+    String clientId = AppSharedPreferences.getClientId();
+    final url = Uri.parse('${Config.baseUrl}/updateClientProfile');
+
+    final request = http.MultipartRequest('POST', url);
+
+    // Add text fields
+    request.fields['id'] = clientId;
+    request.fields['name'] = name;
+    request.fields['email'] = email;
+    request.fields['birth_date'] = birthDate;
+    request.fields['gender'] = gender;
+
+    // Add the image if selected
+    if (imageFile != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('image', imageFile.path),
+      );
+    }
+
+    try {
+      final response = await request.send();
+      return await http.Response.fromStream(response);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error updating profile: $e');
+      }
+      return null;
+    }
+  }
+}
+
+//!Wallet
+class WalletService {
+  static Future<double?> fetchAccountData(int type) async {
+    String clientId = AppSharedPreferences.getClientId();
+
+    if (clientId.isNotEmpty) {
+      final response = await http.post(
+        Uri.parse('${Config.baseUrl}/getAccount'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'type': type,
+          'client_id': clientId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['balance']?.toDouble() ?? 0.0;
+      } else {
+        if (kDebugMode) {
+          print('Error: ${response.statusCode}');
+        }
+        return null;
+      }
+    } else {
+      if (kDebugMode) {
+        print('Client ID is empty');
+      }
+      return null;
+    }
+  }
+
+  static Future<int?> fetchPoints() async {
+    return AppSharedPreferences.getPoints();
+  }
+}
+
+//!OrderService
+class OrderService {
+  Future<List<Order>> fetchOrders() async {
+    String clientId = AppSharedPreferences.getClientId();
+    if (kDebugMode) {
+      print("Fetching orders for client ID: $clientId");
+    }
+
+    final response = await http.get(
+      Uri.parse('${Config.baseUrl}/getClientOrders/$clientId'),
+    );
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      if (kDebugMode) {
+        print("Orders response: $jsonResponse");
+      }
+      return jsonResponse.map((order) => Order.fromJson(order)).toList();
+    } else {
+      if (kDebugMode) {
+        print("Failed to fetch orders. Status code: ${response.statusCode}");
+      }
+      throw Exception('Failed to load orders');
+    }
+  }
+
+  Map<String, dynamic> getStatusInfo(int statusCode) {
+    switch (statusCode) {
+      case 0:
+        return {'text': 'Pending', 'color': AppColorManager.yellow};
+      case 1:
+        return {'text': 'Accepted', 'color': AppColorManager.green};
+      case 2:
+        return {'text': 'On the way', 'color': AppColorManager.blue};
+      case 3:
+        return {'text': 'Delivered', 'color': AppColorManager.grey};
+      case 4:
+        return {'text': 'rejected', 'color': AppColorManager.red};
+      default:
+        return {'text': 'Unknown', 'color': AppColorManager.black};
+    }
+  }
+}
+//!Place Order
 
 
-// //!GetProfile
-// class ProfileService {
-//   final String baseUrl;
+class PlaceOrderService {
+  Future<void> placeOrder({
+    required int payType,
+    required int addressId,
+    required int clientId,
+    required int deliveryType,
+    required List<dynamic> cartItems,
+  }) async {
+    try {
+      final itemsJson = jsonEncode(cartItems);
 
-//   ProfileService({required this.baseUrl});
+      final response = await http.post(
+        Uri.parse('${Config.baseUrl}/addOrder'),
+        body: {
+          'pay_type': payType.toString(),
+          'address_id': addressId.toString(),
+          'client_id': clientId.toString(),
+          'delivery_type': deliveryType.toString(),
+          'items': itemsJson,
+        },
+      );
 
-//   Future<Map<String, dynamic>> getProfile(int id) async {
-//     final url = Uri.parse('$baseUrl/api/getClientProfile/$id');
-//     final response = await http.get(url);
-
-//     if (response.statusCode == 200) {
-//       return jsonDecode(response.body);
-//     } else {
-//       throw Exception('Failed to load profile');
-//     }
-//   }
-// //!UpdateProfile
-//   Future<void> updateProfile({
-//     required int id,
-//     required String name,
-//     required String email,
-//     required String birthdate,
-//     required int gender,
-//   }) async {
-//     final url = Uri.parse('$baseUrl/api/updateClientProfile');
-//     final response = await http.post(
-//       url,
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//       body: jsonEncode(<String, String>{
-//         'id': id.toString(),
-//         'name': name,
-//         'email': email,
-//         'birthdate': birthdate,
-//         'gender': gender.toString(),
-//       }),
-//     );
-
-//     if (response.statusCode != 200) {
-//       throw Exception('Failed to update profile');
-//     }
-//   }
-// }
-
+      if (response.statusCode == 200) {
+        print("Order placed successfully");
+        print("Response: ${response.body}");
+      } else {
+        print('Failed to add Order: ${response.statusCode}');
+        print('Error body: ${response.body}');
+        throw Exception('Failed to add Order');
+      }
+    } catch (e) {
+      print('Error occurred while placing order: $e');
+      throw Exception('Error occurred while placing order');
+    }
+  }
+}

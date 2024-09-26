@@ -3,18 +3,18 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:wasity/core/resource/color_manager.dart';
+import 'package:wasity/features/api/api_link.dart';
 
 //!AddressModel
-
 class Address {
-  final int id;
+  final int? id; 
   final String name;
   final double lat;
   final double long;
   final int clientId;
 
   Address({
-    required this.id,
+    this.id,
     required this.name,
     required this.lat,
     required this.long,
@@ -30,70 +30,83 @@ class Address {
       clientId: json['client_id'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'lat': lat,
+      'long': long,
+      'client_id': clientId,
+    };
+  }
+
+  // Map<String, dynamic> toJsonWithoutClientId() {
+  //   return {
+  //     'id': id,
+  //     'name': name,
+  //     'lat': lat,
+  //     'long': long,
+  //   };
+  // }
 }
-// //!ProfileModel
+class UpdateAddress {
+  final int id;
+  final double lat;
+  final double long;
+  final String name;
 
-// class ProfileModel {
-//   String name;
-//   String email;
-//   String birthdate;
-//   int gender;
+  UpdateAddress({
+    required this.id,
+    required this.lat,
+    required this.long,
+    required this.name,
+  });
 
-//   ProfileModel({
-//     required this.name,
-//     required this.email,
-//     required this.birthdate,
-//     required this.gender,
-//   });
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'lat': lat,
+      'long': long,
+      'name': name,
+    };
+  }
+}
 
-//   factory ProfileModel.fromJson(Map<String, dynamic> json) {
-//     return ProfileModel(
-//       name: json['name'] ?? '',
-//       email: json['email'] ?? '',
-//       birthdate: json['birthdate'] ?? '',
-//       gender: json['gender'] == 'Female' ? 1 : 2,
-//     );
-//   }
+//!ProfileModel
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'name': name,
-//       'email': email,
-//       'birthdate': birthdate,
-//       'gender': gender.toString(),
-//     };
-//   }
-// }
+class ClientProfile {
+  final String name;
+  final String email;
+  final String birthDate;
+  final String gender;
+  final String profileImage;
+  final int points;
 
-// //!EditUserProfile
-// class UserProfile {
-//   final int id;
-//   final String name;
-//   final String email;
-//   final String gender;
-//   final String? birthDate;
-//   final String number;
+  ClientProfile({
+    required this.name,
+    required this.email,
+    required this.birthDate,
+    required this.gender,
+    required this.profileImage,
+    required this.points, 
+  });
 
-//   UserProfile({
-//     required this.id,
-//     required this.name,
-//     required this.email,
-//     required this.gender,
-//     this.birthDate,
-//     required this.number,
-//   });
+  factory ClientProfile.fromJson(Map<String, dynamic> json) {
+    return ClientProfile(
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      birthDate: json['birth_date'] ?? '',
+      gender: json['gender'] ?? '2',
+      profileImage: json['image'] != null
+          ? '${Config.imageUrl}/${json['image']}'
+          : '',
+      points: json['points'] ?? 0,
+    );
+  }
+}
 
-//   factory UserProfile.fromJson(Map<String, dynamic> json) {
-//     return UserProfile(
-//       id: json['id'],
-//       name: json['name'],
-//       email: json['email'],
-//       gender: json['gender'],
-//       birthDate: json['birth_date'],
-//       number: json['number'],
-//     );
-//   }
-// }
+
 //!Product data model
 class Product {
   int id;
@@ -338,118 +351,138 @@ List<Brand> parseBrands(String responseBody) {
   return parsed.map<Brand>((json) => Brand.fromJson(json)).toList();
 }
 //!Order model 
+class ProductforOrder {
+  final int? id;
+  final String? name;
+  final String? desc;
+  final String? image;
+  final int? price;
+  final int? sizeType;
+  final int? count;
+  final int? subBranchId;
+  final int? brandId;
+  final int? subCategoryId;
+  final String? createdAt;
+  final String? updatedAt;
 
-// class OrderResponse {
-//   final Order order;
-//   final List<ProductItem> products;
+  ProductforOrder({
+    this.id,
+    this.name,
+    this.desc,
+    this.image,
+    this.price,
+    this.sizeType,
+    this.count,
+    this.subBranchId,
+    this.brandId,
+    this.subCategoryId,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-//   OrderResponse({
-//     required this.order,
-//     required this.products,
-//   });
+  factory ProductforOrder.fromJson(Map<String, dynamic> json) {
+    return ProductforOrder(
+      id: json['id'],
+      name: json['name'],
+      desc: json['desc'],
+      image: json['image'],
+      price: json['price'],
+      sizeType: json['size_type'],
+      count: json['count'],
+      subBranchId: json['sub_branch_id'],
+      brandId: json['brand_id'],
+      subCategoryId: json['sub_category_id'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+    );
+  }
 
-//   factory OrderResponse.fromJson(Map<String, dynamic> json) {
-//     return OrderResponse(
-//       order: Order.fromJson(json['order']),
-//       products: (json['products'] as List<dynamic>).map((item) => ProductItem.fromJson(item)).toList(),
-//     );
-//   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'desc': desc,
+      'image': image,
+      'price': price,
+      'size_type': sizeType,
+      'count': count,
+      'sub_branch_id': subBranchId,
+      'brand_id': brandId,
+      'sub_category_id': subCategoryId,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
+}
+class Order {
+  final int? id;
+  final String? orderNumber;
+  final int? statusCode;
+  final int? deliveryType;
+  final int? subTotal;
+  final int? total;
+  final int? deliveryFee;
+  final int? clientId;
+  final int? deliveryManId;
+  final int? addressId;
+  final String? createdAt;
+  final String? updatedAt;
+  final List<ProductforOrder>? products;
 
+  Order({
+    this.id,
+    this.orderNumber,
+    this.statusCode,
+    this.deliveryType,
+    this.subTotal,
+    this.total,
+    this.deliveryFee,
+    this.clientId,
+    this.deliveryManId,
+    this.addressId,
+    this.createdAt,
+    this.updatedAt,
+    this.products,
+  });
 
+  factory Order.fromJson(Map<String, dynamic> json) {
+    var productList = json['products'] as List?;
+    List<ProductforOrder>? productsList = productList?.map((i) => ProductforOrder.fromJson(i)).toList();
 
+    return Order(
+      id: json['order']['id'],
+      orderNumber: json['order']['order_number'],
+      statusCode: json['order']['status_code'],
+      deliveryType: json['order']['delivery_type'],
+      subTotal: json['order']['sub_total'],
+      total: json['order']['total'],
+      deliveryFee: json['order']['delivery_fee'],
+      clientId: json['order']['client_id'],
+      deliveryManId: json['order']['delivery_man_id'],
+      addressId: json['order']['address_id'],
+      createdAt: json['order']['created_at'],
+      updatedAt: json['order']['updated_at'],
+      products: productsList,
+    );
+  }
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'order': order.toJson(),
-//       'products': products.map((item) => item.toJson()).toList(),
-//     };
-//   }
-// }
-
-// class Order {
-//   final int id;
-//   final String orderNumber;
-//   final int statusCode;
-//   final int deliveryType;
-//   final double subTotal;
-//   final double? total;
-//   final double? deliveryFee;
-//   final int clientId;
-//   final int? deliveryManId;
-//   final int addressId;
-//   final DateTime createdAt;
-//   final DateTime updatedAt;
-
-//   Order({
-//     required this.id,
-//     required this.orderNumber,
-//     required this.statusCode,
-//     required this.deliveryType,
-//     required this.subTotal,
-//     this.total,
-//     this.deliveryFee,
-//     required this.clientId,
-//     this.deliveryManId,
-//     required this.addressId,
-//     required this.createdAt,
-//     required this.updatedAt,
-//   });
-
-//   factory Order.fromJson(Map<String, dynamic> json) {
-//     return Order(
-//       id: json['id'],
-//       orderNumber: json['order_number'],
-//       statusCode: json['status_code'],
-//       deliveryType: json['delivery_type'],
-//       subTotal: json['sub_total'].toDouble(),
-//       total: json['total']?.toDouble(),
-//       deliveryFee: json['delivery_fee']?.toDouble(),
-//       clientId: json['client_id'],
-//       deliveryManId: json['delivery_man_id'],
-//       addressId: json['address_id'],
-//       createdAt: DateTime.parse(json['created_at']),
-//       updatedAt: DateTime.parse(json['updated_at']),
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'id': id,
-//       'order_number': orderNumber,
-//       'status_code': statusCode,
-//       'delivery_type': deliveryType,
-//       'sub_total': subTotal,
-//       'total': total,
-//       'delivery_fee': deliveryFee,
-//       'client_id': clientId,
-//       'delivery_man_id': deliveryManId,
-//       'address_id': addressId,
-//       'created_at': createdAt.toIso8601String(),
-//       'updated_at': updatedAt.toIso8601String(),
-//     };
-//   }
-// }
-
-// class ProductItem {
-//   final int id;
-//   final int procountity;
-
-//   ProductItem({
-//     required this.id,
-//     required this.procountity,
-//   });
-
-//   factory ProductItem.fromJson(Map<String, dynamic> json) {
-//     return ProductItem(
-//       id: json['id'],
-//       procountity: json['count'],
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'id': id,
-//       'count': procountity,
-//     };
-//   }
-// }
+  Map<String, dynamic> toJson() {
+    return {
+      'order': {
+        'id': id,
+        'order_number': orderNumber,
+        'status_code': statusCode,
+        'delivery_type': deliveryType,
+        'sub_total': subTotal,
+        'total': total,
+        'delivery_fee': deliveryFee,
+        'client_id': clientId,
+        'delivery_man_id': deliveryManId,
+        'address_id': addressId,
+        'created_at': createdAt,
+        'updated_at': updatedAt,
+      },
+      'products': products?.map((product) => product.toJson()).toList(),
+    };
+  }
+}

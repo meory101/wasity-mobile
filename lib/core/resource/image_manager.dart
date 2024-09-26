@@ -7,9 +7,10 @@ class AppImageManager {
 
   static String subCategoryImage = '$_imageBasePath/placeholder.png';
   static String productImage = '$_imageBasePath/placeholder.png';
-  static String logo = '$_imageBasePath/logo.png';
-  static String money = '$_imageBasePath/money.png';
-
+  static String logo = '$_imageBasePath/logoo.png';
+  static String logo2 = '$_imageBasePath/logo2.jpg';
+  static String cash = 'assets/images/cash.png';
+  static String card = 'assets/images/card.jpg';
 
   /// this path is the base path for splash image
   /// pass the splash id to change the image path

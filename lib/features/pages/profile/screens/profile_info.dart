@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
+import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
+// import 'package:wasity/features/pages/auth/screens/finger_print.dart';
 
 class ProfileInfo extends StatefulWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;
@@ -16,6 +19,25 @@ class ProfileInfo extends StatefulWidget {
 }
 
 class _ProfileInfoState extends State<ProfileInfo> {
+  String? _profileImage;
+  String _fullName = "User name";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  Future<void> _loadProfileData() async {
+    final profileImage = AppSharedPreferences.getProfileImage();
+    final fullName = AppSharedPreferences.getFullName();
+
+    setState(() {
+      _profileImage = profileImage.isNotEmpty ? profileImage : null;
+      _fullName = fullName.isNotEmpty ? fullName : "User name";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -36,22 +58,30 @@ class _ProfileInfoState extends State<ProfileInfo> {
               child: DecoratedContainer(
                 height: AppHeightManager.h8,
                 width: AppWidthManager.w16,
-                child: Image.asset(
-                  AppImageManager.productImage,
-                  fit: BoxFit.cover,
-                ),
+                child: _profileImage != null
+                    ? Image.file(
+                        File(_profileImage!),
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        AppImageManager.productImage,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             SizedBox(width: AppWidthManager.w5),
             Expanded(
               child: AppTextWidget(
-                text: "Ahmad Saad",
+                text: _fullName,
                 style: theme.textTheme.headlineMedium
                     ?.copyWith(color: getTextColor()),
               ),
             ),
+            //!!FingerprintAuthPageFingerprintAuthPageFingerprintAuthPage
+
             IconButton(
               onPressed: () => Navigator.pushNamed(context, '/EditProfile'),
+             
               icon: const Icon(Icons.edit_square,
                   color: AppColorManager.lightGrey),
             ),
@@ -61,7 +91,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
     }
 
     Widget profileItem(
-        IconData icon, String title, String subtitle, String route) {
+        IconData? icon, String title, String subtitle, String route) {
       return Column(
         children: [
           ListTile(
@@ -103,7 +133,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                   profileItem(Icons.category_outlined, "Orders",
                       "Ongoing orders, Recent orders..", '/OrderHistory'),
                   profileItem(Icons.payment_rounded, "Payment",
-                      "Saved card, Wallets", '/PaymentPage'),
+                      "Saved card, Wallets", '/Wallet'),
                   profileItem(Icons.location_on_outlined, "Saved Address",
                       "Home, Office", '/SavedAddresses'),
                   profileItem(Icons.settings, "Settings",

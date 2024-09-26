@@ -1,7 +1,4 @@
-
-
-
-abstract class AppIconManager{
+abstract class AppIconManager {
   static const String _iconBasePath = 'assets/icons';
   static String appLogo = '$_iconBasePath/app_logo.svg';
   static String arrowLeft = '$_iconBasePath/arrow_left.svg';
@@ -14,7 +11,13 @@ abstract class AppIconManager{
   static String arrowMenuLeft = '$_iconBasePath/arrow_menu_left.svg';
   static String arrowMenuRight = '$_iconBasePath/arrow_menu_right.svg';
   static String store = '$_iconBasePath/store.svg';
- 
+  static String speed = '$_iconBasePath/speed.svg';
+  static String time = '$_iconBasePath/time.svg';
+  static String totals = '$_iconBasePath/totals.svg';
+
+  static String card = '$_iconBasePath/card.svg';
+  static String error = '$_iconBasePath/error.json';
+  static String success = '$_iconBasePath/success.json';
   static String more = '$_iconBasePath/more.svg';
   static String restaurants = '$_iconBasePath/restaurants.svg';
   static String star = '$_iconBasePath/star.svg';
@@ -34,7 +37,7 @@ abstract class AppIconManager{
   static String cart = '$_iconBasePath/cart.svg';
   static String cartFill = '$_iconBasePath/cart_fill.svg';
   static String category = '$_iconBasePath/category.svg';
- static String home = '$_iconBasePath/home.svg';
+  static String home = '$_iconBasePath/home.svg';
   static String homeFill = '$_iconBasePath/home_fill.svg';
   static String categoryFill = '$_iconBasePath/category_fill.svg';
   static String profile = '$_iconBasePath/profile.svg';
@@ -43,13 +46,11 @@ abstract class AppIconManager{
   static String note = '$_iconBasePath/clock.svg';
   static String ticketDiscount = '$_iconBasePath/clock.svg';
   static String timer = '$_iconBasePath/clock.svg';
- static String list = '$_iconBasePath/list.svg';
- static String verticalSliders = '$_iconBasePath/vertical_sliders.svg';
+  static String list = '$_iconBasePath/list.svg';
+  static String verticalSliders = '$_iconBasePath/vertical_sliders.svg';
   static String arrowMenuUp = '$_iconBasePath/arrow_menu_up.svg';
   static String addCircle = '$_iconBasePath/add_circle.svg';
 
   static String add = '$_iconBasePath/add.svg';
   static String minimize = '$_iconBasePath/minimize.svg';
-
-
 }

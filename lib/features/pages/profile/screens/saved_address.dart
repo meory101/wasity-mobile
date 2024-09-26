@@ -1,6 +1,4 @@
 import 'package:flutter/foundation.dart';
-// ignore: depend_on_referenced_packages
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/font_manager.dart';
@@ -11,8 +9,8 @@ import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/button/app_button.dart';
 import 'package:wasity/core/widget/form_field/app_form_field.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
-import 'package:wasity/features/models/appModels.dart';
 import 'package:wasity/features/api/api_link.dart';
+import 'package:wasity/features/models/appModels.dart';
 
 class SavedAddresses extends StatefulWidget {
   const SavedAddresses({super.key, required this.themeNotifier});
@@ -32,19 +30,46 @@ class _SavedAddressesState extends State<SavedAddresses> {
   @override
   void initState() {
     super.initState();
-    _fetchAddresses();
+    _fetchAddresses().then((_) {
+      _loadSelectedAddress();
+    });
+  }
+
+  void _loadSelectedAddress() {
+    final cachedId = AppSharedPreferences.getSelectedAddressId();
+    if (cachedId != null) {
+      try {
+        final address = _addresses.firstWhere(
+          (address) => address.id?.toString() == cachedId,
+        );
+        setState(() {
+          _selectedAddress = address;
+        });
+      } catch (e) {
+        setState(() {
+          _selectedAddress = null;
+        });
+      }
+    }
   }
 
   Future<void> _fetchAddresses() async {
     try {
-      final addresses = await _addressService.fetchAddresses(1);
+      final clientIdString = AppSharedPreferences.getClientId();
+      final clientId = int.tryParse(clientIdString) ?? 0;
+
+      final addresses = await _addressService.fetchAddresses(clientId);
       setState(() {
         _addresses.clear();
         _addresses.addAll(addresses);
       });
+
+      if (kDebugMode) {
+        print('Fetched addresses for clientId $clientId: ${_addresses.length}');
+      }
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print('Error fetching addresses: $e');
       }
     }
   }
@@ -68,28 +93,38 @@ class _SavedAddressesState extends State<SavedAddresses> {
               top: AppHeightManager.h6,
               right: AppWidthManager.w3,
             ),
-            child: ListView(
-              children: _addresses.map((address) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: AppHeightManager.h5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isDarkMode
-                          ? AppColorManager.navyBlue
-                          : AppColorManager.shadow,
-                      border: Border.all(
-                          color: AppColorManager.grayLightBlue,
-                          width: AppHeightManager.h02),
-                      borderRadius: BorderRadius.circular(10),
+            child: _addresses.isEmpty
+                ? Center(
+                    child: AppTextWidget(
+                      text: 'No addresses found.',
+                      fontSize: FontSizeManager.fs16,
+                      color: AppColorManager.grayLightBlue,
                     ),
-                    child: _buildAddressTile(
-                      address: address,
-                      themeNotifier: widget.themeNotifier,
-                    ),
+                  )
+                : ListView.builder(
+                    itemCount: _addresses.length,
+                    itemBuilder: (context, index) {
+                      final address = _addresses[index];
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: AppHeightManager.h3),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isDarkMode
+                                ? AppColorManager.navyBlue
+                                : AppColorManager.shadow,
+                            border: Border.all(
+                                color: AppColorManager.grayLightBlue,
+                                width: AppHeightManager.h02),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: _buildAddressTile(
+                            address: address,
+                            themeNotifier: widget.themeNotifier,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              }).toList(),
-            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -105,9 +140,7 @@ class _SavedAddressesState extends State<SavedAddresses> {
                   child: AppElevatedButton(
                     text: "Apply",
                     color: AppColorManager.white,
-                    onPressed:
-                        _saveSelectedAddressId,
-                        
+                    onPressed: _saveSelectedAddressId,
                     textColor: AppColorManager.navyBlue,
                     fontSize: FontSizeManager.fs17,
                   ),
@@ -155,12 +188,8 @@ class _SavedAddressesState extends State<SavedAddresses> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      subtitle: Row(
-        children: [
-          Text('Lat: ${address.lat}, Long: ${address.long}'),
-        ],
-      ),
-      leading: Radio(
+      leading: Radio<Address>(
+        activeColor: AppColorManager.yellow,
         value: address,
         groupValue: _selectedAddress,
         onChanged: (Address? value) {
@@ -178,12 +207,11 @@ class _SavedAddressesState extends State<SavedAddresses> {
     );
   }
 
-  void _showEditDialog(BuildContext context, Address? currentAddress) {
-    final bool isNewAddress = currentAddress == null;
+  void _showEditDialog(BuildContext context, Address address) {
     final TextEditingController controller =
-        TextEditingController(text: currentAddress?.name ?? '');
-    double lat = currentAddress?.lat ?? 22.0;
-    double long = currentAddress?.long ?? 33.0;
+        TextEditingController(text: address.name);
+    double lat = address.lat;
+    double long = address.long;
 
     showDialog(
       context: context,
@@ -191,38 +219,41 @@ class _SavedAddressesState extends State<SavedAddresses> {
         return AlertDialog(
           backgroundColor: AppColorManager.navyBlue,
           title: AppTextWidget(
-            text: isNewAddress ? 'Add New Address' : 'Edit Address Name',
+            text: 'Edit Address',
             fontSize: FontSizeManager.fs18,
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AppTextFormField(
-                controller: controller,
-              ),
-              SizedBox(height: AppHeightManager.h2),
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.all(AppColorManager.yellow),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppTextFormField(
+                  controller: controller,
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, "/GMap").then((result) {
-                    if (result != null && result is Map) {
-                      setState(() {
-                        lat = result['lat'];
-                        long = result['long'];
-                      });
-                    }
-                  });
-                },
-                icon: const Icon(
-                  Icons.edit_location_alt_outlined,
-                  color: AppColorManager.white,
+                SizedBox(height: AppHeightManager.h2),
+                ElevatedButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStateProperty.all(AppColorManager.yellow),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/MapScreen",
+                        arguments: {'lat': lat, 'long': long}).then((result) {
+                      if (result != null && result is Map) {
+                        setState(() {
+                          lat = result['lat'];
+                          long = result['long'];
+                        });
+                      }
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.edit_location_alt_outlined,
+                    color: AppColorManager.white,
+                  ),
+                  label: const AppTextWidget(text: 'Pick Location'),
                 ),
-                label: const AppTextWidget(text: 'Pick Location'),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -240,33 +271,44 @@ class _SavedAddressesState extends State<SavedAddresses> {
                     WidgetStateProperty.all(AppColorManager.navyLightBlue),
               ),
               onPressed: () async {
-                final name = controller.text;
-                final clientIdString = AppSharedPreferences.getClientId();
-                final clientId = int.tryParse(clientIdString) ?? 0;
-                final address = Address(
-                  id: isNewAddress ? 0 : currentAddress.id,
+                final name = controller.text.trim();
+                if (name.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a valid name')),
+                  );
+                  return;
+                }
+
+                final updatedAddress = UpdateAddress(
+                  id: address.id ?? 0,
                   name: name,
                   lat: lat,
                   long: long,
-                  clientId: clientId,
                 );
+
                 try {
-                  if (isNewAddress) {
-                    await _addressService.addAddress(address);
-                  } else {
-                    await _addressService.updateAddress(address);
+                  await _addressService.updateAddress(updatedAddress);
+
+                  if (mounted) {
+                    await _fetchAddresses();
                   }
-                  _fetchAddresses();
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
                 } catch (e) {
                   if (kDebugMode) {
-                    print(e);
+                    print('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff$updatedAddress');
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                    print('Error updating address: $e');
                   }
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Failed to update address')),
+                  );
                 }
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pop();
               },
               child: AppTextWidget(
-                text: isNewAddress ? 'Save' : 'Update',
+                text: 'Update',
                 fontSize: FontSizeManager.fs16,
               ),
             ),
@@ -278,8 +320,8 @@ class _SavedAddressesState extends State<SavedAddresses> {
 
   void _showAddAddressDialog() {
     final TextEditingController nameController = TextEditingController();
-    double lat = 22.0; // Default latitude
-    double long = 33.0; // Default longitude
+    double lat = 22.0;
+    double long = 33.0;
 
     showDialog(
       context: context,
@@ -290,35 +332,37 @@ class _SavedAddressesState extends State<SavedAddresses> {
             text: 'Add New Address',
             fontSize: FontSizeManager.fs18,
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AppTextFormField(
-                controller: nameController,
-              ),
-              SizedBox(height: AppHeightManager.h2),
-              ElevatedButton.icon(
-                style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.all(AppColorManager.yellow),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppTextFormField(
+                  controller: nameController,
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, "/GMap").then((result) {
-                    if (result != null && result is Map) {
-                      setState(() {
-                        lat = result['lat'];
-                        long = result['long'];
-                      });
-                    }
-                  });
-                },
-                icon: const Icon(
-                  Icons.edit_location_alt_outlined,
-                  color: AppColorManager.white,
+                SizedBox(height: AppHeightManager.h2),
+                ElevatedButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStateProperty.all(AppColorManager.yellow),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/MapScreen").then((result) {
+                      if (result != null && result is Map) {
+                        setState(() {
+                          lat = result['lat'];
+                          long = result['long'];
+                        });
+                      }
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.edit_location_alt_outlined,
+                    color: AppColorManager.white,
+                  ),
+                  label: const AppTextWidget(text: 'Pick Location'),
                 ),
-                label: const AppTextWidget(text: 'Pick Location'),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -336,26 +380,45 @@ class _SavedAddressesState extends State<SavedAddresses> {
                     WidgetStateProperty.all(AppColorManager.navyLightBlue),
               ),
               onPressed: () async {
-                final name = nameController.text;
+                final name = nameController.text.trim();
+                if (name.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a valid name')),
+                  );
+                  return;
+                }
+
                 final clientIdString = AppSharedPreferences.getClientId();
                 final clientId = int.tryParse(clientIdString) ?? 0;
-                final address = Address(
-                  id: 0, // Set ID to 0 for new addresses
+
+                final newAddress = Address(
+                  id: null,
                   name: name,
                   lat: lat,
                   long: long,
                   clientId: clientId,
                 );
+
                 try {
-                  await _addressService.addAddress(address);
-                  _fetchAddresses();
+                  await _addressService.addAddress(newAddress);
+                  if (mounted) {
+                    await _fetchAddresses();
+                  }
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Address added successfully')),
+                  );
                 } catch (e) {
                   if (kDebugMode) {
-                    print(e);
+                    print('Error adding address: $e');
                   }
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Failed to add address')),
+                  );
                 }
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pop();
               },
               child: AppTextWidget(
                 text: 'Save',
@@ -368,13 +431,18 @@ class _SavedAddressesState extends State<SavedAddresses> {
     );
   }
 
-  Future<void> _saveSelectedAddressId() async {
+  void _saveSelectedAddressId() async {
     if (_selectedAddress != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('selectedAddressId', _selectedAddress!.id);
+      if (kDebugMode) {
+        print('Selected Address: ${_selectedAddress!.toJson()}');
+      }
+
+      AppSharedPreferences.cacheSelectedAddressId(
+        id: _selectedAddress!.id.toString(),
+        location: _selectedAddress!.name,
+      );
 
       showDialog(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -388,7 +456,7 @@ class _SavedAddressesState extends State<SavedAddresses> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.pushNamed(context, '/ButtonNavbar');
+                 Navigator.of(context).pop();
                 },
                 child: AppTextWidget(
                   text: 'OK',
@@ -399,6 +467,10 @@ class _SavedAddressesState extends State<SavedAddresses> {
             ],
           );
         },
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select an address to apply')),
       );
     }
   }

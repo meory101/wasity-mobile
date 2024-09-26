@@ -1,8 +1,10 @@
+import 'dart:io'; // لاستعمال File لعرض الصور من التخزين
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/image_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
+import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 import 'package:wasity/core/widget/button/circular_icon_button.dart';
 
@@ -17,11 +19,26 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   bool isSwitched = true;
+  String? _profileImage;
+  String _fullName = "User name";
 
   @override
   void initState() {
     super.initState();
     isSwitched = widget.themeNotifier.value == ThemeMode.dark;
+    _loadProfileData();
+  }
+
+  Future<void> _loadProfileData() async {
+    final profileImage = AppSharedPreferences.getProfileImage();
+    final fullName = AppSharedPreferences.getFullName();
+
+    setState(() {
+      _profileImage = profileImage.isNotEmpty
+          ? profileImage
+          : AppImageManager.personalImage;
+      _fullName = fullName.isNotEmpty ? fullName : "User name";
+    });
   }
 
   @override
@@ -59,10 +76,26 @@ class _AppDrawerState extends State<AppDrawer> {
                   Padding(
                     padding: EdgeInsets.only(right: AppWidthManager.w3),
                     child: CircularIconButton(
-                        buttonIcon: Image.asset(AppImageManager.personalImage)),
+                      buttonIcon: _profileImage != null
+                          ? Image.file(
+                              File(_profileImage!),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  AppImageManager
+                                      .personalImage, // الصورة البديلة
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              AppImageManager.personalImage,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
                   ),
                   AppTextWidget(
-                    text: 'User Name',
+                    text: _fullName,
                     fontSize: FontSizeManager.fs20,
                     fontWeight: FontWeight.w800,
                     color: AppColorManager.navyBlue,
@@ -79,12 +112,12 @@ class _AppDrawerState extends State<AppDrawer> {
             title: Row(
               children: [
                 AppTextWidget(
-                  text: 'dark',
+                  text: 'Dark Mode',
                   style:
                       theme.textTheme.displayMedium?.copyWith(color: textColor),
                 ),
                 SizedBox(
-                  width: AppWidthManager.w30,
+                  width: AppWidthManager.w15,
                 ),
                 Transform.scale(
                   scale: AppRadiusManager.r0Point5,

@@ -1,7 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
+import 'package:wasity/core/widget/text/app_text_widget.dart';
+import 'package:wasity/features/api/api_link.dart';
+import 'package:wasity/features/pages/home/screens/home_screen.dart';
 import 'package:wasity/features/pages/home/widgets/form_field/search_form_field.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,13 +20,19 @@ class SearchProducts extends StatefulWidget {
 
 class _SearchProductsState extends State<SearchProducts> {
   TextEditingController searchController = TextEditingController();
+  var data; // Map to hold product data
+
   onSearchClickedCallApi() async {
     http.Response response = await http.post(
-        Uri.parse('http://192.168.1.104:6000/api/getMostReleventProducts'),
-        body: {"searchQuery": searchController.text});
+        Uri.parse('http://192.168.134.84:5000/api/getMostReleventProducts'),
+        body: {"searchQuery": irSearch.text});
 
     var body = jsonDecode(response.body);
-    print(body);
+
+    // Ensure that 'releventProducts' is properly parsed as Map<String, dynamic>
+    data = body['releventProducts'];
+
+    setState(() {});
   }
 
   @override
@@ -41,6 +50,43 @@ class _SearchProductsState extends State<SearchProducts> {
                     onSearchClickedCallApi();
                   },
                 ),
+                data == null
+                    ? SizedBox() // Show empty widget if no data
+                    : Visibility(
+                        visible: data != null,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount:
+                              data.length, // Accessing the length of 'id'
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Column(
+                                children: [
+                                  AppTextWidget(
+                                    text: data![index]
+                                        ['name'], // Accessing name by index
+                                    color: AppColorManager.white,
+                                  ),
+                                  AppTextWidget(
+                                    text: data![index]
+                                        ['desc'], // Accessing description
+                                    color: AppColorManager.white,
+                                  ),
+                                  Image.network(
+                                    '${Config.imageUrl}/${data![index]['image']}', // Add your image base URL
+                                    fit: BoxFit.cover,
+                                  ),
+                                  AppTextWidget(
+                                    text: 'Price: ${data![index]['price']}',
+                                    color: AppColorManager.white,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      )
               ],
             ),
           ),

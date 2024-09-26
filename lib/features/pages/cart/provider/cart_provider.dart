@@ -4,18 +4,17 @@ import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/features/models/appModels.dart';
 
 class CartProvider extends ChangeNotifier {
-  final List<Product> _cartItems = [];
-  final Map<int, int> products = {}; //! الماب لتخزين كميات المنتجات في السلة
+  final List<Product> _cartItems = []; // قائمة المنتجات في السلة
+  final Map<int, int> products = {}; // تخزين كميات المنتجات في السلة
 
   List<Product> get cartItems => _cartItems;
 
   CartProvider() {
-    _loadCartItems(); //! تحميل بيانات السلة عند الإنشاء
+    _loadCartItems(); // تحميل بيانات السلة عند الإنشاء
   }
 
   //! حساب السعر الكلي
   double get totalPrice {
-    print(products);
     double total = 0.0;
     for (var product in _cartItems) {
       final quantity = products[product.id] ?? 1;
@@ -26,57 +25,74 @@ class CartProvider extends ChangeNotifier {
 
   //! إضافة منتج إلى السلة
   void addToCart(Product product) {
-    if (!_cartItems.contains(product)) {
-      _cartItems.add(product);
-      products[product.id] = 1; //! تعيين الكمية الابتدائية إلى 1
-    } else {
+    if (products.containsKey(product.id)) {
+      // إذا كان المنتج موجودًا بالفعل، زيادة الكمية فقط
       products[product.id] = (products[product.id] ?? 1) + 1;
+    } else {
+      // إذا كان المنتج غير موجود، أضفه إلى القائمة مع الكمية الابتدائية 1
+      _cartItems.add(product);
+      products[product.id] = 1;
     }
-    _saveCartItems();
-    notifyListeners();
+    _updateCartItemsApi(); // تحديث حالة API مع الكمية الجديدة
+    _saveCartItems(); // حفظ حالة السلة
+    notifyListeners(); // تحديث الواجهة
   }
 
   //! إزالة منتج من السلة
   void removeFromCart(Product product) {
     if (_cartItems.contains(product)) {
-      _cartItems.remove(product);
-
-      cartItemsApi.removeWhere((e) => e['id'] == product.id);
+      _cartItems.remove(product); // إزالة المنتج من القائمة
+      cartItemsApi
+          .removeWhere((e) => e['id'] == product.id); // إزالة من الـ API
     }
-
-    print(cartItemsApi.length);
-    print("after deleting");
-    products.remove(product.id);
-    _saveCartItems(); //! حفظ حالة السلة بعد التعديل
-    notifyListeners(); // !تحديث الواجهة
+    products.remove(product.id); // إزالة المنتج من خريطة الكميات
+    _updateCartItemsApi(); // تحديث API
+    _saveCartItems(); // حفظ حالة السلة بعد التعديل
+    notifyListeners(); // تحديث الواجهة
   }
 
   //! تعديل كمية منتج معين في السلة
   void updateQuantity(Product product, int quantity) {
     if (_cartItems.contains(product) && quantity > 0) {
       products[product.id] = quantity;
-      _saveCartItems();
-      notifyListeners();
+      _updateCartItemsApi(); // تحديث API مع الكمية الجديدة
+      _saveCartItems(); // حفظ حالة السلة
+      notifyListeners(); // تحديث الواجهة
     } else if (quantity == 0) {
-      removeFromCart(product); //! حذف المنتج من السلة إذا كانت الكمية 0
+      removeFromCart(product); // حذف المنتج من السلة إذا كانت الكمية 0
     }
   }
 
   //! الحصول على كمية منتج معين في السلة
   int getQuantity(Product product) {
-    return products[product.id] ?? 1;
+    return products[product.id] ?? 1; // الكمية الابتدائية هي 1
   }
 
-  // !مسح السلة
+  //! مسح السلة
   void clearCart() {
     _cartItems.clear();
     products.clear();
-    cartItemsApi.clear();
-    _saveCartItems();
-    notifyListeners();
+    cartItemsApi.clear(); // مسح الـ API أيضاً
+    _saveCartItems(); // حفظ حالة السلة
+    notifyListeners(); // تحديث الواجهة
   }
 
-  // !حفظ بيانات السلة (تخزين محلي)
+  //! تحديث قائمة المنتجات في الـ API
+  void _updateCartItemsApi() {
+    cartItemsApi.clear(); //! مسح القائمة القديمة
+
+    //! تحديث الـ API بالبيانات الصحيحة
+    products.forEach((id, count) {
+      if (count > 0) {
+        cartItemsApi.add({
+          'id': id,
+          'count': count, //! تأكد من أن الكمية يتم تحديثها بشكل صحيح
+        });
+      }
+    });
+  }
+
+  //! حفظ بيانات السلة (تخزين محلي)
   void _saveCartItems() {
     List<Map<String, dynamic>> cartItemsJson = _cartItems.map((product) {
       return {
@@ -86,10 +102,9 @@ class CartProvider extends ChangeNotifier {
     }).toList();
 
     String cartItemsString =
-        jsonEncode(cartItemsJson); //! تحويل القائمة إلى JSON
-    AppSharedPreferences.cacheCartItems(cartItemsString);
-
-    _loadCartItems(); //! تخزين السلسلة في SharedPreferences
+        jsonEncode(cartItemsJson); // تحويل القائمة إلى JSON
+    AppSharedPreferences.cacheCartItems(
+        cartItemsString); // تخزين السلسلة في SharedPreferences
   }
 
   //! تحميل بيانات السلة (إذا كانت موجودة)
@@ -99,35 +114,20 @@ class CartProvider extends ChangeNotifier {
       List<dynamic> cartItemsJson = jsonDecode(cartItemsString);
 
       for (var item in cartItemsJson) {
-        print('-----------------------');
-        print(cartItemsString);
-        print('-----------------------');
-
         Product product = Product.fromJson(item['product']);
-        if (cartItemsApi.isEmpty) {
-          print('99999');
-          cartItemsApi.add({"id": product.id, "count": item['quantity']});
+        int quantity = item['quantity'];
+
+        // !التأكد من أن المنتج لا يتم إضافته أكثر من مرة
+        if (!products.containsKey(product.id)) {
+          _cartItems.add(product);
         }
-        for (int i = 0; i < cartItemsApi.length; i++) {
-          print('0000');
-          if (cartItemsApi[i]['id'] == product.id) {
-            cartItemsApi[i]['count'] = item['quantity'];
-          } else {
-            cartItemsApi.add({"id": product.id, "count": item['quantity']});
-          }
-        }
-        // int quantity = item['quantity']  ;
-        // _cartItems.add(product);
-        // products[product.id] = quantity;
+        products[product.id] = quantity;
       }
 
-      print('api  api');
-      print(cartItemsApi);
-      print(cartItemsApi.length);
-      print('api  api');
-    }
-    notifyListeners();
-  }
-}
+      _updateCartItemsApi(); //! تحديث الـ API بعد تحميل السلة
 
+      notifyListeners(); //! تحديث الواجهة
+    }
+  }
+}//! متغير لتخزين البيانات التي يتم إرسالها إلى API
 List<Map> cartItemsApi = [];

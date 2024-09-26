@@ -24,6 +24,12 @@ class _TrendingProductState extends State<TrendingProduct> {
     trendingProducts = TrendingProductService().fetchTrendingProducts();
   }
 
+  Future<void> _refreshTrendingProducts() async {
+    setState(() {
+      trendingProducts = TrendingProductService().fetchTrendingProducts();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -33,37 +39,40 @@ class _TrendingProductState extends State<TrendingProduct> {
         onBack: () => Navigator.pop(context),
         titleText: "Trending Products",
       ),
-      body: FutureBuilder<List<Product>>(
-        future: trendingProducts,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(
-                child: AppTextWidget(text: 'Failed to load products'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-                child: AppTextWidget(text: 'No trending products available'));
-          } else {
-            final product = snapshot.data!;
-            return ListView.builder(
-              itemCount: product.length,
-              itemBuilder: (context, index) {
-                try {
-                  return TrendingProductContainer(
-                    themeNotifier: widget.themeNotifier,
-                    product: product[index],
-                  );
-                } catch (e) {
-                  if (kDebugMode) {
-                    print('Error building item at index $index: $e');
+      body: RefreshIndicator(
+        onRefresh: _refreshTrendingProducts,
+        child: FutureBuilder<List<Product>>(
+          future: trendingProducts,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(
+                  child: AppTextWidget(text: 'Failed to load products'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(
+                  child: AppTextWidget(text: 'No trending products available'));
+            } else {
+              final products = snapshot.data!;
+              return ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  try {
+                    return TrendingProductContainer(
+                      themeNotifier: widget.themeNotifier,
+                      product: products[index],
+                    );
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print('Error building item at index $index: $e');
+                    }
+                    return Container();
                   }
-                  return Container();
-                }
-              },
-            );
-          }
-        },
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }

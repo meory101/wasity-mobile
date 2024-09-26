@@ -17,6 +17,15 @@ abstract class AppRadiusManager {
   static double r25 = 25;
   static double r30 = 30;
 
+  static double r70 = 70;
+  static double r100 = 100;
+  static double r160 = 160;
+  static double r150 = 150;
+  static double r155 = 170;
+  static double r120 = 120;
+  static double r80 = 80;
+  static double r60 = 60;
+  static double r55 = 55;
   static double r50 = 50;
 }
 
@@ -38,6 +47,7 @@ abstract class AppWidthManager {
   static double w4 = 4.w;
   static double w4point2 = 4.2.w;
   static double w4point7 = 4.7.w;
+  static double w7point7 = 7.7.w;
   static double w5 = 5.w;
   static double w6 = 6.w;
   static double w7 = 7.w;
@@ -121,6 +131,7 @@ abstract class AppHeightManager {
   static double h1 = 1.h;
   static double h1point5 = 1.5.h;
   static double h1point2 = 1.2.h;
+  static double h1point3 = 1.3.h;
   static double h1point8 = 1.8.h;
   static double h1point6 = 1.6.h;
   static double h2 = 2.h;

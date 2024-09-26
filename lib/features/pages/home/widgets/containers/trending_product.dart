@@ -23,147 +23,152 @@ class TrendingProductContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
+    final isDarkMode = themeNotifier?.value == ThemeMode.dark;
 
     return Padding(
       padding: EdgeInsets.only(bottom: AppHeightManager.h2),
       child: Row(
         children: [
           Expanded(
-            child: Stack(
-              children: [
-                // Main Container
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(AppRadiusManager.r5),
-                  child: DecoratedContainer(
-                    color: themeNotifier!.value == ThemeMode.dark
-                        ? AppColorManager.navyLightBlue
-                        : AppColorManager.whiteBlue,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppWidthManager.w1Point5,
-                        vertical: AppHeightManager.h02,
-                      ),
-                      child: Row(
-                        children: [
-                          // Product image
-                          ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(AppRadiusManager.r5),
-                            child: SizedBox(
-                              width: AppWidthManager.w25,
-                              height: AppHeightManager.h11,
-                              child: InkWell(
-                                child: Image.network(
-                                  '${Config.imageUrl}/${product.image}',
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(Icons.error);
-                                  },
-                                ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    "/ProductInfo",
-                                    arguments: product,
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: AppWidthManager.w3Point5),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Product name
-                                AppTextWidget(
-                                  text: product.name,
-                                  style:
-                                      theme.textTheme.displayMedium?.copyWith(
-                                    color:
-                                        themeNotifier!.value == ThemeMode.dark
-                                            ? AppColorManager.white
-                                            : AppColorManager.navyBlue,
-                                  ),
-                                ),
-                                // Product description
-                                AppTextWidget(
-                                  text: product.desc,
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color:
-                                        themeNotifier!.value == ThemeMode.dark
-                                            ? AppColorManager.grey
-                                            : AppColorManager.navyBlue,
-                                  ),
-                                ),
-                                // Product Price
-                                PriceText(
-                                  price: product.price,
-                                  priceStyle:
-                                      theme.textTheme.displayMedium?.copyWith(
-                                    color:
-                                        themeNotifier!.value == ThemeMode.dark
-                                            ? AppColorManager.white
-                                            : AppColorManager.navyBlue,
-                                  ),
-                                  style:
-                                      theme.textTheme.displayMedium?.copyWith(
-                                    color:
-                                        themeNotifier!.value == ThemeMode.dark
-                                            ? AppColorManager.white
-                                            : AppColorManager.navyBlue,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              // Rating
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: AppHeightManager.h2,
-                                    right: AppWidthManager.w3),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIconManager.star,
-                                      colorFilter: const ColorFilter.mode(
-                                        AppColorManager.yellow,
-                                        BlendMode.srcIn,
-                                      ),
-                                      width: AppWidthManager.w12,
-                                      height: AppHeightManager.h2point2,
-                                    ),
-                                    SizedBox(
-                                      child: AppTextWidget(
-  text: (product.rate != null ? product.rate!.toStringAsFixed(1) : '0.0'),
-  style: theme.textTheme.displaySmall?.copyWith(
-    color: themeNotifier!.value == ThemeMode.dark
-        ? AppColorManager.white
-        : AppColorManager.navyBlue,
-  ),
-),
+            child: _buildProductContainer(context, theme, isDarkMode),
+          ),
+        ],
+      ),
+    );
+  }
 
-                                    ),
-                                  ],
-                                ),
-                              ),
-                               CartButton(product: product,),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+  Widget _buildProductContainer(
+      BuildContext context, ThemeData theme, bool isDarkMode) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppWidthManager.w2),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadiusManager.r5),
+        child: DecoratedContainer(
+          color: isDarkMode
+              ? AppColorManager.navyLightBlue
+              : AppColorManager.whiteBlue,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppWidthManager.w1Point5,
+              vertical: AppHeightManager.h02,
+            ),
+            child: Row(
+              children: [
+                _buildProductImage(context),
+                SizedBox(width: AppWidthManager.w3Point5),
+                _buildProductDetails(theme, isDarkMode),
+                _buildProductRatingAndButton(theme, isDarkMode),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductImage(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadiusManager.r5),
+      child: SizedBox(
+        width: AppWidthManager.w30,
+        height: AppHeightManager.h11,
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              "/ProductInfo",
+              arguments: product,
+              
+            );
+          },
+          child: Hero(
+            tag: 'product-image-trend${product.id}', 
+            child: Image.network(
+              '${Config.imageUrl}/${product.image}',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.error);
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductDetails(ThemeData theme, bool isDarkMode) {
+    return Flexible(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppTextWidget(
+            text: product.name,
+            style: theme.textTheme.displayMedium?.copyWith(
+              color:
+                  isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
+            ),
+          ),
+          AppTextWidget(
+            text: product.desc,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color:
+                  isDarkMode ? AppColorManager.grey : AppColorManager.navyBlue,
+            ),
+          ),
+          PriceText(
+            price: product.price,
+            priceStyle: theme.textTheme.displayMedium?.copyWith(
+              color:
+                  isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
+            ),
+            style: theme.textTheme.displayMedium?.copyWith(
+              color:
+                  isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildProductRatingAndButton(ThemeData theme, bool isDarkMode) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            top: AppHeightManager.h2,
+            right: AppWidthManager.w3,
+          ),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                AppIconManager.star,
+                colorFilter: const ColorFilter.mode(
+                  AppColorManager.yellow,
+                  BlendMode.srcIn,
+                ),
+                width: AppWidthManager.w12,
+                height: AppHeightManager.h2point2,
+              ),
+              SizedBox(
+                child: AppTextWidget(
+                  text: (product.rate != null
+                      ? product.rate!.toStringAsFixed(1)
+                      : '0.0'),
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    color: isDarkMode
+                        ? AppColorManager.white
+                        : AppColorManager.navyBlue,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        CartButton(product: product),
+      ],
     );
   }
 }

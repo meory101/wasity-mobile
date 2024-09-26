@@ -12,9 +12,18 @@ abstract class AppKeyManager {
   static const String language = 'language';
   static const String guestModeLocalKey = 'guest_mode';
   static const String token = 'token';
+    static const String pointsKey = 'pointsKey';
   static const String username = 'username';
-  static const String fullName = 'full_name';
   static const String userId = 'user_id';
   static const String phoneNumber = 'phone_number';
   static const String cartItemsKey = 'cart_items';
+    static const String deliveryTypeKey = 'delivery_type';
+      static const String profileImageKey = 'profile_image';
+  static const String fullName = 'full_name';
+  static const String paymentMethodKey = 'paymentMethodKey';
+
+    static const String selectedAddressId = 'selectedAddressId';
+  static const String selectedLocation = 'selectedLocation';
+
+
 }

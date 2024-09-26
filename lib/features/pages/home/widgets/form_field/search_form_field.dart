@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/form_field/app_form_field.dart';
+import 'package:wasity/features/pages/home/screens/home_screen.dart';
 import 'package:wasity/features/pages/home/widgets/button/filter.dart';
 
 class SearchFormField extends StatelessWidget {
@@ -30,11 +31,11 @@ class SearchFormField extends StatelessWidget {
               borderRadius: AppRadiusManager.r6,
               hintText: 'search here ...',
               prefixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: onSearchClicked ?? () {  Navigator.pushNamed(context, '/SearchProducts');},
                   color: theme.inputDecorationTheme.hintStyle?.color),
               hintStyle: theme.inputDecorationTheme.hintStyle,
-              controller: searchController ?? TextEditingController(),
+              controller: irSearch ?? TextEditingController(),
               textInputType: TextInputType.text,
               textInputAction: TextInputAction.search,
             ),

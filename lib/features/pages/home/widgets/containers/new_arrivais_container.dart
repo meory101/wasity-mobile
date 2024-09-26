@@ -96,15 +96,65 @@ class NewArrivaisContainer extends StatelessWidget {
                               ),
                             ),
                             // Product Description
-                            AppTextWidget(
-                              text: product.desc.isNotEmpty
-                                  ? product.desc
-                                  : "No description available",
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: isDarkMode
-                                    ? AppColorManager.grey
-                                    : AppColorManager.navyBlue,
-                              ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          AppTextWidget(
+                                            text: product.desc.isNotEmpty
+                                                ? product.desc
+                                                : "No description available",
+                                            style: theme.textTheme.bodySmall
+                                                ?.copyWith(
+                                              color: isDarkMode
+                                                  ? AppColorManager.grey
+                                                  : AppColorManager.navyBlue,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: AppHeightManager.h2),
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          AppIconManager.star,
+                                          colorFilter: const ColorFilter.mode(
+                                            AppColorManager.yellow,
+                                            BlendMode.srcIn,
+                                          ),
+                                          width: AppWidthManager.w12,
+                                          height: AppHeightManager.h2point2,
+                                        ),
+                                        SizedBox(width: AppWidthManager.w1),
+                                        AppTextWidget(
+                                          text: (product.rate != null
+                                              ? product.rate!.toStringAsFixed(1)
+                                              : '0.0'),
+                                          style: theme.textTheme.displaySmall
+                                              ?.copyWith(
+                                            color: themeNotifier!.value ==
+                                                    ThemeMode.dark
+                                                ? AppColorManager.white
+                                                : AppColorManager.navyBlue,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: AppHeightManager.h05,
                             ),
                             Row(
                               children: [
@@ -125,42 +175,6 @@ class NewArrivaisContainer extends StatelessWidget {
                                 ),
                                 SizedBox(width: AppWidthManager.w4),
                                 // Product Rating
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: AppHeightManager.h06,
-                                          left: AppHeightManager.h02),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            AppIconManager.star,
-                                            colorFilter: const ColorFilter.mode(
-                                              AppColorManager.yellow,
-                                              BlendMode.srcIn,
-                                            ),
-                                            width: AppWidthManager.w12,
-                                            height: AppHeightManager.h2point2,
-                                          ),
-                                          SizedBox(width: AppWidthManager.w1),
-                                          AppTextWidget(
-                                            text: (product.rate != null
-                                                ? product.rate!
-                                                    .toStringAsFixed(1)
-                                                : '0.0'),
-                                            style: theme.textTheme.displaySmall
-                                                ?.copyWith(
-                                              color: themeNotifier!.value ==
-                                                      ThemeMode.dark
-                                                  ? AppColorManager.white
-                                                  : AppColorManager.navyBlue,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
                           ],
@@ -174,7 +188,9 @@ class NewArrivaisContainer extends StatelessWidget {
               Positioned(
                 left: AppWidthManager.w29,
                 top: AppHeightManager.h15,
-                child:  CartButton(product: product,),
+                child: CartButton(
+                  product: product,
+                ),
               ),
             ],
           ),

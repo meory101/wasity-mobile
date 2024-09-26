@@ -1,12 +1,8 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:wasity/core/resource/color_manager.dart';
-import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
-import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
 import 'package:wasity/core/widget/button/app_button.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
@@ -15,94 +11,26 @@ import 'package:wasity/core/widget/text/price_text_widget.dart';
 import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/models/appModels.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:wasity/features/pages/branch/products_by_sub_branchId.dart';
 import 'package:wasity/features/pages/cart/provider/cart_provider.dart';
+import 'package:wasity/features/pages/branch/products_by_sub_branchId.dart';
 
-// ignore: must_be_immutable
 class ProductInfo extends StatefulWidget {
-  Product product;
+  final Product product;
   final int subBranchId;
-
   final ValueNotifier<ThemeMode>? themeNotifier;
 
-  ProductInfo(
-      {super.key,
-      required this.product,
-      this.themeNotifier,
-      required this.subBranchId});
+  const ProductInfo({
+    super.key,
+    required this.product,
+    this.themeNotifier,
+    required this.subBranchId,
+  });
 
   @override
   State<ProductInfo> createState() => _ProductInfoState();
 }
 
 class _ProductInfoState extends State<ProductInfo> {
-  Future<void> _submitRating(double value) async {
-    // Retrieve client ID from shared preferences
-    String clientId = AppSharedPreferences.getClientId();
-
-    if (clientId.isEmpty) {
-      if (kDebugMode) {
-        print('Error: Client ID is null or empty');
-      }
-      return;
-    }
-
-    int? clientIdParsed = int.tryParse(clientId);
-    if (clientIdParsed == null) {
-      if (kDebugMode) {
-        print('Error: Invalid Client ID');
-      }
-      return;
-    }
-
-    // Prepare data
-    Map<String, dynamic> data = {
-      "value": value.toStringAsFixed(1),
-      "product_id": widget.product.id,
-      "client_id": clientIdParsed,
-    };
-
-    try {
-      if (kDebugMode) {
-        print(clientId);
-      }
-      if (kDebugMode) {
-        print(
-          "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000lientId");
-      }
-
-      final response = await http.post(
-        Uri.parse('http://192.168.1.103:8000/api/rateProduct'),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(data),
-      );
-
-      if (response.statusCode == 200) {
-        Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductInfo(
-              product: widget.product,
-              themeNotifier: widget.themeNotifier,
-              subBranchId: 0,
-            ),
-          ),
-        );
-      } else {
-        if (kDebugMode) {
-          print(
-            'Error submitting rating: ${response.statusCode} - ${response.body}');
-        }
-      }
-    } catch (error) {
-      if (kDebugMode) {
-        print('Error: $error');
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -141,13 +69,16 @@ class _ProductInfoState extends State<ProductInfo> {
                       borderRadius: BorderRadius.circular(AppRadiusManager.r15),
                       height: AppHeightManager.h30,
                       width: AppWidthManager.w80,
-                      child: Image.network(
-                        productImageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return Image.asset('assets/images/placeholder.png');
-                        },
+                      child: Hero(
+                        tag: 'product-image-trend${product.id}',
+                        child: Image.network(
+                          productImageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return Image.asset('assets/images/placeholder.png');
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -305,13 +236,13 @@ class _ProductInfoState extends State<ProductInfo> {
                               content: AppTextWidget(
                                   text: 'Product added to cart!',
                                   color: AppColorManager.navyBlue,
-                                  fontSize: 18)),
+                                  fontWeight: FontWeight.bold)),
                         );
                       },
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -319,60 +250,43 @@ class _ProductInfoState extends State<ProductInfo> {
     );
   }
 
-  void _showRatingDialog(BuildContext context) {
-    double selectedRating = 0;
+//!Rating
+  Future<void> _showRatingDialog(BuildContext context) async {
+    double? ratingValue = 3.0;
 
-    showDialog(
+    await showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppColorManager.lightGray,
-          title: AppTextWidget(
-              text: 'Rate Product',
-              style: TextStyle(
-                  fontSize: FontSizeManager.fs20,
-                  color: AppColorManager.whiteBlue)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              RatingBar.builder(
-                unratedColor: AppColorManager.navyBlue,
-                initialRating: widget.product.rate ?? 0,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: false,
-                itemCount: 5,
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: AppColorManager.yellow,
-                ),
-                onRatingUpdate: (newRating) {
-                  selectedRating = double.parse(newRating.toStringAsFixed(1));
-                },
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Rate Product'),
+        content: RatingBar.builder(
+          initialRating: ratingValue!,
+          minRating: 1,
+          itemBuilder: (context, index) => const Icon(
+            Icons.star,
+            color: Colors.amber,
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: AppColorManager.whiteBlue),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                _submitRating(selectedRating);
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(color: AppColorManager.whiteBlue),
-              ),
-            ),
-          ],
-        );
-      },
+          onRatingUpdate: (rating) {
+            ratingValue = rating;
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await RateService.submitRating(ratingValue!, widget.product.id);
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+              setState(() {});
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
     );
   }
 }

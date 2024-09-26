@@ -9,11 +9,11 @@ abstract class AppColorManager {
   static const Color navyBlue = Color(0xFF102333);
   static const Color background = Color.fromARGB(255, 16, 35, 51);
 
-  static const Color grey = Color(0xff8e8e93);
+  static const Color  grey = Color(0xff8e8e93);
   static const Color green = Color(0xff34c759);
   static const Color lightGray = Color.fromARGB(202, 142, 142, 147);
   static const Color orange = Color(0xffff9500);
-  static const Color yellow = Color.fromARGB(255, 230, 185, 21);
+  static const Color yellow = Color(0xFFE6B915);
   static const Color lightGrey = Color.fromARGB(255, 159, 158, 167);
   static const Color darkOrange2 = Color(0xffec1c24);
 
@@ -35,6 +35,7 @@ abstract class AppColorManager {
   static Color blackShadow = const Color(0xff171717).withOpacity(0.4);
 
   static const Color shadow = Color.fromARGB(28, 130, 130, 130);
+  static const Color shadow2 = Color.fromARGB(97, 130, 130, 130);
 
   static const Color hint = Color(0xffc7c7cc);
 
