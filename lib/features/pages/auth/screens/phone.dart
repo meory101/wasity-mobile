@@ -45,7 +45,7 @@ class _PhoneState extends State<Phone> {
               builder: (context) => Otp(
                 otpCode: otpResponse['otp_code'].toString(),
                 themeNotifier: widget.themeNotifier,
-                clientId: otpResponse['client_id'].toString(), 
+                clientId: otpResponse['client_id'].toString(),
               ),
             ),
           );
@@ -99,8 +99,10 @@ class _PhoneState extends State<Phone> {
                             borderRadius: AppRadiusManager.r6,
                             hintText: '09 - - - - - - - -',
                             prefixIcon: Icon(Icons.phone,
-                                color: theme.inputDecorationTheme.hintStyle?.color),
-                            hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
+                                color: theme
+                                    .inputDecorationTheme.hintStyle?.color),
+                            hintStyle:
+                                theme.inputDecorationTheme.hintStyle?.copyWith(
                               color: isDarkMode
                                   ? AppColorManager.grey
                                   : AppColorManager.navyLightBlue,
@@ -120,7 +122,7 @@ class _PhoneState extends State<Phone> {
                               return null;
                             },
                           ),
-                          SizedBox(height: AppHeightManager.h12),
+                          SizedBox(height: AppHeightManager.h10),
                           AppElevatedButton(
                             text: "Next",
                             onPressed: _generateOTPAndNavigate,

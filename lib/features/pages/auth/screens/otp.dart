@@ -68,7 +68,7 @@ class _OtpState extends State<Otp> {
     AppSharedPreferences.cacheClientId(widget.clientId);
 
     if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, '/ButtonNavbar');
+      Navigator.pushReplacementNamed(context, '/ButtonNavbar');
     }
   }
 

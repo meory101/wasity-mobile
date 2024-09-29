@@ -79,11 +79,10 @@ class TrendingProductContainer extends StatelessWidget {
               context,
               "/ProductInfo",
               arguments: product,
-              
             );
           },
           child: Hero(
-            tag: 'product-image-trend${product.id}', 
+            tag: 'product-image-trend${product.id}',
             child: Image.network(
               '${Config.imageUrl}/${product.image}',
               fit: BoxFit.cover,

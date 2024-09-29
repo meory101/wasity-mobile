@@ -453,6 +453,24 @@ class WalletService {
 
 //!OrderService
 class OrderService {
+  //?cancelOrder
+  Future<void> cancelOrder(String orderId, String clientId) async {
+    final response = await http.post(
+      Uri.parse('${Config.baseUrl}/cancelOrder'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'id': orderId,
+        'user_id': clientId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print("Order cancelled successfully.");
+    } else {
+      throw Exception('Failed to cancel order');
+    }
+  }
+
   Future<List<Order>> fetchOrders() async {
     String clientId = AppSharedPreferences.getClientId();
     if (kDebugMode) {

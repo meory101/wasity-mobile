@@ -29,7 +29,6 @@ class _SearchProductsState extends State<SearchProducts> {
 
     var body = jsonDecode(response.body);
 
-    // Ensure that 'releventProducts' is properly parsed as Map<String, dynamic>
     data = body['releventProducts'];
 
     setState(() {});
@@ -51,38 +50,36 @@ class _SearchProductsState extends State<SearchProducts> {
                   },
                 ),
                 data == null
-                    ? SizedBox() // Show empty widget if no data
+                    ? const SizedBox() 
                     : Visibility(
                         visible: data != null,
                         child: ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount:
-                              data.length, // Accessing the length of 'id'
+                              data.length, 
                           itemBuilder: (context, index) {
-                            return Container(
-                              child: Column(
-                                children: [
-                                  AppTextWidget(
-                                    text: data![index]
-                                        ['name'], // Accessing name by index
-                                    color: AppColorManager.white,
-                                  ),
-                                  AppTextWidget(
-                                    text: data![index]
-                                        ['desc'], // Accessing description
-                                    color: AppColorManager.white,
-                                  ),
-                                  Image.network(
-                                    '${Config.imageUrl}/${data![index]['image']}', // Add your image base URL
-                                    fit: BoxFit.cover,
-                                  ),
-                                  AppTextWidget(
-                                    text: 'Price: ${data![index]['price']}',
-                                    color: AppColorManager.white,
-                                  ),
-                                ],
-                              ),
+                            return Column(
+                              children: [
+                                AppTextWidget(
+                                  text: data![index]
+                                      ['name'], // Accessing name by index
+                                  color: AppColorManager.white,
+                                ),
+                                AppTextWidget(
+                                  text: data![index]
+                                      ['desc'], // Accessing description
+                                  color: AppColorManager.white,
+                                ),
+                                Image.network(
+                                  '${Config.imageUrl}/${data![index]['image']}', // Add your image base URL
+                                  fit: BoxFit.cover,
+                                ),
+                                AppTextWidget(
+                                  text: 'Price: ${data![index]['price']}',
+                                  color: AppColorManager.white,
+                                ),
+                              ],
                             );
                           },
                         ),

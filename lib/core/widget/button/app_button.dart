@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
+import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
 
 class AppElevatedButton extends StatelessWidget {
@@ -21,25 +22,26 @@ class AppElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(color),
-        minimumSize: WidgetStateProperty.all(
-          Size(double.infinity, AppHeightManager.h9),
-        ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadiusManager.r10),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadiusManager.r6),
+      child: Container(
+        width: double.infinity,
+        child: GestureDetector(
+          onTap: onPressed,
+          child: DecoratedContainer(
+            height: AppHeightManager.h6point2,
+            color: color ?? AppColorManager.yellow,
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              AppTextWidget(
+                text: text,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: textColor ?? AppColorManager.navyLightBlue,
+                      fontSize: fontSize,
+                    ),
+              ),
+            ]),
           ),
         ),
-      ),
-      onPressed: onPressed,
-      child: AppTextWidget(
-        text: text,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: textColor ?? AppColorManager.navyLightBlue,
-              fontSize: fontSize,
-            ),
       ),
     );
   }

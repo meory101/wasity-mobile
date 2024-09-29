@@ -4,5 +4,25 @@
     "githubRepositories.autoFetch.enabled": false,
     "githubRepositories.experimental.prefetch": true,
     "gradle.allowParallelRun": true,
-    "gradle.autoDetect": "on"
+    "gradle.autoDetect": "on",
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#fcf099",
+        "activityBar.background": "#fcf099",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#05baa4",
+        "activityBarBadge.foreground": "#15202b",
+        "commandCenter.border": "#15202b99",
+        "sash.hoverBorder": "#fcf099",
+        "statusBar.background": "#fae968",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#f8e237",
+        "statusBarItem.remoteBackground": "#fae968",
+        "statusBarItem.remoteForeground": "#15202b",
+        "titleBar.activeBackground": "#fae968",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#fae96899",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#fae968"
 }

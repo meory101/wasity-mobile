@@ -115,38 +115,6 @@ class Productsbysubbranchcontainer extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: AppHeightManager.h2),
-                                    child: Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          AppIconManager.star,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColorManager.yellow,
-                                            BlendMode.srcIn,
-                                          ),
-                                          width: AppWidthManager.w12,
-                                          height: AppHeightManager.h2point2,
-                                        ),
-                                        SizedBox(width: AppWidthManager.w1),
-                                        AppTextWidget(
-                                          text: (product.rate != null
-                                              ? product.rate!.toStringAsFixed(1)
-                                              : '0.0'),
-                                          style: theme.textTheme.displaySmall
-                                              ?.copyWith(
-                                            color: themeNotifier!.value ==
-                                                    ThemeMode.dark
-                                                ? AppColorManager.white
-                                                : AppColorManager.navyBlue,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                             SizedBox(
@@ -178,6 +146,34 @@ class Productsbysubbranchcontainer extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+              ),
+              Positioned(
+                left: AppWidthManager.w32,
+                top: AppHeightManager.h27,
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      AppIconManager.star,
+                      colorFilter: const ColorFilter.mode(
+                        AppColorManager.yellow,
+                        BlendMode.srcIn,
+                      ),
+                      width: AppWidthManager.w12,
+                      height: AppHeightManager.h2point2,
+                    ),
+                    SizedBox(width: AppWidthManager.w1),
+                    AppTextWidget(
+                      text: (product.rate != null
+                          ? product.rate!.toStringAsFixed(1)
+                          : '0.0'),
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        color: themeNotifier!.value == ThemeMode.dark
+                            ? AppColorManager.white
+                            : AppColorManager.navyBlue,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               // Cart Button

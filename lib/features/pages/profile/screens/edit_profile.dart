@@ -328,7 +328,7 @@ class _EditProfileState extends State<EditProfile> {
         DecoratedContainer(
           border: Border.all(color: AppColorManager.lightGrey),
           height: AppHeightManager.h5point8,
-          width: AppWidthManager.w60,
+          width: AppWidthManager.w70,
           borderRadius: BorderRadius.circular(AppRadiusManager.r6),
           color: AppColorManager.navyLightBlue,
           child: GestureDetector(

@@ -15,13 +15,14 @@ class Intro extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-          top: AppHeightManager.h6, ),
+        top: AppHeightManager.h6,
+      ),
       child: Column(
         children: [
           DecoratedContainer(
-            height: AppHeightManager.h100,
+            height: AppHeightManager.h150,
             isGradient: true,
-            isDarkMode: isDarkMode, // Pass the isDarkMode flag
+            isDarkMode: isDarkMode,
             child: Stack(
               children: [
                 Image.asset(

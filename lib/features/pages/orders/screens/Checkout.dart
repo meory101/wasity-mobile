@@ -391,11 +391,11 @@ class _CheckoutState extends State<Checkout> {
                   text: "Place Order",
                   color: AppColorManager.lightGrey,
                   onPressed: () async {
-                    // print('address_id: $address_id');
-                    // print('delivery_type: $delivery_type');
-                    // print('client_id: $client_id');
-                    // print('pay_type: $pay_type');
-                    // print('products: $cartItemsApi');
+                    print('address_id: $address_id');
+                    print('delivery_type: $delivery_type');
+                    print('client_id: $client_id');
+                    print('pay_type: $pay_type');
+                    print('products: $cartItemsApi');
 
                     //! للتأخير وقت البصمة
                     final bool? isAuthenticated =

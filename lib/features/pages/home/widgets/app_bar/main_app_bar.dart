@@ -83,7 +83,7 @@ class _MainAppBarState extends State<MainAppBar> {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
-                            AppImageManager.personalImage, // الصورة البديلة
+                            AppImageManager.personalImage, 
                             fit: BoxFit.cover,
                           );
                         },

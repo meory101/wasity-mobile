@@ -4,8 +4,8 @@ import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/features/models/appModels.dart';
 
 class CartProvider extends ChangeNotifier {
-  final List<Product> _cartItems = []; // قائمة المنتجات في السلة
-  final Map<int, int> products = {}; // تخزين كميات المنتجات في السلة
+  final List<Product> _cartItems = []; 
+  final Map<int, int> products = {}; 
 
   List<Product> get cartItems => _cartItems;
 
@@ -26,55 +26,55 @@ class CartProvider extends ChangeNotifier {
   //! إضافة منتج إلى السلة
   void addToCart(Product product) {
     if (products.containsKey(product.id)) {
-      // إذا كان المنتج موجودًا بالفعل، زيادة الكمية فقط
+    
       products[product.id] = (products[product.id] ?? 1) + 1;
     } else {
-      // إذا كان المنتج غير موجود، أضفه إلى القائمة مع الكمية الابتدائية 1
+    
       _cartItems.add(product);
       products[product.id] = 1;
     }
-    _updateCartItemsApi(); // تحديث حالة API مع الكمية الجديدة
-    _saveCartItems(); // حفظ حالة السلة
-    notifyListeners(); // تحديث الواجهة
+    _updateCartItemsApi(); 
+    _saveCartItems(); 
+    notifyListeners(); 
   }
 
   //! إزالة منتج من السلة
   void removeFromCart(Product product) {
     if (_cartItems.contains(product)) {
-      _cartItems.remove(product); // إزالة المنتج من القائمة
+      _cartItems.remove(product); 
       cartItemsApi
-          .removeWhere((e) => e['id'] == product.id); // إزالة من الـ API
+          .removeWhere((e) => e['id'] == product.id);
     }
-    products.remove(product.id); // إزالة المنتج من خريطة الكميات
-    _updateCartItemsApi(); // تحديث API
-    _saveCartItems(); // حفظ حالة السلة بعد التعديل
-    notifyListeners(); // تحديث الواجهة
+    products.remove(product.id); 
+    _updateCartItemsApi(); 
+    _saveCartItems(); 
+    notifyListeners(); 
   }
 
   //! تعديل كمية منتج معين في السلة
   void updateQuantity(Product product, int quantity) {
     if (_cartItems.contains(product) && quantity > 0) {
       products[product.id] = quantity;
-      _updateCartItemsApi(); // تحديث API مع الكمية الجديدة
-      _saveCartItems(); // حفظ حالة السلة
-      notifyListeners(); // تحديث الواجهة
+      _updateCartItemsApi();
+      _saveCartItems(); 
+      notifyListeners(); 
     } else if (quantity == 0) {
-      removeFromCart(product); // حذف المنتج من السلة إذا كانت الكمية 0
+      removeFromCart(product);
     }
   }
 
   //! الحصول على كمية منتج معين في السلة
   int getQuantity(Product product) {
-    return products[product.id] ?? 1; // الكمية الابتدائية هي 1
+    return products[product.id] ?? 1; 
   }
 
   //! مسح السلة
   void clearCart() {
     _cartItems.clear();
     products.clear();
-    cartItemsApi.clear(); // مسح الـ API أيضاً
-    _saveCartItems(); // حفظ حالة السلة
-    notifyListeners(); // تحديث الواجهة
+    cartItemsApi.clear(); 
+    _saveCartItems(); 
+    notifyListeners(); 
   }
 
   //! تحديث قائمة المنتجات في الـ API
@@ -96,15 +96,15 @@ class CartProvider extends ChangeNotifier {
   void _saveCartItems() {
     List<Map<String, dynamic>> cartItemsJson = _cartItems.map((product) {
       return {
-        'product': product.toJson(), //! تحويل المنتج إلى JSON
-        'quantity': products[product.id], //! تخزين الكمية
+        'product': product.toJson(),
+        'quantity': products[product.id],
       };
     }).toList();
 
     String cartItemsString =
-        jsonEncode(cartItemsJson); // تحويل القائمة إلى JSON
+        jsonEncode(cartItemsJson); 
     AppSharedPreferences.cacheCartItems(
-        cartItemsString); // تخزين السلسلة في SharedPreferences
+        cartItemsString); 
   }
 
   //! تحميل بيانات السلة (إذا كانت موجودة)

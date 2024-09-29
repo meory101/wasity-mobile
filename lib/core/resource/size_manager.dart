@@ -46,6 +46,7 @@ abstract class AppWidthManager {
   static double w5Point3 = 5.3.w;
   static double w4 = 4.w;
   static double w4point2 = 4.2.w;
+  static double w42point2 = 42.5.w;
   static double w4point7 = 4.7.w;
   static double w7point7 = 7.7.w;
   static double w5 = 5.w;
@@ -204,4 +205,5 @@ abstract class AppHeightManager {
   static double h80 = 80.h;
   static double h90 = 90.h;
   static double h100 = 100.h;
+  static double h150 = 150.h;
 }

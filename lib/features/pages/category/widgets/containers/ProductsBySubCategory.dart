@@ -95,63 +95,29 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          AppTextWidget(
-                                            text: product.desc.isNotEmpty
-                                                ? product.desc
-                                                : "No description available",
-                                            style: theme.textTheme.bodySmall
-                                                ?.copyWith(
-                                              color: isDarkMode
-                                                  ? AppColorManager.grey
-                                                  : AppColorManager.navyBlue,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: AppHeightManager.h2),
-                                    child: Row(
+                                Column(
+                                  children: [
+                                    Row(
                                       children: [
-                                        SvgPicture.asset(
-                                          AppIconManager.star,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColorManager.yellow,
-                                            BlendMode.srcIn,
-                                          ),
-                                          width: AppWidthManager.w12,
-                                          height: AppHeightManager.h2point2,
-                                        ),
-                                        SizedBox(width: AppWidthManager.w1),
                                         AppTextWidget(
-                                          text: (product.rate != null
-                                              ? product.rate!.toStringAsFixed(1)
-                                              : '0.0'),
-                                          style: theme.textTheme.displaySmall
+                                          text: product.desc.isNotEmpty
+                                              ? product.desc
+                                              : "No description available",
+                                          style: theme.textTheme.bodySmall
                                               ?.copyWith(
-                                            color: themeNotifier!.value ==
-                                                    ThemeMode.dark
-                                                ? AppColorManager.white
+                                            color: isDarkMode
+                                                ? AppColorManager.grey
                                                 : AppColorManager.navyBlue,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ],
                             ),
                             SizedBox(
-                              height: AppHeightManager.h05,
+                              height: AppHeightManager.h1,
                             ),
                             Row(
                               children: [
@@ -181,11 +147,41 @@ class ProductsbysubcategoryContainer extends StatelessWidget {
                   ),
                 ),
               ),
+              Positioned(
+                left: AppWidthManager.w32,
+                top: AppHeightManager.h29,
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      AppIconManager.star,
+                      colorFilter: const ColorFilter.mode(
+                        AppColorManager.yellow,
+                        BlendMode.srcIn,
+                      ),
+                      width: AppWidthManager.w12,
+                      height: AppHeightManager.h2point2,
+                    ),
+                    SizedBox(width: AppWidthManager.w1),
+                    AppTextWidget(
+                      text: (product.rate != null
+                          ? product.rate!.toStringAsFixed(1)
+                          : '0.0'),
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        color: themeNotifier!.value == ThemeMode.dark
+                            ? AppColorManager.white
+                            : AppColorManager.navyBlue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               // Cart Button
               Positioned(
                 left: AppWidthManager.w29,
                 top: AppHeightManager.h17,
-                child:  CartButton(product:product ,),
+                child: CartButton(
+                  product: product,
+                ),
               ),
             ],
           ),

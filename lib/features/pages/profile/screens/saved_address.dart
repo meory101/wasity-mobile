@@ -154,19 +154,12 @@ class _SavedAddressesState extends State<SavedAddresses> {
             left: AppWidthManager.w20,
             child: SizedBox(
               height: AppHeightManager.h7,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.all(const Color(0xFF818174)),
-                ),
-                onPressed: _showAddAddressDialog,
-                child: AppTextWidget(
+              child: Container(
+                child: AppElevatedButton(
+                  onPressed: _showAddAddressDialog,
+                  color: AppColorManager.shadow2,
+                  textColor: AppColorManager.grayLightBlue,
                   text: "+ Add Address",
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    color: isDarkMode
-                        ? AppColorManager.white
-                        : AppColorManager.navyLightBlue,
-                  ),
                 ),
               ),
             ),
@@ -231,9 +224,8 @@ class _SavedAddressesState extends State<SavedAddresses> {
                 ),
                 SizedBox(height: AppHeightManager.h2),
                 ElevatedButton.icon(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(AppColorManager.yellow),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColorManager.yellow,
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, "/MapScreen",
@@ -266,10 +258,6 @@ class _SavedAddressesState extends State<SavedAddresses> {
               ),
             ),
             ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    WidgetStateProperty.all(AppColorManager.navyLightBlue),
-              ),
               onPressed: () async {
                 final name = controller.text.trim();
                 if (name.isEmpty) {
@@ -296,7 +284,8 @@ class _SavedAddressesState extends State<SavedAddresses> {
                   Navigator.of(context).pop();
                 } catch (e) {
                   if (kDebugMode) {
-                    print('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff$updatedAddress');
+                    print(
+                        'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff$updatedAddress');
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
                     print('Error updating address: $e');
@@ -341,9 +330,8 @@ class _SavedAddressesState extends State<SavedAddresses> {
                 ),
                 SizedBox(height: AppHeightManager.h2),
                 ElevatedButton.icon(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(AppColorManager.yellow),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColorManager.yellow,
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, "/MapScreen").then((result) {
@@ -375,10 +363,6 @@ class _SavedAddressesState extends State<SavedAddresses> {
               ),
             ),
             ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    WidgetStateProperty.all(AppColorManager.navyLightBlue),
-              ),
               onPressed: () async {
                 final name = nameController.text.trim();
                 if (name.isEmpty) {
@@ -456,7 +440,7 @@ class _SavedAddressesState extends State<SavedAddresses> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                 Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
                 child: AppTextWidget(
                   text: 'OK',

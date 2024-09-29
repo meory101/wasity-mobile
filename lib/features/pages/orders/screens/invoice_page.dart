@@ -76,8 +76,11 @@ class _InvoiceState extends State<Invoice> {
               color: AppColorManager.greyShadowOpacity1,
               thickness: AppHeightManager.h03,
             ),
+            SizedBox(
+              height: AppHeightManager.h3,
+            ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppHeightManager.h4),
+              padding: EdgeInsets.symmetric(horizontal: AppHeightManager.h3),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadiusManager.r10),
                 child: DecoratedContainer(
@@ -86,13 +89,19 @@ class _InvoiceState extends State<Invoice> {
                 ),
               ),
             ),
-            // Row(
-            //   children: [
-            //     DecoratedContainer(
-            //       color: AppColorManager.red,
-            //     ),
-            //   ],
-            // )
+            SizedBox(
+              height: AppHeightManager.h3,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppHeightManager.h3),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadiusManager.r10),
+                child: DecoratedContainer(
+                  height: AppHeightManager.h30,
+                  color: AppColorManager.navyLightBlue,
+                ),
+              ),
+            ),
           ],
         ),
       ),
