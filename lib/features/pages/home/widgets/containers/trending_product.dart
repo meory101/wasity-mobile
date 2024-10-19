@@ -26,14 +26,17 @@ class TrendingProductContainer extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = themeNotifier?.value == ThemeMode.dark;
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: AppHeightManager.h2),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildProductContainer(context, theme, isDarkMode),
-          ),
-        ],
+    return Semantics(
+      label: 'تفاصيل المنتَج الرائج: ${product.name}',
+      child: Padding(
+        padding: EdgeInsets.only(bottom: AppHeightManager.h2),
+        child: Row(
+          children: [
+            Expanded(
+              child: _buildProductContainer(context, theme, isDarkMode),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -68,27 +71,30 @@ class TrendingProductContainer extends StatelessWidget {
   }
 
   Widget _buildProductImage(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppRadiusManager.r5),
-      child: SizedBox(
-        width: AppWidthManager.w30,
-        height: AppHeightManager.h11,
-        child: InkWell(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              "/ProductInfo",
-              arguments: product,
-            );
-          },
-          child: Hero(
-            tag: 'product-image-trend${product.id}',
-            child: Image.network(
-              '${Config.imageUrl}/${product.image}',
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.error);
-              },
+    return Semantics(
+      label: 'صورة المنتَج ${product.name}',
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadiusManager.r5),
+        child: SizedBox(
+          width: AppWidthManager.w30,
+          height: AppHeightManager.h11,
+          child: InkWell(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "/ProductInfo",
+                arguments: product,
+              );
+            },
+            child: Hero(
+              tag: 'product-image-trend${product.id}',
+              child: Image.network(
+                '${Config.imageUrl}/${product.image}',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.error);
+                },
+              ),
             ),
           ),
         ),
@@ -101,29 +107,42 @@ class TrendingProductContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppTextWidget(
-            text: product.name,
-            style: theme.textTheme.displayMedium?.copyWith(
-              color:
-                  isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
+          Semantics(
+            label: 'اسم المنتَج',
+            child: AppTextWidget(
+              text: product.name,
+              style: theme.textTheme.displayMedium?.copyWith(
+                color: isDarkMode
+                    ? AppColorManager.white
+                    : AppColorManager.navyBlue,
+              ),
             ),
           ),
-          AppTextWidget(
-            text: product.desc,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color:
-                  isDarkMode ? AppColorManager.grey : AppColorManager.navyBlue,
+          Semantics(
+            label: 'وصف المنتَج',
+            child: AppTextWidget(
+              text: product.desc,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: isDarkMode
+                    ? AppColorManager.grey
+                    : AppColorManager.navyBlue,
+              ),
             ),
           ),
-          PriceText(
-            price: product.price,
-            priceStyle: theme.textTheme.displayMedium?.copyWith(
-              color:
-                  isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
-            ),
-            style: theme.textTheme.displayMedium?.copyWith(
-              color:
-                  isDarkMode ? AppColorManager.white : AppColorManager.navyBlue,
+          Semantics(
+            label: 'سعر المنتَج',
+            child: PriceText(
+              price: product.price,
+              priceStyle: theme.textTheme.displayMedium?.copyWith(
+                color: isDarkMode
+                    ? AppColorManager.white
+                    : AppColorManager.navyBlue,
+              ),
+              style: theme.textTheme.displayMedium?.copyWith(
+                color: isDarkMode
+                    ? AppColorManager.white
+                    : AppColorManager.navyBlue,
+              ),
             ),
           ),
         ],
@@ -135,38 +154,44 @@ class TrendingProductContainer extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Padding(
-          padding: EdgeInsets.only(
-            top: AppHeightManager.h2,
-            right: AppWidthManager.w3,
-          ),
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                AppIconManager.star,
-                colorFilter: const ColorFilter.mode(
-                  AppColorManager.yellow,
-                  BlendMode.srcIn,
+        Semantics(
+          label: 'تقييم المنتَج ${product.name} بنجمة',
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: AppHeightManager.h2,
+              right: AppWidthManager.w3,
+            ),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  AppIconManager.star,
+                  colorFilter: const ColorFilter.mode(
+                    AppColorManager.yellow,
+                    BlendMode.srcIn,
+                  ),
+                  width: AppWidthManager.w12,
+                  height: AppHeightManager.h2point2,
                 ),
-                width: AppWidthManager.w12,
-                height: AppHeightManager.h2point2,
-              ),
-              SizedBox(
-                child: AppTextWidget(
-                  text: (product.rate != null
-                      ? product.rate!.toStringAsFixed(1)
-                      : '0.0'),
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    color: isDarkMode
-                        ? AppColorManager.white
-                        : AppColorManager.navyBlue,
+                SizedBox(
+                  child: AppTextWidget(
+                    text: (product.rate != null
+                        ? product.rate!.toStringAsFixed(1)
+                        : '0.0'),
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: isDarkMode
+                          ? AppColorManager.white
+                          : AppColorManager.navyBlue,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        CartButton(product: product),
+        Semantics(
+          label: 'زر إضافة المنتَج إلى السلة',
+          child: CartButton(product: product),
+        ),
       ],
     );
   }

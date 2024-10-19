@@ -54,21 +54,28 @@ class _TrendingProductState extends State<TrendingProduct> {
                   child: AppTextWidget(text: 'No trending products available'));
             } else {
               final products = snapshot.data!;
-              return ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  try {
-                    return TrendingProductContainer(
-                      themeNotifier: widget.themeNotifier,
-                      product: products[index],
-                    );
-                  } catch (e) {
-                    if (kDebugMode) {
-                      print('Error building item at index $index: $e');
+              return Semantics(
+                label: 'قائمة المنتجات الرائجة',
+                child: ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    try {
+                      return Semantics(
+                        label: 'المنتج ${products[index].name}',
+                        hint: 'اضغط للحصول على معلومات المنتج',
+                        child: TrendingProductContainer(
+                          themeNotifier: widget.themeNotifier,
+                          product: products[index],
+                        ),
+                      );
+                    } catch (e) {
+                      if (kDebugMode) {
+                        print('Error building item at index $index: $e');
+                      }
+                      return Container();
                     }
-                    return Container();
-                  }
-                },
+                  },
+                ),
               );
             }
           },

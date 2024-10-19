@@ -22,54 +22,74 @@ class CountitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedContainer(
-      color: AppColorManager.navyBlue,
-      width: AppWidthManager.w26,
-      height: AppHeightManager.h4point4,
-      child: Row(
-        children: [
-          SizedBox(width: AppWidthManager.w1),
-          GestureDetector(
-            onTap: onDecrement,
-            child: DecoratedContainer(
-              color: AppColorManager.whiteBlue,
-              height: AppHeightManager.h3point3,
-              width: AppWidthManager.w7,
-              child: Center(
-                child: SvgPicture.asset(
-                  width: AppWidthManager.w4,
-                  AppIconManager.minimize,
-                  // ignore: deprecated_member_use
-                  color: AppColorManager.black,
+    return Semantics(
+      label: 'محدد الكمية',
+      hint: 'أختر الكمية المطلوبة',
+      child: DecoratedContainer(
+        color: AppColorManager.navyBlue,
+        width: AppWidthManager.w26,
+        height: AppHeightManager.h4point4,
+        child: Row(
+          children: [
+            SizedBox(width: AppWidthManager.w1),
+            Semantics(
+              button: true,
+              label: 'تقليل الكمية',
+              hint: 'اضغط لتقليل الكمية',
+              excludeSemantics: true,
+              child: GestureDetector(
+                onTap: onDecrement,
+                child: DecoratedContainer(
+                  color: AppColorManager.whiteBlue,
+                  height: AppHeightManager.h3point3,
+                  width: AppWidthManager.w7,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      width: AppWidthManager.w4,
+                      AppIconManager.minimize,
+                      // ignore: deprecated_member_use
+                      color: AppColorManager.black,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: AppWidthManager.w10,
-            child: Center(
-              child: AppTextWidget(
-                text: '$quantity',
-                fontSize: FontSizeManager.fs17,
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: onIncrement,
-            child: DecoratedContainer(
-              color: AppColorManager.navyLightBlue,
-              height: AppHeightManager.h3point3,
-              width: AppWidthManager.w7,
+            SizedBox(
+              width: AppWidthManager.w10,
               child: Center(
-                child: SvgPicture.asset(
-                  width: AppWidthManager.w4,
-                  AppIconManager.add,
+                child: Semantics(
+                  label: 'الكمية الحالية',
+                  hint: 'الكمية المختارة هي $quantity',
+                  child: AppTextWidget(
+                    text: '$quantity',
+                    fontSize: FontSizeManager.fs17,
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(width: AppWidthManager.w1),
-        ],
+            Semantics(
+              button: true,
+              label: 'زيادة الكمية',
+              hint: 'اضغط لزيادة الكمية',
+              excludeSemantics: true,
+              child: GestureDetector(
+                onTap: onIncrement,
+                child: DecoratedContainer(
+                  color: AppColorManager.navyLightBlue,
+                  height: AppHeightManager.h3point3,
+                  width: AppWidthManager.w7,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      width: AppWidthManager.w4,
+                      AppIconManager.add,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: AppWidthManager.w1),
+          ],
+        ),
       ),
     );
   }

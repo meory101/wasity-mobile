@@ -28,7 +28,7 @@ class _MapScreenState extends State<MapScreen> {
   CameraPosition? _kGooglePlex;
   late Set<Marker> mymarker;
 
-  getLocation() async {
+  getLocation() async { 
     PermissionStatus status = await Permission.location.request();
     if (status == PermissionStatus.denied) {
       await Geolocator.requestPermission();

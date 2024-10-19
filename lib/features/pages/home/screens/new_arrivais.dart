@@ -65,7 +65,7 @@ class _NewArrivaisState extends State<NewArrivais> {
                       crossAxisCount: 2,
                       crossAxisSpacing: AppWidthManager.w3,
                       childAspectRatio:
-                          AppWidthManager.w25 / AppHeightManager.h23,
+                          AppWidthManager.w25 / AppHeightManager.h20,
                     ),
                     itemCount: allNewItems.length,
                     itemBuilder: (context, index) {

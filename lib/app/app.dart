@@ -11,7 +11,6 @@ import 'package:wasity/features/pages/category/screens/Products_by_sub_category.
 import 'package:wasity/features/pages/home/screens/new_arrivais.dart';
 import 'package:wasity/features/pages/branch/sub_branch.dart';
 import 'package:wasity/features/pages/orders/screens/Checkout.dart';
-import 'package:wasity/features/pages/orders/screens/invoice_page.dart';
 import 'package:wasity/features/pages/orders/screens/map_screen.dart';
 import 'package:wasity/features/pages/orders/screens/order_history.dart';
 import 'package:wasity/features/pages/profile/screens/saved_address.dart';
@@ -41,7 +40,7 @@ class Wasity extends StatelessWidget {
             darkTheme: darkTheme(),
             themeMode: themeNotifier.value,
             debugShowCheckedModeBanner: false,
-            home: HomeScreen(
+            home: ButtonNavbar(
               themeNotifier: themeNotifier,
             ),
             initialRoute: "/ButtonNavbar",
@@ -52,18 +51,10 @@ class Wasity extends StatelessWidget {
                     builder: (context) =>
                         ButtonNavbar(themeNotifier: themeNotifier),
                   );
-                case "/AllCategory":
-                  return MaterialPageRoute(
-                    builder: (context) =>
-                        AllCategory(themeNotifier: themeNotifier),
-                  );
+
                 case "/Cart":
                   return MaterialPageRoute(
                     builder: (context) => Cart(themeNotifier: themeNotifier),
-                  );
-                case "/Invoice":
-                  return MaterialPageRoute(
-                    builder: (context) => Invoice(themeNotifier: themeNotifier),
                   );
                 case "/SubCategoryProducts":
                   final arguments = settings.arguments as Map<String, dynamic>;
@@ -109,6 +100,11 @@ class Wasity extends StatelessWidget {
                   return MaterialPageRoute(
                     builder: (context) =>
                         Checkout(themeNotifier: themeNotifier),
+                  );
+                case "/AllCategory":
+                  return MaterialPageRoute(
+                    builder: (context) =>
+                        AllCategory(themeNotifier: themeNotifier),
                   );
                 case "/HomeScreen":
                   final args = settings.arguments as Map<String, dynamic>;

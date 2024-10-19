@@ -38,12 +38,14 @@ class _FingerprintAuthPageState extends State<FingerprintAuthPage> {
         _statusMessage = authenticated ? "Authentication successful!" : "Authentication failed or cancelled.";
       });
 
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop(authenticated);
     } on PlatformException catch (e) {
       setState(() {
         _isAuthenticating = false;
         _statusMessage = "Error: ${e.message}";
       });
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop(false);
     }
   }
@@ -83,8 +85,10 @@ Future<bool?> showFingerprintAuthDialog(BuildContext context) {
               final bool? isAuthenticated = await _authenticate(context);
               if (isAuthenticated == true) {
             
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop(true);
               } else {
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop(false);
               }
             },

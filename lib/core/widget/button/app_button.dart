@@ -24,7 +24,7 @@ class AppElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppRadiusManager.r6),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: GestureDetector(
           onTap: onPressed,

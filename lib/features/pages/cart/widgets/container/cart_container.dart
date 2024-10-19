@@ -35,7 +35,6 @@ class _CartContainerState extends State<CartContainer> {
 
   @override
   void initState() {
-    print(quantity);
     super.initState();
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     quantity = cartProvider.getQuantity(widget.product);
@@ -46,7 +45,7 @@ class _CartContainerState extends State<CartContainer> {
       quantity++;
     });
     Provider.of<CartProvider>(context, listen: false)
-        .updateQuantity(widget.product, quantity);
+        .updateQuantity(widget.product, quantity, context);
   }
 
   void _decrementQuantity() {
@@ -55,7 +54,7 @@ class _CartContainerState extends State<CartContainer> {
         quantity--;
       });
       Provider.of<CartProvider>(context, listen: false)
-          .updateQuantity(widget.product, quantity);
+          .updateQuantity(widget.product, quantity, context);
     }
   }
 
@@ -70,14 +69,14 @@ class _CartContainerState extends State<CartContainer> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: const Text("إلغاء"),
             ),
             TextButton(
               onPressed: () {
-                widget.onRemove(); 
-                Navigator.of(context).pop(); 
+                widget.onRemove();
+                Navigator.of(context).pop();
               },
               child: const Text("تأكيد"),
             ),
@@ -101,100 +100,115 @@ class _CartContainerState extends State<CartContainer> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadiusManager.r5),
-                child: DecoratedContainer(
-                  color: widget.themeNotifier.value == ThemeMode.dark
-                      ? AppColorManager.navyLightBlue
-                      : AppColorManager.whiteBlue,
-                  width: AppWidthManager.w89,
-                  height: AppHeightManager.h15point7,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: AppWidthManager.w3Point5,
-                        top: AppHeightManager.h02,
-                        bottom: AppHeightManager.h08),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(AppRadiusManager.r5),
-                          child: DecoratedContainer(
-                            width: AppWidthManager.w25,
-                            height: AppHeightManager.h11,
-                            child: InkWell(
-                              child: Image.network(
-                                '${Config.imageUrl}/${widget.product.image}',
-                                fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context,
-                                    Object exception, StackTrace? stackTrace) {
-                                  return Image.asset(
-                                      'assets/images/placeholder.png');
-                                },
+                child: Semantics(
+                  label: 'صندوق المنتج',
+                  child: DecoratedContainer(
+                    color: widget.themeNotifier.value == ThemeMode.dark
+                        ? AppColorManager.navyLightBlue
+                        : AppColorManager.whiteBlue,
+                    width: AppWidthManager.w89,
+                    height: AppHeightManager.h15point7,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: AppWidthManager.w3Point5,
+                          top: AppHeightManager.h02,
+                          bottom: AppHeightManager.h08),
+                      child: Row(
+                        children: [
+                          Semantics(
+                            label: 'صورة المنتج ${widget.product.name}',
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(AppRadiusManager.r5),
+                              child: DecoratedContainer(
+                                width: AppWidthManager.w25,
+                                height: AppHeightManager.h11,
+                                child: InkWell(
+                                  child: Image.network(
+                                    '${Config.imageUrl}/${widget.product.image}',
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception, StackTrace? stackTrace) {
+                                      return Image.asset(
+                                          'assets/images/placeholder.png');
+                                    },
+                                  ),
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/ProductInfo",
+                                      arguments: widget.product,
+                                    );
+                                  },
+                                ),
                               ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  "/ProductInfo",
-                                  arguments: widget.product,
-                                );
-                              },
                             ),
                           ),
-                        ),
-                        SizedBox(width: AppWidthManager.w3),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppTextWidget(
-                                text: widget.product.name,
-                                style: theme.textTheme.displayMedium?.copyWith(
-                                  color: widget.themeNotifier.value ==
-                                          ThemeMode.dark
-                                      ? AppColorManager.white
-                                      : AppColorManager.navyBlue,
+                          SizedBox(width: AppWidthManager.w3),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Semantics(
+                                  label: 'اسم المنتج',
+                                  child: AppTextWidget(
+                                    text: widget.product.name,
+                                    style: theme.textTheme.displayMedium?.copyWith(
+                                      color: widget.themeNotifier.value ==
+                                              ThemeMode.dark
+                                          ? AppColorManager.white
+                                          : AppColorManager.navyBlue,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: AppHeightManager.h1point2),
-                              AppTextWidget(
-                                text: widget.product.desc,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: widget.themeNotifier.value ==
-                                          ThemeMode.dark
-                                      ? AppColorManager.grey
-                                      : AppColorManager.navyBlue,
+                                SizedBox(height: AppHeightManager.h1point2),
+                                Semantics(
+                                  label: 'وصف المنتج',
+                                  child: AppTextWidget(
+                                    text: widget.product.desc,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: widget.themeNotifier.value ==
+                                              ThemeMode.dark
+                                          ? AppColorManager.grey
+                                          : AppColorManager.navyBlue,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                              SizedBox(height: AppHeightManager.h1point2),
-                              // ?تحديث سعر المنتج بناءً على الكمية
-                              PriceText(
-                                price: totalPrice,
-                                priceStyle:
-                                    theme.textTheme.displayMedium?.copyWith(
-                                  color: widget.themeNotifier.value ==
-                                          ThemeMode.dark
-                                      ? AppColorManager.white
-                                      : AppColorManager.navyBlue,
+                                SizedBox(height: AppHeightManager.h1point2),
+                                Semantics(
+                                  label: 'السعر الإجمالي',
+                                  child: PriceText(
+                                    price: totalPrice,
+                                    priceStyle: theme.textTheme.displayMedium
+                                        ?.copyWith(
+                                      color: widget.themeNotifier.value ==
+                                              ThemeMode.dark
+                                          ? AppColorManager.white
+                                          : AppColorManager.navyBlue,
+                                    ),
+                                    style: theme.textTheme.displayMedium?.copyWith(
+                                      color: widget.themeNotifier.value ==
+                                              ThemeMode.dark
+                                          ? AppColorManager.white
+                                          : AppColorManager.navyBlue,
+                                    ),
+                                  ),
                                 ),
-                                style: theme.textTheme.displayMedium?.copyWith(
-                                  color: widget.themeNotifier.value ==
-                                          ThemeMode.dark
-                                      ? AppColorManager.white
-                                      : AppColorManager.navyBlue,
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: AppWidthManager.w13,
-                              top: AppHeightManager.h2,
-                              bottom: AppHeightManager.h8),
-                          child: Column(
-                            children: [
-                              GestureDetector(
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: AppWidthManager.w13,
+                                top: AppHeightManager.h2,
+                                bottom: AppHeightManager.h8),
+                            child: Semantics(
+                              label: 'حذف المنتج',
+                              hint: 'اضغط لحذف المنتج من السلة',
+                              button: true,
+                              child: GestureDetector(
                                 onTap: _showDeleteConfirmationDialog,
                                 child: SvgPicture.asset(
                                   AppIconManager.trash,
@@ -206,10 +220,10 @@ class _CartContainerState extends State<CartContainer> {
                                   height: AppHeightManager.h3Point5,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

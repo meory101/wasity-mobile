@@ -1,4 +1,4 @@
-import 'dart:io'; // لاستعمال File لعرض الصور من التخزين
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/icon_manager.dart';
@@ -60,39 +60,46 @@ class _MainAppBarState extends State<MainAppBar> {
               padding: EdgeInsets.only(right: AppWidthManager.w3Point8),
               child: Builder(
                 builder: (context) {
-                  return CircularIconButton(
-                    buttonIcon: SvgPicture.asset(
-                      AppIconManager.list,
-                      fit: BoxFit.none,
-                      // ignore: deprecated_member_use
-                      color: iconColor,
+                  return Semantics(
+                    label: 'القائمة الجانبية',
+                    hint: 'ضغطتين لفتح القائمة',
+                    child: CircularIconButton(
+                      buttonIcon: SvgPicture.asset(
+                        AppIconManager.list,
+                        fit: BoxFit.none,
+                        // ignore: deprecated_member_use
+                        color: iconColor,
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
                     ),
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
                   );
                 },
               ),
             ),
             Padding(
               padding: EdgeInsets.only(right: AppWidthManager.w3),
-              child: CircularIconButton(
-                buttonIcon: _profileImage != null
-                    ? Image.file(
-                        File(_profileImage!),
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            AppImageManager.personalImage, 
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      )
-                    : Image.asset(
-                        AppImageManager.personalImage,
-                        fit: BoxFit.cover,
-                      ),
-                onPressed: () {},
+              child: Semantics(
+                label: 'الصورة الشخصية',
+                child: CircularIconButton(
+                  buttonIcon: _profileImage != null
+                      ? Image.file(
+                          File(_profileImage!),
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              AppImageManager.personalImage,
+                              fit: BoxFit.fill,
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          AppImageManager.personalImage,
+                          fit: BoxFit.cover,
+                        ),
+                  onPressed: () {},
+                ),
               ),
             ),
             Column(
@@ -104,26 +111,32 @@ class _MainAppBarState extends State<MainAppBar> {
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(),
                 ),
                 SizedBox(height: AppHeightManager.h02),
-                AppTextWidget(
-                  text: "$_fullName!",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(color: iconColor),
+                Semantics(
+                  label: 'User Name',
+                  child: AppTextWidget(
+                    text: "$_fullName!",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium!
+                        .copyWith(color: iconColor),
+                  ),
                 ),
               ],
             ),
             Padding(
               padding: EdgeInsets.only(left: AppWidthManager.w12),
-              child: DeliveryTypeSlider(
-                currentValue: deliveryType,
-                onValueChanged: (value) {
-                  setState(() {
-                    deliveryType = value;
-                    AppSharedPreferences.cacheDeliveryType(value!);
-                  });
-                },
-                iconSize: 25.0,
+              child: Semantics(
+                label: 'طريقة التوصيل المفضلة',
+                child: DeliveryTypeSlider(
+                  currentValue: deliveryType,
+                  onValueChanged: (value) {
+                    setState(() {
+                      deliveryType = value;
+                      AppSharedPreferences.cacheDeliveryType(value!);
+                    });
+                  },
+                  iconSize: 25.0,
+                ),
               ),
             ),
           ],

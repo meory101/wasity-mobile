@@ -66,8 +66,8 @@ class _EditProfileState extends State<EditProfile> {
     try {
       final profile = await _clientProfileService.fetchClientProfile();
       if (profile != null) {
-        print(profile.points);
-        print("++++++++++++++++++profile.points");
+        // print(profile.points);
+        // print("++++++++++++++++++profile.points");
         setState(() {
           name = profile.name;
           email = profile.email;
@@ -108,6 +108,11 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
+    } else {
+      Image.asset(
+        AppImageManager.personalImage,
+        fit: BoxFit.cover,
+      );
     }
   }
 
@@ -229,7 +234,7 @@ class _EditProfileState extends State<EditProfile> {
                         fit: BoxFit.cover,
                       )
                     : profileImage.isNotEmpty
-                        ? Image.network(
+                        ? Image.asset(
                             profileImage,
                             height: AppHeightManager.h13,
                             width: AppWidthManager.w26,

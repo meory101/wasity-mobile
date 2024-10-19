@@ -78,7 +78,6 @@ flutter:
     - assets/icons/
     - assets/translations/
 
-
   fonts:
     - family: Cairo
       fonts:

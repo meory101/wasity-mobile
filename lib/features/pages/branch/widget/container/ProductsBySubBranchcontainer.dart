@@ -27,7 +27,7 @@ class Productsbysubbranchcontainer extends StatelessWidget {
     final bool isDarkMode = themeNotifier?.value == ThemeMode.dark;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: AppHeightManager.h5),
+      padding: EdgeInsets.only(bottom: AppHeightManager.h2),
       child: Row(
         children: [
           Stack(
@@ -36,7 +36,6 @@ class Productsbysubbranchcontainer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadiusManager.r5),
                 child: Container(
                   width: AppWidthManager.w42,
-                  height: AppHeightManager.h32,
                   color: isDarkMode
                       ? AppColorManager.navyLightBlue
                       : AppColorManager.whiteBlue,

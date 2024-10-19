@@ -39,7 +39,7 @@ class ProductsBySubBranchid extends StatelessWidget {
             } else if (snapshot.hasData) {
               final products = snapshot.data!;
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SearchFormField(),
                   SizedBox(height: AppHeightManager.h3),
@@ -47,7 +47,7 @@ class ProductsBySubBranchid extends StatelessWidget {
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        crossAxisSpacing: AppWidthManager.w3,
+                        crossAxisSpacing: AppWidthManager.w4,
                         childAspectRatio:
                             (AppWidthManager.w27 / AppHeightManager.h23),
                       ),

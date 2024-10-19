@@ -20,11 +20,12 @@ class SearchProducts extends StatefulWidget {
 
 class _SearchProductsState extends State<SearchProducts> {
   TextEditingController searchController = TextEditingController();
-  var data; // Map to hold product data
+  // ignore: prefer_typing_uninitialized_variables
+  var data;
 
   onSearchClickedCallApi() async {
     http.Response response = await http.post(
-        Uri.parse('http://192.168.134.84:5000/api/getMostReleventProducts'),
+        Uri.parse('${Config.searchEngineUrl}/getMostReleventProducts'),
         body: {"searchQuery": irSearch.text});
 
     var body = jsonDecode(response.body);
@@ -50,14 +51,13 @@ class _SearchProductsState extends State<SearchProducts> {
                   },
                 ),
                 data == null
-                    ? const SizedBox() 
+                    ? const SizedBox()
                     : Visibility(
                         visible: data != null,
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount:
-                              data.length, 
+                          itemCount: data.length,
                           itemBuilder: (context, index) {
                             return Column(
                               children: [

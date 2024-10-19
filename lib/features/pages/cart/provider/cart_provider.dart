@@ -1,16 +1,17 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/features/models/appModels.dart';
 
 class CartProvider extends ChangeNotifier {
-  final List<Product> _cartItems = []; 
-  final Map<int, int> products = {}; 
+  final List<Product> _cartItems = [];
+  final Map<int, int> products = {};
 
   List<Product> get cartItems => _cartItems;
 
   CartProvider() {
-    _loadCartItems(); // تحميل بيانات السلة عند الإنشاء
+    loadCartItems();
   }
 
   //! حساب السعر الكلي
@@ -25,56 +26,95 @@ class CartProvider extends ChangeNotifier {
 
   //! إضافة منتج إلى السلة
   void addToCart(Product product) {
+    // التحقق من كمية المنتج في المتجر
+    if (product.procountity == 0) {
+      // إذا كانت كمية المنتج في المتجر صفر، لا تضيفه إلى السلة
+      return;
+    }
+
     if (products.containsKey(product.id)) {
-    
       products[product.id] = (products[product.id] ?? 1) + 1;
     } else {
-    
       _cartItems.add(product);
       products[product.id] = 1;
     }
-    _updateCartItemsApi(); 
-    _saveCartItems(); 
-    notifyListeners(); 
+
+    _updateCartItemsApi();
+    _saveCartItems();
+    notifyListeners();
   }
 
   //! إزالة منتج من السلة
   void removeFromCart(Product product) {
-    if (_cartItems.contains(product)) {
-      _cartItems.remove(product); 
-      cartItemsApi
-          .removeWhere((e) => e['id'] == product.id);
+    if (kDebugMode) {
+      print('Removing product: ${product.id}, ${product.name}');
     }
-    products.remove(product.id); 
-    _updateCartItemsApi(); 
-    _saveCartItems(); 
-    notifyListeners(); 
+    if (_cartItems.contains(product)) {
+      if (kDebugMode) {
+        print('Product found in cartItems. Removing...');
+      }
+      _cartItems.removeWhere((item) => item.id == product.id);
+    }
+
+    products.remove(product.id);
+    cartItemsApi.removeWhere((e) => e['id'] == product.id);
+
+    _updateCartItemsApi();
+    _saveCartItems();
+
+    if (kDebugMode) {
+      print('Product removed successfully.');
+    }
+    notifyListeners();
   }
 
   //! تعديل كمية منتج معين في السلة
-  void updateQuantity(Product product, int quantity) {
-    if (_cartItems.contains(product) && quantity > 0) {
-      products[product.id] = quantity;
-      _updateCartItemsApi();
-      _saveCartItems(); 
-      notifyListeners(); 
-    } else if (quantity == 0) {
+  void updateQuantity(Product product, int quantity, BuildContext context) {
+    // التحقق من كمية المنتج في المتجر
+    if (product.procountity == 0 || quantity == 0) {
       removeFromCart(product);
+    } else if (_cartItems.contains(product) && quantity > 0) {
+      if (quantity <= product.procountity) {
+        // تحديث الكمية في السلة إذا كانت الكمية أقل أو تساوي المتاحة في المتجر
+        products[product.id] = quantity;
+        _updateCartItemsApi();
+        _saveCartItems();
+        notifyListeners();
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("الكمية غير متاحة"),
+              content: Text(
+                  "الكمية المطلوبة من ${product.name} تتجاوز المتوفر. الكمية المتاحة هي: ${product.procountity}."),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("موافق"),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
   //! الحصول على كمية منتج معين في السلة
   int getQuantity(Product product) {
-    return products[product.id] ?? 1; 
+    return products[product.id] ?? 1;
   }
 
   //! مسح السلة
   void clearCart() {
     _cartItems.clear();
     products.clear();
-    cartItemsApi.clear(); 
-    _saveCartItems(); 
-    notifyListeners(); 
+    cartItemsApi.clear();
+    _saveCartItems();
+    notifyListeners();
   }
 
   //! تحديث قائمة المنتجات في الـ API
@@ -101,14 +141,12 @@ class CartProvider extends ChangeNotifier {
       };
     }).toList();
 
-    String cartItemsString =
-        jsonEncode(cartItemsJson); 
-    AppSharedPreferences.cacheCartItems(
-        cartItemsString); 
+    String cartItemsString = jsonEncode(cartItemsJson);
+    AppSharedPreferences.cacheCartItems(cartItemsString);
   }
 
   //! تحميل بيانات السلة (إذا كانت موجودة)
-  void _loadCartItems() {
+  void loadCartItems() {
     String cartItemsString = AppSharedPreferences.getCartItems();
     if (cartItemsString.isNotEmpty) {
       List<dynamic> cartItemsJson = jsonDecode(cartItemsString);
@@ -129,5 +167,6 @@ class CartProvider extends ChangeNotifier {
       notifyListeners(); //! تحديث الواجهة
     }
   }
-}//! متغير لتخزين البيانات التي يتم إرسالها إلى API
+} //! متغير لتخزين البيانات التي يتم إرسالها إلى API
+
 List<Map> cartItemsApi = [];

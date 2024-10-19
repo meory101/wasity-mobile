@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wasity/core/resource/color_manager.dart';
 import 'package:wasity/core/resource/font_manager.dart';
@@ -9,15 +10,16 @@ import 'package:wasity/features/api/api_link.dart';
 import 'wallet_card.dart';
 
 class SelectableContainers extends StatefulWidget {
-    final Function(int) onPaymentMethodSelected;
-  const SelectableContainers({super.key, required this.onPaymentMethodSelected});
+  final Function(int) onPaymentMethodSelected;
+  const SelectableContainers(
+      {super.key, required this.onPaymentMethodSelected});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SelectableContainersState createState() => _SelectableContainersState();
 }
 
 class _SelectableContainersState extends State<SelectableContainers> {
-  
   int _selectedValue = 0;
   double? balance;
   int? points;
@@ -44,18 +46,25 @@ class _SelectableContainersState extends State<SelectableContainers> {
       points = fetchedPoints;
     });
   }
- void _saveSelectedValue(int value) async {
+
+  void _saveSelectedValue(int value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('selected_payment', value);
-    widget.onPaymentMethodSelected(value); 
+    widget.onPaymentMethodSelected(value);
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildSelectableContainer(0, AppImageManager.cash, "cash"),
-        _buildSelectableContainer(1, AppImageManager.card, "epay"),
+        Semantics(
+            label: 'الدفع عند الاستلام',
+            child: _buildSelectableContainer(0, AppImageManager.cash, "cash")),
+        Semantics(
+            label: 'الدفع عبر المحفظة ',
+            hint: 'اضغط مطوّلا لرؤية البطاقة ',
+            child: _buildSelectableContainer(1, AppImageManager.card, "epay")),
       ],
     );
   }
@@ -66,7 +75,7 @@ class _SelectableContainersState extends State<SelectableContainers> {
         setState(() {
           _selectedValue = value;
         });
-         _saveSelectedValue(value); 
+        _saveSelectedValue(value);
       },
       onLongPress: () async {
         if (value == 1) {

@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Config {
   static const String baseUrl = 'http://192.168.1.104:8000/api';
+  static const String searchEngineUrl = 'http://192.168.1.104:5000/api';
   static const String imageUrl = 'http://192.168.1.104:8000/storage';
 
   static String getFullUrl(String endpoint) {
@@ -465,12 +466,15 @@ class OrderService {
     );
 
     if (response.statusCode == 200) {
-      print("Order cancelled successfully.");
+      if (kDebugMode) {
+        print("Order cancelled successfully.");
+      }
     } else {
       throw Exception('Failed to cancel order');
     }
   }
 
+//!fetch Orders
   Future<List<Order>> fetchOrders() async {
     String clientId = AppSharedPreferences.getClientId();
     if (kDebugMode) {
@@ -507,13 +511,14 @@ class OrderService {
         return {'text': 'Delivered', 'color': AppColorManager.grey};
       case 4:
         return {'text': 'rejected', 'color': AppColorManager.red};
+      case 5:
+        return {'text': 'Canceled', 'color': AppColorManager.hint};
       default:
         return {'text': 'Unknown', 'color': AppColorManager.black};
     }
   }
 }
 //!Place Order
-
 
 class PlaceOrderService {
   Future<void> placeOrder({
@@ -538,15 +543,25 @@ class PlaceOrderService {
       );
 
       if (response.statusCode == 200) {
-        print("Order placed successfully");
-        print("Response: ${response.body}");
+        if (kDebugMode) {
+          print("Order placed successfully");
+        }
+        if (kDebugMode) {
+          print("Response: ${response.body}");
+        }
       } else {
-        print('Failed to add Order: ${response.statusCode}');
-        print('Error body: ${response.body}');
+        if (kDebugMode) {
+          print('Failed to add Order: ${response.statusCode}');
+        }
+        if (kDebugMode) {
+          print('Error body: ${response.body}');
+        }
         throw Exception('Failed to add Order');
       }
     } catch (e) {
-      print('Error occurred while placing order: $e');
+      if (kDebugMode) {
+        print('Error occurred while placing order: $e');
+      }
       throw Exception('Error occurred while placing order');
     }
   }

@@ -9,7 +9,7 @@ import 'package:wasity/features/pages/cart/screen/cart.dart';
 import 'package:wasity/features/pages/category/screens/all_category.dart';
 import 'package:wasity/features/pages/home/screens/home_screen.dart';
 import 'package:wasity/features/pages/profile/screens/profile_info.dart';
-import 'package:wasity/features/pages/branch/main_branch.dart'; 
+import 'package:wasity/features/pages/branch/main_branch.dart';
 
 class ButtonNavbar extends StatefulWidget {
   final ValueNotifier<ThemeMode> themeNotifier;
@@ -56,79 +56,99 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
                     });
                   },
                   destinations: [
-                    Padding(
-                      padding: EdgeInsets.only(top: AppHeightManager.h3),
-                      child: NavigationDestination(
-                        icon: SvgPicture.asset(
-                          AppIconManager.homeFill,
-                          colorFilter: const ColorFilter.mode(
-                            AppColorManager.white,
-                            BlendMode.srcIn,
+                    Semantics(
+                      label: 'الهوم',
+                      child: Padding(
+                        padding: EdgeInsets.only(top: AppHeightManager.h3),
+                        child: NavigationDestination(
+                          icon: SvgPicture.asset(
+                            AppIconManager.homeFill,
+                            colorFilter: const ColorFilter.mode(
+                              AppColorManager.white,
+                              BlendMode.srcIn,
+                            ),
+                            width: AppWidthManager.w12,
+                            height: AppHeightManager.h4,
                           ),
-                          width: AppWidthManager.w12,
-                          height: AppHeightManager.h4,
+                          label: '',
+                          tooltip: 'Home',
                         ),
-                        label: '',
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: AppHeightManager.h3),
-                      child: NavigationDestination(
-                        icon: SvgPicture.asset(
-                          AppIconManager.categoryFill,
-                          colorFilter: const ColorFilter.mode(
-                            AppColorManager.white,
-                            BlendMode.srcIn,
+                    Semantics(
+                      label: 'الفئات',
+                      child: Padding(
+                        padding: EdgeInsets.only(top: AppHeightManager.h3),
+                        child: NavigationDestination(
+                          icon: SvgPicture.asset(
+                            AppIconManager.categoryFill,
+                            colorFilter: const ColorFilter.mode(
+                              AppColorManager.white,
+                              BlendMode.srcIn,
+                            ),
+                            width: AppWidthManager.w12,
+                            height: AppHeightManager.h4,
                           ),
-                          width: AppWidthManager.w12,
-                          height: AppHeightManager.h4,
+                          label: '',
+                          tooltip: 'Categories',
                         ),
-                        label: '',
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: AppHeightManager.h3),
-                      child: NavigationDestination(
-                        icon: SvgPicture.asset(
-                          AppIconManager.cartFill,
-                          colorFilter: const ColorFilter.mode(
-                            AppColorManager.white,
-                            BlendMode.srcIn,
+                    Semantics(
+                      label: 'السلة',
+                      child: Padding(
+                        padding: EdgeInsets.only(top: AppHeightManager.h3),
+                        child: NavigationDestination(
+                          icon: SvgPicture.asset(
+                            AppIconManager.cartFill,
+                            colorFilter: const ColorFilter.mode(
+                              AppColorManager.white,
+                              BlendMode.srcIn,
+                            ),
+                            width: AppWidthManager.w12,
+                            height: AppHeightManager.h4,
                           ),
-                          width: AppWidthManager.w12,
-                          height: AppHeightManager.h4,
+                          label: '',
+                          tooltip: 'Cart',
                         ),
-                        label: '',
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: AppHeightManager.h3),
-                      child: NavigationDestination(
-                        icon: SvgPicture.asset(
-                          AppIconManager.store,
-                          colorFilter: const ColorFilter.mode(
-                            AppColorManager.white,
-                            BlendMode.srcIn,
+                    Semantics(
+                      label: 'الأفرع',
+                      child: Padding(
+                        padding: EdgeInsets.only(top: AppHeightManager.h3),
+                        child: NavigationDestination(
+                          icon: SvgPicture.asset(
+                            AppIconManager.store,
+                            colorFilter: const ColorFilter.mode(
+                              AppColorManager.white,
+                              BlendMode.srcIn,
+                            ),
+                            width: AppWidthManager.w12,
+                            height: AppHeightManager.h4,
                           ),
-                          width: AppWidthManager.w12,
-                          height: AppHeightManager.h4,
+                          label: '',
+                          tooltip: 'Branches',
                         ),
-                        label: '',
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: AppHeightManager.h3),
-                      child: NavigationDestination(
-                        icon: SvgPicture.asset(
-                          AppIconManager.profileFill,
-                          colorFilter: const ColorFilter.mode(
-                            AppColorManager.white,
-                            BlendMode.srcIn,
+                    Semantics(
+                      label: 'معلومات الحساب',
+                      child: Padding(
+                        padding: EdgeInsets.only(top: AppHeightManager.h3),
+                        child: NavigationDestination(
+                          icon: SvgPicture.asset(
+                            AppIconManager.profileFill,
+                            colorFilter: const ColorFilter.mode(
+                              AppColorManager.white,
+                              BlendMode.srcIn,
+                            ),
+                            width: AppWidthManager.w12,
+                            height: AppHeightManager.h4,
                           ),
-                          width: AppWidthManager.w12,
-                          height: AppHeightManager.h4,
+                          label: '',
+                          tooltip: 'Profile',
                         ),
-                        label: '',
                       ),
                     ),
                   ],

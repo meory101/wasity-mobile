@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/widget/form_field/app_form_field.dart';
-import 'package:wasity/features/pages/home/screens/home_screen.dart';
 import 'package:wasity/features/pages/home/widgets/button/filter.dart';
 
 class SearchFormField extends StatelessWidget {
@@ -26,18 +25,27 @@ class SearchFormField extends StatelessWidget {
         children: [
           Expanded(
             flex: 85,
-            child: AppTextFormField(
-              fillColor: theme.inputDecorationTheme.fillColor,
-              borderRadius: AppRadiusManager.r6,
-              hintText: 'search here ...',
-              prefixIcon: IconButton(
+            child: Semantics(
+              label: 'مربع البحث',
+              hint: 'اضغط مرتين للكتابة',
+              child: AppTextFormField(
+                fillColor: theme.inputDecorationTheme.fillColor,
+                borderRadius: AppRadiusManager.r6,
+                hintText: 'search here ...',
+                prefixIcon: IconButton(
                   icon: const Icon(Icons.search),
-                  onPressed: onSearchClicked ?? () {  Navigator.pushNamed(context, '/SearchProducts');},
-                  color: theme.inputDecorationTheme.hintStyle?.color),
-              hintStyle: theme.inputDecorationTheme.hintStyle,
-              controller: irSearch ?? TextEditingController(),
-              textInputType: TextInputType.text,
-              textInputAction: TextInputAction.search,
+                  onPressed: onSearchClicked ??
+                      () {
+                        Navigator.pushNamed(context, '/SearchProducts');
+                      },
+                  color: theme.inputDecorationTheme.hintStyle?.color,
+                  tooltip: 'Search',
+                ),
+                hintStyle: theme.inputDecorationTheme.hintStyle,
+                controller: searchController ?? TextEditingController(),
+                textInputType: TextInputType.text,
+                textInputAction: TextInputAction.search,
+              ),
             ),
           ),
           const Expanded(

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wasity/core/resource/color_manager.dart';
+import 'package:wasity/core/resource/font_manager.dart';
 import 'package:wasity/core/resource/icon_manager.dart';
 import 'package:wasity/core/resource/size_manager.dart';
 import 'package:wasity/core/storage/shared/shared_pref.dart';
@@ -70,6 +71,7 @@ class _CheckoutState extends State<Checkout> {
         deliveryType: delivery_type!,
         cartItems: cartItemsApi,
       );
+      // ignore: use_build_context_synchronously
       showOrderResultDialog(context, true);
     } catch (e) {
       if (kDebugMode) {
@@ -87,7 +89,7 @@ class _CheckoutState extends State<Checkout> {
         return AlertDialog(
           backgroundColor: const Color.fromARGB(192, 130, 130, 130),
           content: SizedBox(
-            height: AppHeightManager.h24,
+            height: AppHeightManager.h30,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -95,27 +97,37 @@ class _CheckoutState extends State<Checkout> {
                     ? Column(
                         children: [
                           Lottie.asset(
-                            height: AppHeightManager.h17,
+                            height: AppHeightManager.h13,
                             AppIconManager.success,
                           ),
                           SizedBox(height: AppHeightManager.h2),
-                          const Text(
-                            'Order placed successfully!',
-                            style: TextStyle(
-                                color: AppColorManager.white, fontSize: 20),
+                          Semantics(
+                            label: 'تمت عملية الطلب بنجاح',
+                            child: const Text(
+                              'Order placed successfully!',
+                              style: TextStyle(
+                                  color: AppColorManager.white, fontSize: 20),
+                            ),
                           ),
                         ],
                       )
                     : Column(
                         children: [
-                          Lottie.asset(
-                            AppIconManager.error,
+                          SizedBox(
+                            height: AppHeightManager.h15,
+                            child: Lottie.asset(
+                              height: AppHeightManager.h13,
+                              AppIconManager.error,
+                            ),
                           ),
                           SizedBox(height: AppHeightManager.h2),
-                          const Text(
-                            'Failed to place the order. Please try again.',
-                            style: TextStyle(
-                                color: AppColorManager.white, fontSize: 20),
+                          Semantics(
+                            label: 'فشلت عملية التحقق ',
+                            child: const Text(
+                              'Failed to place the order.\nPlease try again.',
+                              style: TextStyle(
+                                  color: AppColorManager.white, fontSize: 20),
+                            ),
                           ),
                         ],
                       ),
@@ -124,24 +136,30 @@ class _CheckoutState extends State<Checkout> {
           ),
           actions: isSuccess
               ? [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/OrderHistory');
-                    },
-                    child: const Text(
-                      'View Order',
-                      style: TextStyle(
-                          color: AppColorManager.yellow, fontSize: 15),
+                  Semantics(
+                    label: 'صفحة تتبع حالةالطلب',
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/OrderHistory');
+                      },
+                      child: const Text(
+                        'View Order',
+                        style: TextStyle(
+                            color: AppColorManager.yellow, fontSize: 15),
+                      ),
                     ),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed('/ButtonNavbar');
                     },
-                    child: const Text(
-                      'Continue Shopping',
-                      style: TextStyle(
-                          color: AppColorManager.yellow, fontSize: 15),
+                    child: Semantics(
+                      label: 'الاستمرار بالتسوق',
+                      child: const Text(
+                        'Continue Shopping',
+                        style: TextStyle(
+                            color: AppColorManager.yellow, fontSize: 15),
+                      ),
                     ),
                   ),
                 ]
@@ -187,12 +205,15 @@ class _CheckoutState extends State<Checkout> {
             children: [
               Row(
                 children: [
-                  AppTextWidget(
-                    text: "Shipping Address",
-                    style: theme.textTheme.displayLarge?.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? AppColorManager.white
-                          : AppColorManager.navyBlue,
+                  Semantics(
+                    label: 'العناوين المحفوظة',
+                    child: AppTextWidget(
+                      text: "Shipping Address",
+                      style: theme.textTheme.displayLarge?.copyWith(
+                        color: theme.brightness == Brightness.dark
+                            ? AppColorManager.white
+                            : AppColorManager.navyBlue,
+                      ),
                     ),
                   ),
                 ],
@@ -256,10 +277,15 @@ class _CheckoutState extends State<Checkout> {
                               ),
                             ),
                             const Spacer(),
-                            IconButton(
-                              onPressed: () => Navigator.pushNamed(
-                                  context, '/SavedAddresses'),
-                              icon: const Icon(Icons.arrow_forward_ios_rounded),
+                            Semantics(
+                              label:
+                                  'اضغط للانتقال الى العناوين المحفوظة او اضافة عنوان جديد ',
+                              child: IconButton(
+                                onPressed: () => Navigator.pushNamed(
+                                    context, '/SavedAddresses'),
+                                icon:
+                                    const Icon(Icons.arrow_forward_ios_rounded),
+                              ),
                             ),
                           ],
                         ),
@@ -269,12 +295,15 @@ class _CheckoutState extends State<Checkout> {
                     return InkWell(
                       onTap: () =>
                           Navigator.pushNamed(context, '/SavedAddresses'),
-                      child: AppTextWidget(
-                        text: "Location not set",
-                        style: theme.textTheme.displayMedium?.copyWith(
-                          color: theme.brightness == Brightness.dark
-                              ? AppColorManager.white
-                              : AppColorManager.navyBlue,
+                      child: Semantics(
+                        label: 'موفع التوصيل غير محدد اضغط للتحديد',
+                        child: AppTextWidget(
+                          text: "Location not set",
+                          style: theme.textTheme.displayMedium?.copyWith(
+                            color: theme.brightness == Brightness.dark
+                                ? AppColorManager.red
+                                : AppColorManager.red,
+                          ),
                         ),
                       ),
                     );
@@ -286,12 +315,15 @@ class _CheckoutState extends State<Checkout> {
               SizedBox(height: AppHeightManager.h2),
               Row(
                 children: [
-                  AppTextWidget(
-                    text: "Choose Shipping",
-                    style: theme.textTheme.displayLarge?.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? AppColorManager.white
-                          : AppColorManager.navyBlue,
+                  Semantics(
+                    label: 'نوع التوصيل',
+                    child: AppTextWidget(
+                      text: "Choose Shipping",
+                      style: theme.textTheme.displayLarge?.copyWith(
+                        color: theme.brightness == Brightness.dark
+                            ? AppColorManager.white
+                            : AppColorManager.navyBlue,
+                      ),
                     ),
                   ),
                 ],
@@ -314,6 +346,7 @@ class _CheckoutState extends State<Checkout> {
               if (delivery_type == 1)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
+                  //!!!هذا الخيار قد يفرض رسوم توصيل اضافية'
                   child: AppTextWidget(
                     text: "This option may incur additional delivery charges.",
                     color: Colors.red,
@@ -391,21 +424,26 @@ class _CheckoutState extends State<Checkout> {
                   text: "Place Order",
                   color: AppColorManager.lightGrey,
                   onPressed: () async {
-                    print('address_id: $address_id');
-                    print('delivery_type: $delivery_type');
-                    print('client_id: $client_id');
-                    print('pay_type: $pay_type');
-                    print('products: $cartItemsApi');
+                    // print('address_id: $address_id');
+                    // print('delivery_type: $delivery_type');
+                    // print('client_id: $client_id');
+                    // print('pay_type: $pay_type');
+                    // print('products: $cartItemsApi');
 
                     //! للتأخير وقت البصمة
                     final bool? isAuthenticated =
                         await showFingerprintAuthDialog(context);
 
                     if (isAuthenticated == true) {
-                      print('Authentication successful. Placing order...');
+                      if (kDebugMode) {
+                        print('Authentication successful. Placing order...');
+                      }
                       await placeOrder();
                     } else {
-                      print('Authentication failed. Order not placed.');
+                      if (kDebugMode) {
+                        print('Authentication failed. Order not placed.');
+                      }
+                      // ignore: use_build_context_synchronously
                       showOrderResultDialog(context, false);
                     }
                   },
@@ -424,46 +462,77 @@ class _CheckoutState extends State<Checkout> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: const Color.fromARGB(192, 130, 130, 130),
-          title: const Text('Authentication Required'),
+          title: AppTextWidget(
+              fontSize: FontSizeManager.fs18,
+              color: AppColorManager.yellow,
+              text: 'Authentication Required'),
           content: SizedBox(
-            height: AppHeightManager.h15,
+            height: AppHeightManager.h25,
             child: Column(children: [
+              const Divider(
+                color: AppColorManager.grey,
+              ),
               const Row(
                 children: [
-                  Text('Confirm the order....'),
+                  AppTextWidget(
+                    text: 'Confirm the order....',
+                    fontSize: 18,
+                  ),
                 ],
               ),
               Row(
                 children: [
-                  const Text('the total price:'),
+                  Semantics(
+                    label: 'السعر الكلي للطلب',
+                    child: const AppTextWidget(
+                      text: 'the total price:   ',
+                      fontSize: 18,
+                    ),
+                  ),
                   Consumer<CartProvider>(
                     builder: (context, cartProvider, child) {
                       return Padding(
                         padding: EdgeInsets.only(bottom: AppHeightManager.h03),
-                        child: PriceText(
-                          price: cartProvider.totalPrice,
-                          priceStyle:
-                              const TextStyle(color: AppColorManager.white),
-                          style: const TextStyle(color: AppColorManager.white),
+                        child: Semantics(
+                          label: 'السعر الكلي للطلب',
+                          child: PriceText(
+                            price: cartProvider.totalPrice,
+                            priceStyle: const TextStyle(
+                                fontSize: 18, color: AppColorManager.green),
+                            style: const TextStyle(
+                                fontSize: 15, color: AppColorManager.green),
+                          ),
                         ),
                       );
                     },
                   ),
                 ],
               ),
+              const Divider(
+                color: AppColorManager.grey,
+              ),
+              SizedBox(
+                height: AppHeightManager.h2,
+              ),
               const Row(
                 children: [
-                  Text('Please authenticate using your fingerprint.'),
+                  AppTextWidget(
+                      fontSize: 18,
+                      color: AppColorManager.dotGrey,
+                      text: 'Please authenticate \nusing your fingerprint.'),
                 ],
               ),
             ]),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.cancel, color: Colors.red),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
+            Semantics(
+              label: 'تراجع عن الشراء',
+              child: IconButton(
+                icon: const Icon(Icons.cancel, color: Colors.red),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
             ),
             IconButton(
               onPressed: () async {
@@ -472,9 +541,12 @@ class _CheckoutState extends State<Checkout> {
                   MaterialPageRoute(
                       builder: (context) => const FingerprintAuthPage()),
                 );
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop(isAuthenticated);
               },
-              icon: const Icon(Icons.fingerprint, color: Colors.green),
+              icon: Semantics(
+                  label: 'تأكيد الشراء بالبصمة',
+                  child: const Icon(Icons.fingerprint, color: Colors.green)),
             ),
           ],
         );

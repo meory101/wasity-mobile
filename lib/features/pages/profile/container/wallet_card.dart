@@ -44,7 +44,7 @@ class WalletCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: AppWidthManager.w4, top: AppHeightManager.h2),
+                          left: AppWidthManager.w1, top: AppHeightManager.h2),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -93,7 +93,8 @@ class WalletCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          top: AppHeightManager.h3, left: AppWidthManager.w14),
+                          bottom: AppHeightManager.h3,
+                          left: AppWidthManager.w27),
                       child: SizedBox(
                         height: AppHeightManager.h4,
                         width: AppWidthManager.w20,

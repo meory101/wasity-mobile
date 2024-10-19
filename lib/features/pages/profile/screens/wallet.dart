@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
-
 import 'package:wasity/features/api/api_link.dart';
 import 'package:wasity/features/pages/profile/container/wallet_card.dart';
 
@@ -34,6 +33,10 @@ class _WalletState extends State<Wallet> {
     });
   }
 
+  Future<void> _refreshPage() async {
+    await loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +47,13 @@ class _WalletState extends State<Wallet> {
         },
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: 
-            WalletCard(balance: balance, points: points),
+      body: RefreshIndicator(
+        onRefresh: _refreshPage,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(), 
+          child: WalletCard(balance: balance, points: points ),
+        ),
+      ),
     );
   }
 }

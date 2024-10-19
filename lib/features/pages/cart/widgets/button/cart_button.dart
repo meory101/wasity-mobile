@@ -36,18 +36,21 @@ class CartButton extends StatelessWidget {
           ),
         );
       },
-      child: DecoratedContainer(
-        borderRadius: BorderRadius.circular(AppRadiusManager.r4),
-        shape: BoxShape.circle,
-        width: AppWidthManager.w8point5,
-        height: AppHeightManager.h8,
-        color: containerColor,
-        child: SvgPicture.asset(
-          fit: BoxFit.scaleDown,
-          AppIconManager.cartFill,
-          colorFilter: ColorFilter.mode(
-            iconColor,
-            BlendMode.srcIn,
+      child: Semantics(
+        label: ' اضافة للسلة',
+        child: DecoratedContainer(
+          borderRadius: BorderRadius.circular(AppRadiusManager.r4),
+          shape: BoxShape.circle,
+          width: AppWidthManager.w8point5,
+          height: AppHeightManager.h8,
+          color: containerColor,
+          child: SvgPicture.asset(
+            fit: BoxFit.scaleDown,
+            AppIconManager.cartFill,
+            colorFilter: ColorFilter.mode(
+              iconColor,
+              BlendMode.srcIn,
+            ),
           ),
         ),
       ),

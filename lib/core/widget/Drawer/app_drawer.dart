@@ -79,11 +79,11 @@ class _AppDrawerState extends State<AppDrawer> {
                       buttonIcon: _profileImage != null
                           ? Image.file(
                               File(_profileImage!),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
                                   AppImageManager
-                                      .personalImage, // الصورة البديلة
+                                      .personalImage,
                                   fit: BoxFit.cover,
                                 );
                               },

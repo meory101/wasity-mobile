@@ -19,15 +19,6 @@ class CartItemsWidget extends StatefulWidget {
 }
 
 class _CartItemsWidgetState extends State<CartItemsWidget> {
-  // @override
-  // void initState() {
-  //   final cartProvider = Provider.of<CartProvider>(context);
-  //   final cartItems = cartProvider.cartItems;
-  //   print(cartItems);
-  //   print("cart items");
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);

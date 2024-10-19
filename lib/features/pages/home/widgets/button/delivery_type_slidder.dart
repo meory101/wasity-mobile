@@ -25,8 +25,7 @@ class DeliveryTypeSlider extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final iconColor =
         isDarkMode ? AppColorManager.white : AppColorManager.navyLightBlue;
-    final textColor =
-        isDarkMode ? Colors.white : AppColorManager.navyLightBlue;
+    final textColor = isDarkMode ? Colors.white : AppColorManager.navyLightBlue;
 
     return SizedBox(
       height: 60,
@@ -45,10 +44,13 @@ class DeliveryTypeSlider extends StatelessWidget {
                 height: iconSize,
                 fit: BoxFit.scaleDown,
               ),
-              AppTextWidget(
-                text: "Economic",
-                color: textColor,
-                fontSize: textSize,
+              Semantics(
+                label: 'اقتصادي',
+                child: AppTextWidget(
+                  text: "Economic",
+                  color: textColor,
+                  fontSize: textSize,
+                ),
               ),
             ],
           ),
@@ -62,10 +64,13 @@ class DeliveryTypeSlider extends StatelessWidget {
                 height: iconSize,
                 fit: BoxFit.scaleDown,
               ),
-              AppTextWidget(
-                text: "Direct",
-                color: textColor,
-                fontSize: textSize,
+              Semantics(
+                label: 'التوصيل الفوري',
+                child: AppTextWidget(
+                  text: "Direct",
+                  color: textColor,
+                  fontSize: textSize,
+                ),
               ),
             ],
           ),

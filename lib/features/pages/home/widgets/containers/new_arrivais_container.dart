@@ -36,7 +36,7 @@ class NewArrivaisContainer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadiusManager.r5),
                 child: Container(
                   width: AppWidthManager.w42,
-                  height: AppHeightManager.h30,
+                  height: AppHeightManager.h31,
                   color: isDarkMode
                       ? AppColorManager.navyLightBlue
                       : AppColorManager.whiteBlue,
@@ -64,15 +64,19 @@ class NewArrivaisContainer extends StatelessWidget {
                                   arguments: product,
                                 );
                               },
-                              child: CachedNetworkImage(
-                                imageUrl: '${Config.imageUrl}/${product.image}',
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => Icon(
-                                  Icons.warning_rounded,
-                                  size: AppRadiusManager.r30,
+                              child: Semantics(
+                                label: "صورة المنتج",
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      '${Config.imageUrl}/${product.image}',
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.warning_rounded,
+                                    size: AppRadiusManager.r30,
+                                  ),
+                                  fit: BoxFit.fill,
                                 ),
-                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
@@ -86,15 +90,19 @@ class NewArrivaisContainer extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Product Name
-                            AppTextWidget(
-                              text: product.name,
-                              style: theme.textTheme.displayMedium?.copyWith(
-                                color: isDarkMode
-                                    ? AppColorManager.white
-                                    : AppColorManager.navyBlue,
+                       
+                            
+                  
+                  
+                             AppTextWidget(
+                                text: product.name,
+                                style: theme.textTheme.displayMedium?.copyWith(
+                                  color: isDarkMode
+                                      ? AppColorManager.white
+                                      : AppColorManager.navyBlue,
+                                ),
                               ),
-                            ),
+                            
                             // Product Description
                             Row(
                               children: [
@@ -102,15 +110,18 @@ class NewArrivaisContainer extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        AppTextWidget(
-                                          text: product.desc.isNotEmpty
-                                              ? product.desc
-                                              : "No description available",
-                                          style: theme.textTheme.bodySmall
-                                              ?.copyWith(
-                                            color: isDarkMode
-                                                ? AppColorManager.grey
-                                                : AppColorManager.navyBlue,
+                                        Semantics(
+                                          label: 'وصْف المنتَج',
+                                          child: AppTextWidget(
+                                            text: product.desc.isNotEmpty
+                                                ? product.desc
+                                                : "No description available",
+                                            style: theme.textTheme.bodySmall
+                                                ?.copyWith(
+                                              color: isDarkMode
+                                                  ? AppColorManager.grey
+                                                  : AppColorManager.navyBlue,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -156,24 +167,30 @@ class NewArrivaisContainer extends StatelessWidget {
                 top: AppHeightManager.h25,
                 child: Column(
                   children: [
-                    SvgPicture.asset(
-                      AppIconManager.star,
-                      colorFilter: const ColorFilter.mode(
-                        AppColorManager.yellow,
-                        BlendMode.srcIn,
+                    Semantics(
+                      label: 'ايقونة نجمة للتقييم',
+                      child: SvgPicture.asset(
+                        AppIconManager.star,
+                        colorFilter: const ColorFilter.mode(
+                          AppColorManager.yellow,
+                          BlendMode.srcIn,
+                        ),
+                        width: AppWidthManager.w12,
+                        height: AppHeightManager.h2point2,
                       ),
-                      width: AppWidthManager.w12,
-                      height: AppHeightManager.h2point2,
                     ),
                     SizedBox(width: AppWidthManager.w1),
-                    AppTextWidget(
-                      text: (product.rate != null
-                          ? product.rate!.toStringAsFixed(1)
-                          : '0.0'),
-                      style: theme.textTheme.displaySmall?.copyWith(
-                        color: themeNotifier!.value == ThemeMode.dark
-                            ? AppColorManager.white
-                            : AppColorManager.navyBlue,
+                    Semantics(
+                      label: 'نسبة التقييم',
+                      child: AppTextWidget(
+                        text: (product.rate != null
+                            ? product.rate!.toStringAsFixed(1)
+                            : '0.0'),
+                        style: theme.textTheme.displaySmall?.copyWith(
+                          color: themeNotifier!.value == ThemeMode.dark
+                              ? AppColorManager.white
+                              : AppColorManager.navyBlue,
+                        ),
                       ),
                     ),
                   ],

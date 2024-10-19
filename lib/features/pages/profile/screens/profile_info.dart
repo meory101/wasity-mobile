@@ -7,7 +7,6 @@ import 'package:wasity/core/storage/shared/shared_pref.dart';
 import 'package:wasity/core/widget/app_bar/second_appbar.dart';
 import 'package:wasity/core/widget/container/decorated_container.dart';
 import 'package:wasity/core/widget/text/app_text_widget.dart';
-// import 'package:wasity/features/pages/auth/screens/finger_print.dart';
 
 class ProfileInfo extends StatefulWidget {
   final ValueNotifier<ThemeMode>? themeNotifier;
@@ -81,7 +80,6 @@ class _ProfileInfoState extends State<ProfileInfo> {
 
             IconButton(
               onPressed: () => Navigator.pushNamed(context, '/EditProfile'),
-             
               icon: const Icon(Icons.edit_square,
                   color: AppColorManager.lightGrey),
             ),
@@ -120,7 +118,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: SecondAppbar(
         titleText: "Profile",
-        onBack: () => Navigator.pushNamed(context, '/ButtonNavbar'),
+        onBack: () => Navigator.popAndPushNamed(context, '/ButtonNavbar'),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppWidthManager.w6),
@@ -137,7 +135,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                   profileItem(Icons.location_on_outlined, "Saved Address",
                       "Home, Office", '/SavedAddresses'),
                   profileItem(Icons.settings, "Settings",
-                      "app settings, Dark mode", '/SettingsPage'),
+                      "app settings, Dark mode", '/'),
                 ],
               ),
             ),

@@ -154,13 +154,11 @@ class _SavedAddressesState extends State<SavedAddresses> {
             left: AppWidthManager.w20,
             child: SizedBox(
               height: AppHeightManager.h7,
-              child: Container(
-                child: AppElevatedButton(
-                  onPressed: _showAddAddressDialog,
-                  color: AppColorManager.shadow2,
-                  textColor: AppColorManager.grayLightBlue,
-                  text: "+ Add Address",
-                ),
+              child: AppElevatedButton(
+                onPressed: _showAddAddressDialog,
+                color: AppColorManager.shadow2,
+                textColor: AppColorManager.grayLightBlue,
+                text: "+ Add Address",
               ),
             ),
           ),
