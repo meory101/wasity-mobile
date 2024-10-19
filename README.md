@@ -1,16 +1,7 @@
 # wasity
 
-A new Flutter project.
+commercial intermediary
 
-## Getting Started
+## Brief description
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project is a commercial intermediary application that supports the blind and the fingerprint and face verification method on demand and provides an electronic wallet, which enables an easy and distinctive experience for online shopping, and includes key functions such as browsing the latest and most popular products, managing accounts, placing orders, and rating products. The application aims to enhance customer satisfaction through a simple and straightforward user interface.
